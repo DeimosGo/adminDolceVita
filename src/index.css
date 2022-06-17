@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.card{
+    @apply m-auto text-lg font-semibold flex flex-col items-center justify-center space-y-4 h-36 shadow-lg  hover:shadow-xl border border-cerise-50 transform transition-all duration-300 hover:scale-105 cursor-pointer rounded-md
+}
+.buttonEdit {
+    @apply px-2 h-8 w-24 text-white-0 rounded-md hover:scale-105 hover:shadow-sm transition-all duration-150
+}
