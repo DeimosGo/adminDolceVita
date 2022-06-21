@@ -7,9 +7,9 @@ const routes = [
     component: ()=>import('../Pages/LoginPage.vue')
   },
   {
-    path: '/about',
+    path: '/reportes',
     name: 'about',
-    component: () => import('../views/AboutView.vue'),
+    component: () => import('../Pages/ReportesPage.vue'),
     meta: { requiresAuth: true },
   },
   {

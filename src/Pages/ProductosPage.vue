@@ -1,26 +1,40 @@
 <template>
-    <div v-if="loading" class="w-full h-100v grid place-content-center">
+    <div v-if="loading" class="w-full h-100v grid place-content-center z-40">
         <LoadingWheel />
     </div>
-    <CardProducto />
     <NotFound />
+    <transition name="componentCreated">
+        <CreatedElement v-show="created" />
+    </transition>
     <div
         v-if="!loading"
         class="pt-16 w-full px-2 lg:px-10 h-100v flex place-content-center flex-col lg:items-end justify-center"
     >
         <div class="w-4/5 flex items-center justify-between">
-            <h2 class="text-card text-3xl font-bold">Productos</h2>
+            <h2 class="text-card text-3xl font-bold">
+                {{ cantidad }} Productos
+            </h2>
             <div
                 class="flex space-x-7 items-center justify-center place-content-center"
             >
-                <AsideFilter @filtrar="filtro" @quitar="quitar" />
-                <InputBusqueda v-on:search="search" />
+                <AsideFilter
+                    @filtrar="filtro"
+                    @quitar="quitar"
+                    @advice="advice"
+                />
+                <InputBusqueda @showcard="showcard" @search="search" />
             </div>
         </div>
         <div
             class="flex flex-col items-center justify-center lg:items-end w-full h-5/6"
         >
-            <TableProducto :paginas="paginas" :actual="actual" />
+            <TableProducto
+                :paginas="paginas"
+                :actual="actual"
+                :class="tableAnimation"
+                @after="after"
+                @before="before"
+            />
         </div>
     </div>
 </template>
@@ -30,30 +44,36 @@ import AsideFilter from "@/containers/AsideFilter.vue";
 import TableProducto from "@/containers/TableProducto.vue";
 import LoadingWheel from "@/components/LoadingWheel.vue";
 import InputBusqueda from "@/components/InputBusqueda.vue";
+import CreatedElement from "@/components/CreatedElement.vue";
 import NotFound from "@/components/NotFoundSearch.vue";
-import CardProducto from "@/components/CardProducto.vue";
 import Producto from "./../services/ProductoService";
 export default {
     name: "ProductPage",
     components: {
         AsideFilter,
+        CreatedElement,
         TableProducto,
         LoadingWheel,
         InputBusqueda,
         NotFound,
-        CardProducto,
     },
     data() {
         return {
+            card: false,
+            tableAnimation: [],
+            created: false,
             loaded: false,
             productName: "",
             loading: true,
             productos: [],
+            cantidad: 0,
             found: false,
             ProductoService: new Producto(),
             paginas: 1,
             actual: 1,
             initFilter: false,
+            limit: 10,
+            offset: 0,
         };
     },
     provide() {
@@ -63,6 +83,30 @@ export default {
         };
     },
     methods: {
+        async before() {
+            if (this.offset >= 10) {
+                this.offset -= 10;
+                await this.load();
+                this.actual-=1;
+            }
+        },
+        async after() {
+            if (this.offset <= this.paginas) {
+                this.offset += 10;
+                await this.load();
+                this.actual+=1;
+            }
+        },
+        async advice() {
+            await this.load();
+            this.created = !this.created;
+            setTimeout(() => {
+                this.created = !this.created;
+            }, 4000);
+        },
+        showcard() {
+            this.card = !this.card;
+        },
         async search(value) {
             if (value.length <= 0) {
                 await this.load();
@@ -85,6 +129,12 @@ export default {
                     console.clear();
                 }, 500);
             }
+        },
+        filtroStock() {
+            this.initFilter = !this.initFilter;
+            /* datos.forEach((element) => {
+                this.productos.push(element);
+                }); */
         },
         async filtro(value) {
             console.log(value);
@@ -126,18 +176,19 @@ export default {
                 }
             });
             this.productos = productosSinCat;
-            if (productosSinCat.length >= 0) {
-                this.load()
+            if (productosSinCat.length <= 0) {
+                this.initFilter = false;
+                this.load();
             }
         },
         async countProductos() {
             const respuesta = await this.ProductoService.getProductosCount();
             if (respuesta.status == 200) {
                 const data = await respuesta.data;
+                this.cantidad = data.cantidad;
                 const cantidad = data.cantidad / 10;
                 if (cantidad % 2 !== 0) {
-                    let mod = 1 - (cantidad % 2);
-                    this.paginas = mod + cantidad;
+                    this.paginas = Math.floor(cantidad) + 1;
                 }
             } else {
                 return "error";
@@ -145,7 +196,10 @@ export default {
         },
         async load() {
             this.loading = true;
-            const respuesta = await this.ProductoService.getProductos();
+            const respuesta = await this.ProductoService.getProductos(
+                this.limit,
+                this.offset,
+            );
             if (respuesta.status == 200) {
                 const data = await respuesta.data;
                 this.productos = data;
@@ -155,6 +209,14 @@ export default {
                 }, 50);
             }
             this.loaded = !this.loaded;
+            this.animationT();
+        },
+        async animationT() {
+            this.tableAnimation.pop();
+            this.tableAnimation.push("table");
+            setTimeout(() => {
+                this.tableAnimation.pop();
+            }, 600);
         },
     },
     mounted() {
@@ -163,3 +225,48 @@ export default {
     },
 };
 </script>
+<style scoped>
+.componentCreated-leave-active {
+    animation: outCard 1000ms;
+}
+
+@keyframes outCard {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+.componentCreated-enter-active {
+    animation: animacionCard 300ms;
+}
+
+@keyframes animacionCard {
+    0% {
+        transform: scale(0.2);
+        opacity: 0.1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.table {
+    animation-name: animacion;
+    animation-duration: 600ms;
+}
+@keyframes animacion {
+    0% {
+        opacity: 0.1;
+        transform: translateY(-200px) scale(0.8);
+    }
+}
+.image {
+    filter: invert(32%) sepia(67%) saturate(2915%) hue-rotate(145deg)
+        brightness(94%) contrast(96%);
+}
+</style>

@@ -1,7 +1,5 @@
 <template>
-<KeepAlive>
-    <AsideBar v-if="sesion" />
-</KeepAlive>
+    <AsideBar @side="side" class="side" v-if="sesion" />
     <router-view @side="side" />
 </template>
 <style scoped>
@@ -13,19 +11,34 @@ import AsideBar from "./components/SideBar.vue";
 export default {
     data (){
         return {
+            clases:[],
             sesion: false,
         }
     },
     methods:{
         side(){
             this.sesion = !this.sesion;
+            this.clases.push("animacion");
+            setTimeout(() => this.clases.pop(), 500);
         }
     },
     components: { AsideBar },
-    mounted(){
+    async mounted(){
         if (sessionStorage.getItem("sesion")) {
             this.side();
         }
     }
 }
 </script>
+<style scoped>
+animacion{
+animation-name: side;
+animation-duration: 500ms;
+}
+@keyframes side {
+    0%{
+        opacity: 0.1;
+        transform: translateY(-200px) scale(0.8);
+    }
+}
+</style>

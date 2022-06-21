@@ -11,9 +11,9 @@
     <ProductoRow v-for="(item) in productos" :key="item.idProducto" :product="item" />
 </table>
 <div class="w-full flex space-x-3 text-lg justify-center place-items-center">
-    <button class="text-azureMarine-800"> <img class="w-2 arrow" src="./../assets/left.svg" alt="Atras"> </button>
-    <p class="text-card text-md font-semibold">{{paginas}} ... {{actual}}</p>
-    <button class="text-azureMarine-800"> <img class="w-2 arrow" src="./../assets/right.svg" alt="Atras"> </button>
+    <button @click="before" class="text-azureMarine-800 border-card"> <img class="w-4 rounded-sm arrow border border-card p-1" src="./../assets/left.svg" alt="Atras"> </button>
+    <p class="text-card text-md font-semibold">{{actual}} de {{paginas}}</p>
+    <button @click="after" class="text-azureMarine-800"> <img class="w-4 rounded-sm arrow border border-card p-1" src="./../assets/right.svg" alt="Siguente"> </button>
 </div>
 </div>
 </template>
@@ -45,6 +45,14 @@ export default {
             productos: this.productList,
         }
     },
+    methods:{
+        before(){
+            this.$emit('before');
+        },
+        after(){
+            this.$emit("after");
+        }
+    }
 }
 </script>
 <style scoped>
