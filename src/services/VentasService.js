@@ -2,7 +2,7 @@ import axios from "axios";
 
 class Venta {
     constructor(){
-        this.url = `https://restdolcevita.herokuapp.com//api/v1/ventas`;
+        this.url = `https://restdolcevita.herokuapp.com/api/v1/ventas`;
         this.token = sessionStorage.getItem("token");
     }
     async getVentas(limit = 9, offset = 0) {
