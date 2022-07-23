@@ -10,7 +10,7 @@ function addStyles(win, styles) {
     });
 }
 const VueHtmlToPaper = {
-    install(Vue, options = {}) {
+    install (Vue, options = {}) {
         let globals = Vue.prototype || Vue.config.globalProperties;
         globals.$htmlToPaper = (el, localOptions, cb = () => true) => {
             let defaultName = "_blank",
@@ -77,7 +77,6 @@ const VueHtmlToPaper = {
 ::after {
   --tw-content: '';
 }
-
 
 
 html {
@@ -158,7 +157,6 @@ b,
 strong {
   font-weight: bolder;
 }
-
 
 
 code,
@@ -415,6 +413,7 @@ Make sure disabled buttons don't get the pointer cursor.
 }
 
 
+
 img,
 svg,
 video,
@@ -592,6 +591,10 @@ video {
   border-width: 0;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .fixed {
   position: fixed;
 }
@@ -670,6 +673,14 @@ video {
 
 .top-10 {
   top: 2.5rem;
+}
+
+.right-1 {
+  right: 0.25rem;
+}
+
+.top-14 {
+  top: 3.5rem;
 }
 
 .z-40 {
@@ -810,8 +821,16 @@ video {
   margin-right: 2rem;
 }
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
 .block {
   display: block;
+}
+
+.inline {
+  display: inline;
 }
 
 .flex {
@@ -828,6 +847,10 @@ video {
 
 .grid {
   display: grid;
+}
+
+.contents {
+  display: contents;
 }
 
 .hidden {
@@ -932,6 +955,10 @@ video {
   height: -webkit-min-content;
   height: -moz-min-content;
   height: min-content;
+}
+
+.h-56 {
+  height: 14rem;
 }
 
 .max-h-70v {
@@ -1104,6 +1131,22 @@ video {
   width: 18rem;
 }
 
+.w-1 {
+  width: 0.25rem;
+}
+
+.w-2 {
+  width: 0.5rem;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.w-96 {
+  width: 24rem;
+}
+
 .min-w-780 {
   min-width: 780px;
 }
@@ -1114,6 +1157,10 @@ video {
 
 .flex-shrink-0 {
   flex-shrink: 0;
+}
+
+.flex-shrink {
+  flex-shrink: 1;
 }
 
 .border-collapse {
@@ -1154,6 +1201,14 @@ video {
           appearance: none;
 }
 
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -1172,6 +1227,10 @@ video {
 
 .place-content-end {
   place-content: end;
+}
+
+.place-items-start {
+  place-items: start;
 }
 
 .place-items-center {
@@ -1291,6 +1350,10 @@ video {
   place-self: end;
 }
 
+.overflow-auto {
+  overflow: auto;
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -1301,6 +1364,10 @@ video {
 
 .overflow-scroll {
   overflow: scroll;
+}
+
+.overflow-y-visible {
+  overflow-y: visible;
 }
 
 .overflow-y-scroll {
@@ -1325,6 +1392,10 @@ video {
 
 .rounded-2xl {
   border-radius: 1rem;
+}
+
+.rounded-none {
+  border-radius: 0px;
 }
 
 .rounded-l-lg {
@@ -1365,6 +1436,10 @@ video {
 
 .border-t-4 {
   border-top-width: 4px;
+}
+
+.border-t-0 {
+  border-top-width: 0px;
 }
 
 .border-r {
@@ -1491,6 +1566,11 @@ video {
   border-color: rgb(224 180 180 / var(--tw-border-opacity));
 }
 
+.border-gray-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(82 82 91 / var(--tw-border-opacity));
+}
+
 .border-b-azureMarine-700 {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(3 105 161 / var(--tw-border-opacity));
@@ -1606,6 +1686,11 @@ video {
   background-color: rgb(190 85 85 / var(--tw-bg-opacity));
 }
 
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(63 63 70 / var(--tw-bg-opacity));
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -1694,6 +1779,16 @@ video {
   padding-right: 0.375rem;
 }
 
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 .pt-16 {
   padding-top: 4rem;
 }
@@ -1712,6 +1807,10 @@ video {
 
 .pb-2 {
   padding-bottom: 0.5rem;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem;
 }
 
 .pl-1 {
@@ -1754,12 +1853,16 @@ video {
   padding-left: 1.5rem;
 }
 
-.pb-3 {
-  padding-bottom: 0.75rem;
-}
-
 .pr-8 {
   padding-right: 2rem;
+}
+
+.pt-0 {
+  padding-top: 0px;
+}
+
+.pr-16 {
+  padding-right: 4rem;
 }
 
 .text-left {
@@ -1991,6 +2094,16 @@ video {
   color: rgb(224 180 180 / var(--tw-text-opacity));
 }
 
+.text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(212 212 216 / var(--tw-text-opacity));
+}
+
+.underline {
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline;
+}
+
 .opacity-20 {
   opacity: 0.2;
 }
@@ -2055,6 +2168,10 @@ video {
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.outline {
+  outline-style: solid;
 }
 
 .brightness-50 {
