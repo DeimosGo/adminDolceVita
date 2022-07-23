@@ -1,36 +1,50 @@
 <template>
-<div class="w-full flex flex-col overflow-scroll lg:overflow-auto space-y-4 lg:w-10/12 md:mt-7 sm:mt-7">
-    <table class="w-full text-center min-w-500">
-    <tr class="text-sm lg:text-md bg-azureMarine-800 h-10 text-white-0 font-semibold">
-        <td class="w-1/5">Nombre</td>
-        <td class="w-1/5">Stock</td>
-        <td class="w-1/5">Precio</td>
-        <td class="w-1/5">Cantidad de ventas</td>
+<div class="w-full flex justify-end">
+<div @click="editar" v-if="showEditarProducto" class="absolute w-full top-0 right-0 bottom-0 h-100v bg-gray-900 opacity-20 z-10 cursor-pointer"></div>
+<div @click="eliminar" v-if="showEliminarProducto" class="absolute w-full top-0 right-0 bottom-0 h-100v bg-gray-900 opacity-20 z-10 cursor-pointer"></div>
+<transition name="showEditar">
+    <CardEditProducto v-if="showEditarProducto" :producto="producto" @edited="edited" @cerrar="cerrar" />
+</transition>
+<transition name="showEliminar">
+    <CardDeleteElement v-if="showEliminarProducto" @deleted="deleted" @eliminar="eliminar"/>
+</transition>
+<div class="w-full flex flex-col overflow-scroll max-h-65v scrollTable lg:overflow-auto space-y-4 lg:w-10/12 lg:mt-0 mt-7">
+    <table class="relative w-full text-center min-w-580">
+    <tr class="text-sm lg:text-md bg-azureMarine-600 h-10 text-white-0 font-semibold">
+        <td class="w-1/5">
+            <div class="w-1/2 m-auto cursor-pointer" @click="ordenarNombre">Nombre <i class="fa-solid fa-arrow-down-short-wide"></i></div>
+        </td>
+        <td class="w-1/5">
+            <div class="w-1/2 m-auto cursor-pointer" @click="ordenarStock">Stock <i class="fa-solid fa-arrow-down-short-wide"></i></div>
+        </td>
+        <td class="w-1/5">
+            <div class="w-1/2 m-auto cursor-pointer" @click="ordenarPrecio">Precio <i class="fa-solid fa-arrow-down-short-wide"></i></div>
+        </td>
+        <td class="w-1/5">
+            <div class="w-1/2 m-auto cursor-pointer" @click="ordenarCantidad">Ventas <i class="fa-solid fa-arrow-down-short-wide"></i></div>
+        </td>
         <td class="w-1/5">Acciones</td>
     </tr>
-    <ProductoRow v-for="(item) in productos" :key="item.idProducto" :product="item" />
+    <ProductoRow v-for="item in products" @editar="editar" @eliminar="eliminar" :key="item.idProducto" :product="item" />
 </table>
-<div class="w-full flex space-x-3 text-lg justify-center place-items-center">
-    <button @click="before" class="text-azureMarine-800 border-card"> <img class="w-4 rounded-sm arrow border border-card p-1" src="./../assets/left.svg" alt="Atras"> </button>
-    <p class="text-card text-md font-semibold">{{actual}} de {{paginas}}</p>
-    <button @click="after" class="text-azureMarine-800"> <img class="w-4 rounded-sm arrow border border-card p-1" src="./../assets/right.svg" alt="Siguente"> </button>
+<slot></slot>
 </div>
 </div>
 </template>
 <script>
 import ProductoRow from '../components/ProductoRow.vue';
+import CardEditProducto from '@/components/CardEditProducto.vue';
+const CardDeleteElement = defineAsyncComponent(()=> import("@/components/CardDeleteElement.vue"));
+import { computed, defineAsyncComponent } from '@vue/runtime-core';
 export default {
-    name: "CardProducto",
+    name: "TableProducto",
     props:{
+        productos: Array,
         paginas: Number,
         actual: Number,
     },
-    components: { ProductoRow },
-    inject: {
-    productList: {
-        from: "productList",
-        },
-    },
+    components: { ProductoRow, CardEditProducto, CardDeleteElement },
+    emits:['before','after', 'edited', 'eliminar', 'ordenarStock', 'ordenarNombre', 'ordenarPrecio', 'ordenarCantidad'],
     computed:{
         list(){
             if(this.paginas === 1){
@@ -40,22 +54,150 @@ export default {
             }
         }
     },
+    setup(props){
+        let products = computed(()=>{
+            return props.productos
+        });
+        return {
+            products
+        }
+    },
     data () {
         return {
-            productos: this.productList,
+            showEditarProducto:false,
+            showEliminarProducto:false,
+            producto:{},
+            idDeleted:0
         }
     },
     methods:{
+        deleted(){
+            this.$emit('eliminar', this.idDeleted);
+            this.showEliminarProducto = !this.showEliminarProducto;
+            this.idDeleted = 0;
+        },
+        eliminar(id){
+            this.idDeleted = id;
+            this.showEliminarProducto = !this.showEliminarProducto;
+        },
+        edited(item){
+            this.$emit('edited', item);
+            this.showEditarProducto = !this.showEditarProducto;
+        },
+        editar(item){
+            this.producto = item;
+            this.showEditarProducto = !this.showEditarProducto;
+        },
+        cerrar(){
+            this.showBackGray = !this.showBackGray;
+            this.showEditarProducto = !this.showEditarProducto;
+        },
         before(){
             this.$emit('before');
         },
         after(){
             this.$emit("after");
+        },
+        ordenarStock(){
+            this.$emit('ordenarStock');
+        },
+        ordenarNombre(){
+            this.$emit('ordenarNombre');
+        },
+        ordenarPrecio(){
+            this.$emit('ordenarPrecio');
+        },
+        ordenarCantidad(){
+            this.$emit('ordenarCantidad');
         }
     }
 }
 </script>
 <style scoped>
+
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.scrollTable {
+    scrollbar-width: auto;
+    scrollbar-color: #d4d4d8 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+.scrollTable::-webkit-scrollbar {
+    border-radius: 15px;
+    width: 10px;
+}
+
+.scrollTable::-webkit-scrollbar-track {
+    border-radius: 15px;
+    background: #ffffff;
+}
+
+.scrollTable::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: #d4d4d8;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+}
+
+.showEliminar-enter-active{
+    animation: enterDelete 250ms;
+}
+
+@keyframes enterDelete {
+    0%{
+        transform: scale(0.1);
+    }
+
+    80%{
+        transform: scale(1.1);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
+
+.showEliminar-leave-active{
+    animation: leaveDelete 200ms;
+}
+
+@keyframes leaveDelete {
+    from{
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    to{
+        opacity: 0;
+        transform: scale(0.3);
+    }
+}
+
+.showEditar-leave-active{
+    animation: outCard 250ms;
+}
+
+@keyframes outCard {
+    from{
+        opacity: 1;
+    }
+    to{
+        top: 200px;
+        opacity: 0;
+    }
+}
+
+.showEditar-enter-active{
+    animation: animacionCard 250ms;
+}
+
+@keyframes animacionCard {
+    from{
+        opacity: 0.4;
+        top: 200px;
+    }
+}
 .arrow {
     filter: invert(23%) sepia(13%) saturate(7206%) hue-rotate(336deg) brightness(114%) contrast(83%);
 }

@@ -14,8 +14,9 @@
     >
         <div class="w-full flex flex-col h-50v justify-between">
             <div
-                class="w-full flex items-center justify-center h-14 bg-upBar border-r border-b border-b-cerise-900 border-r-cerise-900"
+                class="w-full flex items-center space-x-2 justify-center h-14 bg-upBar border-r border-b border-b-cerise-900 border-r-cerise-900"
             >
+            <img src="./../assets/logo.png" alt="Dolce Vita Logo" class="w-11">
                 <p class="font-semibold text-lg text-white-0 cursor-pointer">
                     Dolce Vita
                 </p>
@@ -25,88 +26,64 @@
                 id="userOptions"
                 class="w-full justify-center cursor-pointer flex space-x-1 items-center hover:text-gray-100"
             >
-                <div class="border-2 border-fontColor rounded-md">
-                    <img
-                        src="./../assets/userSide.svg"
-                        class="w-4 m-1 iconAside"
-                        alt="User button"
-                    />
+                <div class="border-2 border-fontColor rounded-md px-1.5">
+                <i class="fa-solid fa-user-tie text-fontColor text-xl"></i>
                 </div>
                 <p class="flex items-center font-bold">David Castillo</p>
             </button>
             <div class="flex w-full flex-col text-sm font-semibold">
                 <router-link
                     ref="reportes"
-                    to="/reportes"
+                    to="/"
                     class="w-full py-4 pl-3 hover:bg-upBar"
                     :class="claseProds"
                 >
-                    <div class="border-2 border-fontColor rounded-md">
-                        <img
-                            src="./../assets/reportes.svg"
-                            class="w-4 m-1 iconAside"
-                            alt="User button"
-                        />
+                    <div class="border-2 border-fontColor rounded-md text-fontColor">
+                        <i class="fa-solid fa-chart-column px-1 text-base"></i>
                     </div>
                     <p>Reportes y Graficas</p>
                 </router-link>
                 <router-link
                     ref="productos"
-                    to="/"
+                    to="/productos"
                     class="w-full pl-3 hover:bg-upBar py-4"
                     :class="claseProds"
                 >
-                    <div class="border-2 border-fontColor rounded-md">
-                        <img
-                            src="./../assets/cookie.svg"
-                            class="w-4 m-1 iconAside"
-                            alt="User button"
-                        />
+                    <div class="border-2 border-fontColor rounded-md text-fontColor">
+                        <i class="fa-solid fa-cookie-bite px-1 text-base"></i>
                     </div>
                     <p>Productos</p>
                 </router-link>
                 <router-link
                     ref="ventas"
-                    to="/product"
+                    to="/ventas"
                     class="w-full pl-3 py-4 hover:bg-upBar"
                     :class="claseProds"
                 >
-                    <div class="border-2 border-fontColor rounded-md">
-                        <img
-                            src="./../assets/sack.svg"
-                            class="w-4 m-1 iconAside"
-                            alt="User button"
-                        />
+                    <div class="border-2 border-fontColor rounded-md text-fontColor">
+                        <i class="fa-solid fa-sack-dollar px-1 text-base"></i>
                     </div>
                     <p>Ventas</p>
                 </router-link>
                 <router-link
                     ref="categorias"
-                    to="/pros"
+                    to="/categorias"
                     class="w-full pl-3 py-4 hover:bg-upBar"
                     :class="claseProds"
                 >
-                    <div class="border-2 border-fontColor rounded-md">
-                        <img
-                            src="./../assets/categories.svg"
-                            class="w-4 m-1 iconAside"
-                            alt="User button"
-                        />
+                    <div class="border-2 border-fontColor rounded-md text-fontColor">
+                        <i class="fa-solid fa-diagram-project px-1 text-base"></i>
                     </div>
                     <p>Categorias</p>
                 </router-link>
                 <router-link
                     ref="empleados"
-                    to="/producto"
+                    to="/empleados"
                     class="w-full pl-3 py-4 hover:bg-upBar"
                     :class="claseProds"
                 >
-                    <div class="border-2 border-fontColor rounded-md">
-                        <img
-                            src="./../assets/empleado.svg"
-                            class="w-4 m-1 iconAside"
-                            alt="User button"
-                        />
+                    <div class="border-2 border-fontColor rounded-md text-fontColor">
+                        <i class="fa-solid fa-people-carry-box px-1 text-base"></i>
                     </div>
                     <p>Empleados</p>
                 </router-link>
@@ -129,13 +106,6 @@
         </div>
     </aside>
 </template>
-<style scoped>
-.svg {
-    width: 25px;
-    filter: invert(14%) sepia(67%) saturate(3709%) hue-rotate(350deg)
-        brightness(77%) contrast(88%);
-}
-</style>
 <script>
 import router from "@/router";
 export default {
@@ -153,7 +123,7 @@ export default {
             show: false,
         };
     },
-    emits: ["add"],
+    emits: ['add','side'],
     methods: {
         options() {
             this.$emit("add");

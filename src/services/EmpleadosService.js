@@ -1,14 +1,14 @@
 import axios from "axios";
 
-class Producto {
+class Empleado {
     constructor() {
-        this.url = `http://192.168.1.109:3000/api/v1/productos/`;
+        this.url = `http://192.168.1.109:3000/api/v1/empleados/`;
         this.token = sessionStorage.getItem("token");
     }
-    async getProductos(limit = 10, offset = 0) {
+    async getEmpleado(limit = 9, offset = 0) {
         try {
             const respuesta = await axios.get(
-                `${this.url}?limit=${limit}&offset=${offset}`, {
+                `${this.url}/?limit=${limit}&offset=${offset}`, {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     },
@@ -19,35 +19,7 @@ class Producto {
             return error;
         }
     }
-    async getProductosChart(limit = 6, offset = 0) {
-        try {
-            const respuesta = await axios.get(
-                `${this.url}chart/?limit=${limit}&offset=${offset}`, {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`
-                    },
-                }
-            );
-            return respuesta;
-        } catch (error) {
-            return error;
-        }
-    }
-    async getProductosVenta() {
-        try {
-            const respuesta = await axios.get(
-                `${this.url}venta`, {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`
-                    },
-                }
-            );
-            return respuesta;
-        } catch (error) {
-            return error;
-        }
-    }
-    async postProductos(body) {
+    async postEmpleado(body) {
         try {
             const respuesta = await axios.post(this.url, body, {
                 headers: {
@@ -56,11 +28,10 @@ class Producto {
             });
             return respuesta;
         } catch (error) {
-            console.error(error);
             return error;
         }
     }
-    async patchProductos(id, body) {
+    async patchEmpleado(id, body) {
         try {
             const respuesta = await axios.patch(`${this.url}${id}`, body, {
                 headers: {
@@ -73,22 +44,8 @@ class Producto {
             return error;
         }
     }
-    async getProductosCategoria(idCategoria) {
-        try {
-            const respuesta = await axios.get(
-                `${this.url}/categoria/${idCategoria}`, {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`
-                    },
-                }
-            );
-            return respuesta;
-        } catch (error) {
-            return error;
-        }
-    }
 
-    async getProductosId(idProducto) {
+    async getEmpleadoId(idProducto) {
         try {
             const respuesta = await axios.get(
                 `${this.url}${idProducto}`, {
@@ -102,10 +59,10 @@ class Producto {
             return error;
         }
     }
-    async deleteProducto(idProducto) {
+    async deleteEmpleado(idEmpleado) {
         try {
             const respuesta = await axios.delete(
-                `${this.url}${idProducto}`, {
+                `${this.url}${idEmpleado}`, {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     },
@@ -116,7 +73,7 @@ class Producto {
             return error;
         }
     }
-    async getProductosCount() {
+    async getEmpleadosCount() {
         try {
             const respuesta = await axios.get(
                 `${this.url}/count`, {
@@ -130,7 +87,7 @@ class Producto {
             return error;
         }
     }
-    async getProductosSearch(value) {
+    async getEmpleadoSearch(value) {
         try {
             const respuesta = await axios.get(
                 `${this.url}name/${value}`, {
@@ -144,19 +101,5 @@ class Producto {
             return error;
         }
     }
-    async getProductosSearchVenta(value) {
-        try {
-            const respuesta = await axios.get(
-                `${this.url}venta/${value}`, {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`
-                    },
-                }
-            );
-            return respuesta;
-        } catch (error) {
-            return error;
-        }
-    }
 }
-export default Producto;
+export default Empleado;

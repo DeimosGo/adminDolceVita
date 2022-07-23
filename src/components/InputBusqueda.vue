@@ -1,23 +1,25 @@
 <template>
-<div class="bg-gray-100 w-96 h-10 hover:h-14 flex rounded-l-lg transition-all duration-150
-shadow-gray-200 shadow-lg">
-    <input v-model="nameProducto" class="text-xl w-full pl-4 py-2 top-32 outline-none rounded-l-lg bg-gray-100" type="text" placeholder="Producto" />
+<div class="bg-gray-100 w-4/5 mt-2 lg:mt-0 lg:w-96 place-content-center h-10 hover:h-12 flex rounded-l-lg transition-all duration-150
+shadow-gray-200 shadow-lg m-auto">
+    <input v-model="name" class="text-xl w-full pl-4 py-2 top-32 outline-none rounded-l-lg bg-gray-100" type="text" :placeholder="phText" />
     <button class="w-12 px-2 bg-azureMarine-800 rounded-r-lg" @click="buscar">
-        <img class="w-5 m-auto" src="./../assets/busqueda.svg" alt="Icono de busqueda" />
+        <i class="fa-solid fa-magnifying-glass text-white-0 text-xl"></i>
     </button>
 </div>
 </template>
 <script>
 export default {
+    props:['phText'],
     name: 'InputBusqueda',
     data (){
         return {
-            nameProducto: '',
+            name: '',
         }
     },
+    emits:['search'],
     methods:{
         buscar(){
-            this.$emit("search", this.nameProducto);
+            this.$emit("search", this.name);
         }
     }
 }

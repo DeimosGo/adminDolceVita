@@ -1,37 +1,50 @@
 <template>
-    <CardProducto v-if="mostrarCard" :producto="producto" />
-    <tr class="odd:bg-azureMarine-50" v-bind="$attrs">
-        <td class="text-sm w-1/5 py-2 border-y border-azure-200"> {{producto.nombreProducto}} </td>
-        <td class="text-sm w-1/5 py-2 border-y border-azure-200"> {{producto.stock}} </td>
-        <td class="text-sm w-1/5 py-2 border-y border-azure-200">{{producto.precio}}</td>
-        <td class="text-sm w-1/5 py-2 border-y border-azure-200">{{producto.cantidadVentas}}</td>
+    <tr class="odd:bg-azure-50" v-bind="$attrs">
+        <td class="text-sm w-1/5 py-2 border-y border-azure-200">
+            <p class="w-44 m-auto text-start">{{producto.nombreProducto}}</p>
+        </td>
+        <td class="text-sm w-1/5 py-2 border-y border-azure-200">
+            <p class="w-11 m-auto text-end">{{producto.stock}}</p>
+        </td>
+        <td class="text-sm w-1/5 py-2 border-y border-azure-200 items-center">
+                <p class="w-16 m-auto text-start">S/. {{producto.precio}}</p>
+        </td>
+        <td class="text-sm w-1/5 py-2 border-y border-azure-200">
+            <p class="w-fit m-auto text-end">{{producto.cantidadVentas}}</p>
+        </td>
         <td class="text-sm w-full py-2 border-y border-azure-200 flex justify-center space-x-2">
-            <button class="w-20 p-1 font-semibold text-azureAqua-600 rounded-md border border-azureAqua-600 transition-all duration-200 transform
-            hover:scale-105" >
-                <div class="flex items-center justify-center">
-                    Detalles <img class="filter w-4" src="./../assets/details.svg" alt="Detalles del producto" />
-                </div>
+            <button @click="editProduct" class="flex w-20 h-8 p-2 font-semibold text-azureAqua-500 rounded-md border border-azureAqua-500 justify-center
+            transition-all duration-200 transform hover:scale-105 items-center space-x-1">
+                    <p>Detalles</p> <i class="fa-solid fa-circle-info text-md"></i>
             </button>
-            <button>
-                <img class="fillDelete w-5" src="./../assets/delete.svg" alt="Eliminar Producto">
+            <button @click="deleteProduct" class="p-0 m-0">
+                <i class="fa-regular fa-circle-xmark text-cerise-800 text-2xl scale-105 hover:scale-100"></i>
             </button>
         </td>
     </tr>
 </template>
 <script>
-import CardProducto from './CardProducto.vue';
 export default {
     name: "ProductoRow",
     props: {
         product: Object,
+        orden:Number,
     },
     data () {
         return{
-            mostrarCard:false,
             producto: this.product,
+            ordenCampo: this.orden,
         }
     },
-    components: { CardProducto }
+    emits:['editar', 'eliminar'],
+    methods:{
+        deleteProduct(){
+            this.$emit('eliminar', this.producto.idProducto);
+        },
+        editProduct(){
+            this.$emit('editar', this.producto);
+        }
+    },
 }
 </script>
 <style scoped>

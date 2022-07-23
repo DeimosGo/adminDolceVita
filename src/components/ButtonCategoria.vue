@@ -10,6 +10,7 @@ export default {
         nombreCategoria:String,
         idCategoria: String,
     },
+    emits:['choose'],
     methods:{
         choose(){
             this.$emit("choose")

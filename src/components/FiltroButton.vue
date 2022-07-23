@@ -21,6 +21,7 @@ export default {
     props: {
         item: Object,
     },
+    emits:['quitar', 'filtrar'],
     methods: {
         search(e) {
             if (this.clicked) {

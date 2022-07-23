@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col justify-between h-70v w-100 rounded-lg z-30  bg-white-0 p-7 overflow-hidden"
+        class="flex flex-col justify-between h-60v w-100 rounded-lg z-30 bg-white-0 p-7 overflow-hidden"
     >
         <transition name="error">
             <div
@@ -14,109 +14,49 @@
         <h2
             class="w-full items-center justify-center text-center text-2xl font-semibold text-azureMarine-800"
         >
-            Nuevo producto
+            Nueva Categoria
         </h2>
         <div
             class="text-gray-600 font-semibold flex flex-col items-start space-y-1"
         >
             <label class="text-lg font-semibold" for="nombre"
-                >Nombre del producto</label
+                >Nombre de la categoria</label
             >
             <input
+                autocomplete="off"
                 name="nombre"
                 @input="testNombre()"
                 type="text"
                 maxlength="100"
-                v-model="nombreProducto"
+                v-model="nombreCategoria"
                 class="pl-1 w-full py-1 outline-none border-b border-b-azureMarine-700"
             />
-        </div>
-        <div class="relative text-gray-600 font-semibold flex justify-between">
-            <button
-                @click="showCategories"
-                class="flex w-1/2 text-lg font-semibold p-1 shadow-md border rounded-xl items-center justify-center space-x-6"
-            >
-                <p>{{ categorySelected.toLocaleLowerCase() }}</p>
-                <i class="fa-solid fa-caret-down text-xs"></i>
-            </button>
-            <transition name="cat">
-                <ul
-                    v-if="showCats"
-                    class="flex flex-col bg-white-0 bordes justify-start top-11 absolute max-h-32 w-1/2 rounded-lg outline-none overflow-y-scroll shadow-gray-500 shadow-md"
-                >
-                    <ButtonCategoria
-                        v-for="item in categories"
-                        @choose="choose(item.nombreCategoria, item.idCategoria)"
-                        :key="item.idCategoria"
-                        :id="item.idCategoria"
-                        :nombreCategoria="item.nombreCategoria"
-                    />
-                </ul>
-            </transition>
-            <div class="flex flex-row space-x-2">
-                <label class="text-lg font-semibold" for="cantidad"
-                    >N° ventas:</label
-                >
-                <input
-                    type="number"
-                    name="cantidad"
-                    v-model="cantidadVentas"
-                    v-on:input="cantidadIn()"
-                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                    class="pr-1 w-20 py-1 outline-none border-b border-b-azureMarine-700 appearance-none text-end"
-                />
-            </div>
         </div>
         <div
             class="text-gray-600 font-semibold flex flex-col items-start space-y-1"
         >
             <label class="text-lg font-semibold" for="descripcion"
-                >Descripcion del producto</label
+                >Descripcion de la categoria</label
             >
             <textarea
+                autocomplete="off"
                 @input="testDescripcion()"
                 maxlength="180"
                 name="descripcion"
                 type="text"
-                v-model="descripcionProducto"
+                v-model="descripcion"
                 class="p-1 w-full py-1 outline-none rounded-md border border-azureMarine-700 h-24"
             ></textarea>
         </div>
-        <div
-            class="text-gray-600 font-semibold flex flex-row items-center justify-between space-y-1"
-        >
-            <div class="flex flex-row space-x-2">
-                <label class="text-lg font-semibold" for="stock">Stock:</label>
-                <input
-                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                    type="number"
-                    name="stock"
-                    v-model="stock"
-                    class="pr-2 w-20 py-1 outline-none border-b border-b-azureMarine-700 appearance-none text-end"
-                />
-            </div>
-            <div class="flex flex-row space-x-2">
-                <label class="text-lg font-semibold" for="precio"
-                    >Precio:</label
-                >
-                <input
-                    type="number"
-                    name="precio"
-                    onkeypress="return (event.charCode !== 45 && event.charCode !== 43)"
-                    v-model="precio"
-                    class="pr-2 w-20 py-1 outline-none border-b border-b-azureMarine-700 appearance-none text-end"
-                />
-            </div>
-        </div>
         <div class="w-full flex justify-between">
             <button
-                @click="createProduct()"
+                @click="createdElement()"
                 class="w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600 scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Guardar cambios
             </button>
             <button
-                @click="$emit('showProd')"
+                @click="$emit('nuevaCategoria')"
                 class="w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Cerrar
@@ -125,95 +65,55 @@
     </div>
 </template>
 <script>
-import Producto from "@/services/ProductoService";
 import Categoria from "./../services/CategoriasService";
-import ButtonCategoria from "./ButtonCategoria.vue";
 export default {
-    name: "CardProducto",
-    components: { ButtonCategoria },
+    name: "CardCategoria",
     data() {
         return {
             message: "",
-            ProductoService: new Producto(),
-            stock: 0,
-            precio: 0,
             cantidadVentas: 0,
-            descripcionProducto: "",
-            nombreProducto: "",
+            descripcion: "",
+            nombreCategoria: "",
             showCats: false,
             showImg: true,
             listar: false,
-            categories: [],
             CategoriaService: new Categoria(),
             categorySelected: "categorias",
             idCategoria: 0,
             errorShow: false,
         };
     },
-    emits:['showProd', 'created'],
+    emits: ["nuevaCategoria", "created"],
     methods: {
-        choose(nombre, idCategoria) {
-            this.categorySelected = nombre;
-            this.showCats = !this.showCats;
-            this.showImg = false;
-            this.idCategoria = idCategoria;
-        },
         testNombre() {
-            const nombre = this.nombreProducto.replace(/[^a-zA-Z ]/g, "");
-            this.nombreProducto = nombre;
+            const nombre = this.nombreCategoria.replace(/[^a-zA-Z ]/g, "");
+            this.nombreCategoria = nombre;
         },
         testDescripcion() {
-            const descripcion = this.descripcionProducto.replace(
+            const descripcion = this.descripcion.replace(
                 /[^a-zA-Z., ]/g,
                 ""
             );
             this.descripcionProducto = descripcion;
         },
-        async getCategories() {
-            const datos = await this.CategoriaService.getCategorias();
-            const cats = datos.data;
-            this.categories = cats;
-        },
-        async showCategories() {
-            if (this.listar === false) {
-                await this.getCategories();
-                this.listar = true;
-                this.showCats = true;
-            }else{
-                this.listar = false
-                this.showCats = false;
-            }
-        },
-        async createProduct() {
-            console.log(this.descripcionProducto);
+        async createdElement() {
             const data = {
-                nombreProducto: this.nombreProducto.toUpperCase(),
-                descripcionProducto: this.descripcionProducto.toUpperCase(),
-                precio: this.precio,
-                stock: this.stock || 0,
-                cantidadVentas: this.cantidadVentas || 0,
-                idCategoria: this.idCategoria,
+                nombreCategoria: this.nombreCategoria.toUpperCase(),
+                descripcion: this.descripcion.toUpperCase(),
             };
             if (
-                data.nombreProducto.length <= 0 ||
-                data.descripcionProducto.length <= 0 ||
-                data.precio <= 0
+                data.nombreCategoria.length <= 0 ||
+                data.descripcion.length <= 0
             ) {
                 this.message = "LLene todos lo campos";
                 this.errorShow = !this.errorShow;
                 setTimeout(() => {
                     this.errorShow = !this.errorShow;
                 }, 2000);
-            } else if (data.idCategoria === 0) {
-                this.errorShow = !this.errorShow;
-                this.message = "Escoja una categoria";
-                setTimeout(() => {
-                    this.errorShow = !this.errorShow;
-                }, 2000);
-            } else {
-                const returned = await this.ProductoService.postProductos(data);
+            }else {
+                const returned = await this.CategoriaService.postCategorias(data);
                 if (returned.data.created) {
-                    this.$emit("created", data);
+                    this.$emit("createdElement");
                 } else {
                     this.errorShow = !this.errorShow;
                     this.message = "Problema de conexion";

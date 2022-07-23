@@ -1,28 +1,38 @@
 <template>
-<transition name="fade">
-    <CardProducto v-if="card" @showProd="showcard" @created="created" />
-</transition>
-<div @click="showcard" v-if="card" class="absolute w-full top-0 right-0 bottom-0 h-100v bg-gray-900 opacity-20 z-20 cursor-pointer"></div>
-    <section
-        class="relative flex flex-col text-gray-700 items-center justify-between space-y-3 rounded-md"
-    >
-    <div class="flex flex-row space-x-6">
-        <button
-        @click="showcard"
-        class="flex space-x-1 items-center h-10 px-1 rounded-md border-2 text-submarine-600 border-submarine-600
-            transition-all duration-100 hover:scale-105">
-                <p>Nuevo</p> <img class="w-4 image" src="./../assets/add.svg" alt="Nuevo Producto"></button>
-        <button
-            @click="showFilter"
-            class="h-10 px-1 z-10 rounded-lg text-azureMarine-800 text-lg flex items-center border-2
-            border-azureMarine-800 space-x-2 transition-all duration-100 hover:scale-105">
-            Filtros<img class="w-5 filter ml-2" src="./../assets/sort.png" alt="Filtros"/>
-        </button>
-        </div>
-        <div v-show="showAll" :class="animacion" class="absolute top-10 right-0 pl-6 w-72 flex flex-col
-            h-fit p-2 items-start border rounded-lg border-gray-300 text-azureMarine-800 bg-white-0
-            z-0 shadow-gray-300 shadow-sm">
-                <h3 class="text-lg pb-1">Categorias</h3>
+    <div>
+        <div
+            @click="showcard"
+            v-if="card"
+            class="absolute w-screen top-0 right-0 bottom-0 h-100v bg-gray-900 opacity-20 z-20 cursor-pointer"
+        ></div>
+        <transition name="fade">
+            <CardProducto v-if="card" @showProd="showcard" @created="created" class="absolute top-0 left-0 right-0 bottom-0 m-auto" />
+        </transition>
+        <section
+            class="relative flex flex-col text-gray-700 items-center justify-between space-y-3 rounded-md"
+        >
+            <div class="flex flex-row space-x-6">
+                <button
+                    @click="showcard"
+                    class="flex space-x-1 items-center h-10 px-2 rounded-md border-2 text-submarine-600 border-submarine-600 transition-all duration-100 hover:scale-105"
+                >
+                    <p>Nuevo</p>
+                    <i class="fa-solid fa-file-circle-plus w-4"></i>
+                </button>
+                <button
+                    @click="showFilter"
+                    class="h-10 px-1 z-10 rounded-lg text-azureMarine-800 text-lg flex items-center border-2 border-azureMarine-800 space-x-2 transition-all duration-100 hover:scale-105"
+                >
+                    <p>Filtrar</p>
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+            </div>
+            <div
+                v-show="showAll"
+                :class="animacion"
+                class="absolute top-10 right-0 pl-6 w-52 flex flex-col h-fit p-2 items-start border rounded-lg border-gray-300 text-azureMarine-800 bg-white-0 z-10 shadow-gray-300 shadow-sm"
+            >
+                <h3 class="w-full text-center text-lg pb-1">Categorias</h3>
                 <div class="pl-3 flex flex-col space-y-2 items-start">
                     <FiltroButton
                         v-for="item in itemsCategoria"
@@ -31,39 +41,9 @@
                         v-bind="$attrs"
                     />
                 </div>
-                <h3 class="text-lg pt-2 pb-1">Precios</h3>
-                <div class="py-2 w-full flex flex-col items-start text-gray-900">
-                    <ul class="flex flex-row pl-3 space-x-2 items-center justify-center">
-                        <li class="flex space-x-2">
-                            <label>Min</label>
-                            <input
-                                class="w-10 pl-1 outline-none rounded-lg border border-azureMarine-800"
-                                v-model="min"
-                                type="number"
-                            />
-                        </li>
-                        <li class="flex space-x-2">
-                            <label>Max</label>
-                            <input
-                                type="number"
-                                v-model="max"
-                                class="w-10 pl-1 outline-none rounded-lg border border-azureMarine-800"
-                            />
-                        </li>
-                        <ul>
-                            <button class="text-white-0 bg-azureMarine-800 px-2 py-1 rounded-md">
-                                aplicar
-                            </button>
-                        </ul>
-                    </ul>
-                </div>
-                <h3 class="text-lg pt-1 pb-2">Stock</h3>
-                <div class="space-y-1 pl-3 w-full flex flex-col items-start text-gray-900">
-                        <button @click="dispose" :class="dBtn">disponible</button>
-                        <button @click="non" :class="aBtn">agotado</button>
-                </div>
             </div>
-    </section>
+        </section>
+    </div>
 </template>
 <script>
 import Categorias from "@/services/CategoriasService";
@@ -86,7 +66,7 @@ export default {
     },
     data() {
         return {
-            card:false,
+            card: false,
             animacion: [],
             showAll: false,
             checked: false,
@@ -96,33 +76,36 @@ export default {
             itemsCategoria: [],
             disponible: false,
             agotado: false,
-            dBtn:["text-gray-900"],
-            aBtn:["text-gray-900"],
+            dBtn: ["text-gray-900"],
+            aBtn: ["text-gray-900"],
         };
     },
+    emits: ["advice"],
     methods: {
-        created(){
+        created() {
             this.card = !this.card;
-            this.$emit("advice");
+            this.$emit("advice", "Elemento creado");
         },
-        showcard(){
+        showcard() {
             this.card = !this.card;
             this.showAll = false;
         },
-        dispose(){
-            if (!this.disponible){
+        dispose() {
+            if (!this.disponible) {
                 this.disponible = !this.disponible;
                 this.dBtn = ["font-bold", "text-azureMarine-800"];
-            }else{
+                this.$emit('filtroStock', true);
+            } else {
                 this.disponible = !this.disponible;
                 this.dBtn = ["text-gray-900"];
+                this.$emit('filtroStock', false);
             }
         },
-        non(){
-            if (!this.agotado){
+        non() {
+            if (!this.agotado) {
                 this.agotado = !this.agotado;
                 this.aBtn = ["font-bold", "text-azureMarine-800"];
-            }else{
+            } else {
                 this.agotado = !this.agotado;
                 this.aBtn = ["text-gray-900"];
             }
@@ -156,37 +139,38 @@ export default {
 </script>
 <style scoped>
 /* .fade-enter-from, */
-.fade-leave-active{
+.fade-leave-active {
     animation: outCard 300ms;
 }
 
 @keyframes outCard {
-    from{
+    from {
         top: 0;
         opacity: 1;
     }
-    to{
+    to {
         top: -800px;
         opacity: 0;
     }
 }
 
-.fade-enter-active{
+.fade-enter-active {
     animation: animacionCard 300ms;
 }
 
 @keyframes animacionCard {
-    from{
+    from {
         top: -800px;
         opacity: 0.8;
     }
-    to{
+    to {
         top: 0;
         opacity: 1;
     }
 }
-.image{
-    filter: invert(32%) sepia(67%) saturate(2915%) hue-rotate(145deg) brightness(94%) contrast(96%);
+.image {
+    filter: invert(32%) sepia(67%) saturate(2915%) hue-rotate(145deg)
+        brightness(94%) contrast(96%);
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {

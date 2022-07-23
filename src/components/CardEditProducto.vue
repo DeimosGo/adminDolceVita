@@ -1,20 +1,19 @@
 <template>
     <div
-        class="flex flex-col justify-between h-70v w-100 rounded-lg z-30  bg-white-0 p-7 overflow-hidden"
+        class="flex flex-col justify-between absolute h-70v m-auto w-100 rounded-lg z-30 top-0 left-0 right-0 bottom-0 bg-white-0 p-7 overflow-hidden"
     >
         <transition name="error">
             <div
                 v-show="errorShow"
-                class="w-48 h-14 border-cerise-800 text-cerise-700 absolute top-6 right-0 left-0 m-auto bg-cerise-200 rounded-lg flex items-center justify-center border-2"
+                class="w-64 h-14 border-cerise-800 text-cerise-700 absolute top-6 right-0 left-0 m-auto bg-cerise-200 rounded-lg flex items-center justify-center border-2"
             >
                 <p>{{ message }}</p>
             </div>
         </transition>
-
         <h2
             class="w-full items-center justify-center text-center text-2xl font-semibold text-azureMarine-800"
         >
-            Nuevo producto
+            Manejo del Producto
         </h2>
         <div
             class="text-gray-600 font-semibold flex flex-col items-start space-y-1"
@@ -41,7 +40,7 @@
             </button>
             <transition name="cat">
                 <ul
-                    v-if="showCats"
+                    v-show="showCats"
                     class="flex flex-col bg-white-0 bordes justify-start top-11 absolute max-h-32 w-1/2 rounded-lg outline-none overflow-y-scroll shadow-gray-500 shadow-md"
                 >
                     <ButtonCategoria
@@ -110,13 +109,13 @@
         </div>
         <div class="w-full flex justify-between">
             <button
-                @click="createProduct()"
+                @click="editProduct()"
                 class="w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600 scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Guardar cambios
             </button>
             <button
-                @click="$emit('showProd')"
+                @click="$emit('cerrar')"
                 class="w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Cerrar
@@ -126,32 +125,48 @@
 </template>
 <script>
 import Producto from "@/services/ProductoService";
-import Categoria from "./../services/CategoriasService";
+import Categoria from "@/services/CategoriasService";
 import ButtonCategoria from "./ButtonCategoria.vue";
 export default {
-    name: "CardProducto",
+    name: "CardEditProducto",
     components: { ButtonCategoria },
+    props: {
+        producto: Object,
+        orden: Number,
+    },
     data() {
         return {
-            message: "",
+            ordenCampo: this.orden,
+            message: "No se han detectado cambios",
             ProductoService: new Producto(),
-            stock: 0,
-            precio: 0,
-            cantidadVentas: 0,
-            descripcionProducto: "",
-            nombreProducto: "",
+            idProducto: this.producto.id,
+            stock: this.producto.stock,
+            precio: this.producto.precio,
+            cantidadVentas: this.producto.cantidadVentas,
+            descripcionProducto: this.producto.descripcionProducto,
+            nombreProducto: this.producto.nombreProducto,
             showCats: false,
             showImg: true,
             listar: false,
             categories: [],
             CategoriaService: new Categoria(),
             categorySelected: "categorias",
-            idCategoria: 0,
+            idCategoria: this.producto.idCategoria,
             errorShow: false,
         };
     },
-    emits:['showProd', 'created'],
+    emits: ["editar", "edited", "cerrar"],
     methods: {
+        async loadCategory() {
+            const response = await this.CategoriaService.getCategoriaId(
+                this.producto.idCategoria
+            );
+            this.categorySelected = response.data.nombreCategoria;
+            this.idCategoria = response.data.idCategoria;
+        },
+        closeCard() {
+            this.$emit("cerrar");
+        },
         choose(nombre, idCategoria) {
             this.categorySelected = nombre;
             this.showCats = !this.showCats;
@@ -175,51 +190,85 @@ export default {
             this.categories = cats;
         },
         async showCategories() {
+            this.showCats = !this.showCats;
             if (this.listar === false) {
                 await this.getCategories();
                 this.listar = true;
-                this.showCats = true;
-            }else{
-                this.listar = false
-                this.showCats = false;
             }
         },
-        async createProduct() {
-            console.log(this.descripcionProducto);
-            const data = {
-                nombreProducto: this.nombreProducto.toUpperCase(),
-                descripcionProducto: this.descripcionProducto.toUpperCase(),
-                precio: this.precio,
-                stock: this.stock || 0,
-                cantidadVentas: this.cantidadVentas || 0,
-                idCategoria: this.idCategoria,
+        async editProduct() {
+            const modelo = {
+                nombreProducto: "",
+                descripcionProducto: "",
+                precio: 0,
+                stock: 0,
+                cantidadVentas: 0,
+                idCategoria: 0,
             };
-            if (
-                data.nombreProducto.length <= 0 ||
-                data.descripcionProducto.length <= 0 ||
-                data.precio <= 0
+            const replace = [
+                this.nombreProducto.toUpperCase(),
+                this.descripcionProducto.toUpperCase(),
+                this.precio,
+                this.stock,
+                this.cantidadVentas,
+                this.idCategoria,
+            ];
+            let objetoSend = {};
+            const claves = Object.keys(modelo);
+            const old = [
+                this.producto.nombreProducto,
+                this.producto.descripcionProducto,
+                this.producto.precio,
+                this.producto.stock,
+                this.producto.cantidadVentas,
+                this.producto.idCategoria,
+            ];
+            for (let i = 0; i < claves.length; i++) {
+                let clave = claves[i];
+                if (replace[i] !== old[i]) {
+                    objetoSend[clave] = replace[i];
+                }
+            }
+            if (Object.keys(objetoSend).length === 0) {
+                this.message = "No se han detectado cambios";
+                this.errorShow = !this.errorShow;
+                setTimeout(() => {
+                    this.errorShow = !this.errorShow;
+                }, 2000);
+            } else if (
+                this.nombreProducto.length <= 0 ||
+                this.descripcionProducto.length <= 0 ||
+                this.precio.length <= 0 ||
+                this.stock.length <= 0 ||
+                this.cantidadVentas.length <= 0
             ) {
                 this.message = "LLene todos lo campos";
                 this.errorShow = !this.errorShow;
                 setTimeout(() => {
                     this.errorShow = !this.errorShow;
                 }, 2000);
-            } else if (data.idCategoria === 0) {
-                this.errorShow = !this.errorShow;
-                this.message = "Escoja una categoria";
-                setTimeout(() => {
-                    this.errorShow = !this.errorShow;
-                }, 2000);
             } else {
-                const returned = await this.ProductoService.postProductos(data);
-                if (returned.data.created) {
-                    this.$emit("created", data);
-                } else {
+                const data = await this.ProductoService.patchProductos(
+                    this.producto.idProducto,
+                    objetoSend
+                );
+                if (data.status == 500) {
+                    this.message = "Error de conexion";
                     this.errorShow = !this.errorShow;
-                    this.message = "Problema de conexion";
                     setTimeout(() => {
                         this.errorShow = !this.errorShow;
                     }, 2000);
+                } else if (data.status == 404) {
+                    this.message = "El elemento no existe";
+                    this.errorShow = !this.errorShow;
+                    setTimeout(() => {
+                        this.errorShow = !this.errorShow;
+                    }, 2000);
+                } else {
+                    const reload = await this.ProductoService.getProductosId(
+                        this.producto.idProducto
+                    );
+                    this.$emit("edited", reload.data);
                 }
             }
         },
@@ -231,72 +280,16 @@ export default {
             }
         },
     },
+    mounted() {
+        this.loadCategory();
+    },
 };
 </script>
 <style scoped>
-.error-leave-active {
-    animation: outCard 1000ms;
-}
-
-@keyframes outCard {
-    from {
-        top: 0;
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        top: -400px;
-        transform: scale(0);
-        overflow: hidden;
-    }
-}
-
-.error-enter-active {
-    animation: animacionCard 300ms;
-}
-
-@keyframes animacionCard {
-    0% {
-        top: -400px;
-        transform: scale(0.5);
-        overflow: hidden;
-        opacity: 0.1;
-    }
-    100% {
-        transform: scale(1);
-        overflow: hidden;
-        opacity: 1;
-    }
-}
-
-.cat-enter-active {
-    animation: listShow 200ms;
-}
-
-@keyframes listShow {
-    0% {
-        overflow: auto;
-        height: 0px;
-    }
-    100% {
-        height: 128px;
-        overflow: auto;
-    }
-}
-
-.cat-leave-active {
-    animation: listHide 200ms;
-}
-
-@keyframes listHide {
-    0% {
-        height: 128px;
-        overflow: auto;
-    }
-    100% {
-        height: 0;
-        overflow: auto;
-    }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .bordes :nth-child(even) {
@@ -332,48 +325,33 @@ export default {
     border: 3px solid #ffffff;
 }
 
-textarea {
-    resize: none;
+.cat-enter-active {
+    animation: listShow 200ms;
 }
-.animationCard {
-    animation: card 500ms;
-}
-@keyframes card {
+
+@keyframes listShow {
     0% {
-        transform: scale(0.1);
-        opacity: 10%;
+        overflow: auto;
+        height: 0px;
+    }
+    100% {
+        height: 128px;
+        overflow: auto;
     }
 }
 
-div::-webkit-scrollbar {
-    -webkit-appearance: none;
+.cat-leave-active {
+    animation: listHide 200ms;
 }
 
-div::-webkit-scrollbar:vertical {
-    width: 10px;
-}
-
-div::-webkit-scrollbar-button:increment,
-div::-webkit-scrollbar-button {
-    display: none;
-}
-
-div::-webkit-scrollbar:horizontal {
-    height: 10px;
-}
-
-div::-webkit-scrollbar-thumb {
-    background-color: #797979;
-    border-radius: 20px;
-    border: 2px solid #f1f2f3;
-}
-
-div::-webkit-scrollbar-track {
-    border-radius: 10px;
-}
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+@keyframes listHide {
+    0% {
+        height: 128px;
+        overflow: auto;
+    }
+    100% {
+        height: 0;
+        overflow: auto;
+    }
 }
 </style>

@@ -1,10 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./index.html", "./src/**/*.{vue,js}", ],
+    content: ["./index.html", "./src/**/*.{vue,js}"],
     theme: {
+        screens: {
+            sm: '640px',
+            md: '768px',
+            lg: '1024px',
+            xl: '1280px',
+            dxl: '1536px',
+        },
         colors: {
             card: '#AD3636',
-            fontColor:'#e0b4b4',
+            fontColor: '#e0b4b4',
             upBar: '#be5555',
             white: {
                 '0': '#FFFFFF',
@@ -271,14 +278,27 @@ module.exports = {
             },
             minWidth: {
                 "238": "238px",
-                "500": "500px"
+                "580": "580px",
+                "780": "780px"
             },
+
+            maxHeight: {
+                "238": "238px",
+                "65v": "65vh",
+                "70v": "70vh"
+            },
+
             width: {
-                "100":"580px",
+                "300": "300px",
+                "600p": "600px",
+                "66": "66px",
+                "100": "580px",
                 "95pct": "95%",
+                "87pct": "87%",
                 "98pct": "98%",
             },
             height: {
+                "66": "66px",
                 "30v": "30vh",
                 "40v": "40vh",
                 "50v": "50vh",

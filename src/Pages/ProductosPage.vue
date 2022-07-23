@@ -2,67 +2,116 @@
     <div v-if="loading" class="w-full h-100v grid place-content-center z-40">
         <LoadingWheel />
     </div>
-    <NotFound />
     <transition name="componentCreated">
-        <CreatedElement v-show="created" />
+        <CreatedElement v-show="created" :message="mensaje" />
     </transition>
     <div
-        v-if="!loading"
+        v-show="!loading"
         class="pt-16 w-full px-2 lg:px-10 h-100v flex place-content-center flex-col lg:items-end justify-center"
     >
         <div class="w-4/5 flex items-center justify-between">
+            <transition name="nfCard">
+                <NotFoundSearch v-if="found" />
+            </transition>
             <h2 class="text-card text-3xl font-bold">
                 {{ cantidad }} Productos
             </h2>
             <div
-                class="flex space-x-7 items-center justify-center place-content-center"
+                class="flex flex-col lg:flex-row space-x-7 items-center justify-center place-content-center"
             >
-                <AsideFilter
+                <SideFilter
+                    v-if="reiniciar"
                     @filtrar="filtro"
                     @quitar="quitar"
                     @advice="advice"
                 />
-                <InputBusqueda @showcard="showcard" @search="search" />
+                <ReiniciarFiltros @recargar="recargar" />
+                <InputBusqueda
+                    @showcard="showcard"
+                    @search="search"
+                    :phText="'Producto'"
+                />
             </div>
         </div>
         <div
             class="flex flex-col items-center justify-center lg:items-end w-full h-5/6"
         >
-            <TableProducto
-                :paginas="paginas"
-                :actual="actual"
-                :class="tableAnimation"
-                @after="after"
-                @before="before"
-            />
+            <transition name="table">
+                <TableProducto
+                    v-if="!loading"
+                    :productos="productos"
+                    :class="tableBar"
+                    @ordenarStock="ordenarStock"
+                    @ordenarPrecio="ordenarPrecio"
+                    @ordenarNombre="ordenarNombre"
+                    @ordenarCantidad="ordenarCantidad"
+                    @after="after"
+                    @before="before"
+                    @advice="advice"
+                    @edited="edited"
+                    @eliminar="eliminar"
+                >
+                    <div
+                        v-if="noBuscar"
+                        class="w-full flex space-x-3 text-lg justify-center place-items-center"
+                    >
+                        <button @click="before">
+                            <i
+                                class="fa-solid fa-caret-left text-xl text-card"
+                            ></i>
+                        </button>
+                        <p class="text-card text-md font-semibold">
+                            {{ actual }} de {{ paginas }}
+                        </p>
+                        <button @click="after" class="text-azureMarine-800">
+                            <i
+                                class="fa-solid fa-caret-right text-xl text-card"
+                            ></i>
+                        </button>
+                    </div>
+                </TableProducto>
+            </transition>
         </div>
     </div>
 </template>
 <script>
-import { computed } from "vue";
-import AsideFilter from "@/containers/AsideFilter.vue";
-import TableProducto from "@/containers/TableProducto.vue";
+import { defineAsyncComponent } from "vue";
+const SideFilter = defineAsyncComponent(() =>
+    import("@/containers/SideFilter.vue")
+);
+const TableProducto = defineAsyncComponent(() =>
+    import("@/containers/TableProducto.vue")
+);
 import LoadingWheel from "@/components/LoadingWheel.vue";
-import InputBusqueda from "@/components/InputBusqueda.vue";
+const InputBusqueda = defineAsyncComponent(() =>
+    import("@/components/InputBusqueda.vue")
+);
+const ReiniciarFiltros = defineAsyncComponent(() =>
+    import("@/components/ReiniciarFiltros.vue")
+);
 import CreatedElement from "@/components/CreatedElement.vue";
-import NotFound from "@/components/NotFoundSearch.vue";
+import NotFoundSearch from "@/components/NotFoundSearch.vue";
 import Producto from "./../services/ProductoService";
 export default {
     name: "ProductPage",
     components: {
-        AsideFilter,
+        SideFilter,
         CreatedElement,
         TableProducto,
         LoadingWheel,
         InputBusqueda,
-        NotFound,
+        NotFoundSearch,
+        ReiniciarFiltros,
     },
     data() {
         return {
-            card: false,
-            tableAnimation: [],
+            initOrderStock: false,
+            initOrderPrecio: false,
+            initOrderNombre: false,
+            initOrdenarCantidad: false,
             created: false,
             loaded: false,
+            tableBar: [],
             productName: "",
             loading: true,
             productos: [],
@@ -72,33 +121,88 @@ export default {
             paginas: 1,
             actual: 1,
             initFilter: false,
+            noBuscar: true,
             limit: 10,
             offset: 0,
+            mensaje: "",
+            reiniciar: true,
         };
     },
-    provide() {
-        return {
-            productList: computed(() => this.productos),
-            isEmpty: computed(() => this.found),
-        };
-    },
+    emits: ["side"],
     methods: {
+        ordenarStock() {
+            if (this.initOrderStock) {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.stock > b.stock) {
+                        return -1;
+                    }
+                    if (a.stock < b.stock) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrderStock = !this.initOrderStock;
+            } else {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.stock < b.stock) {
+                        return -1;
+                    }
+                    if (a.stock > b.stock) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrderStock = !this.initOrderStock;
+            }
+        },
+        async eliminar(id) {
+            const data = await this.ProductoService.deleteProducto(id);
+            if (data.status == 200) {
+                let productos = JSON.parse(JSON.stringify(this.productos));
+                let filtro = [];
+                productos.forEach((element) => {
+                    if (element.idProducto !== id) {
+                        filtro.push(element);
+                    }
+                });
+                console.log(filtro);
+                this.productos = filtro;
+                this.cantidad -= 1;
+                await this.advice("Registro eliminado");
+            }
+        },
+        async edited(item) {
+            let productos = JSON.parse(JSON.stringify(this.productos));
+            for (let i = 0; i < productos.length; i++) {
+                if (productos[i].idProducto == item.idProducto) {
+                    productos[i] = item;
+                }
+            }
+            this.productos = productos;
+            this.loading = !this.loading;
+            setTimeout(() => (this.loading = !this.loading), 100);
+            await this.advice("Cambios guardados");
+        },
         async before() {
             if (this.offset >= 10) {
                 this.offset -= 10;
                 await this.load();
-                this.actual-=1;
+                this.actual -= 1;
             }
         },
         async after() {
             if (this.offset <= this.paginas) {
                 this.offset += 10;
                 await this.load();
-                this.actual+=1;
+                this.actual += 1;
             }
         },
-        async advice() {
-            await this.load();
+        async advice(mensaje) {
+            this.mensaje = mensaje;
             this.created = !this.created;
             setTimeout(() => {
                 this.created = !this.created;
@@ -107,8 +211,23 @@ export default {
         showcard() {
             this.card = !this.card;
         },
+        async recargar() {
+            this.initFilter = false;
+            this.noBuscar = true;
+            this.reiniciar = false;
+            setTimeout(() => {
+                this.reiniciar = !this.reiniciar;
+            }, 25);
+            await this.load();
+        },
         async search(value) {
             if (value.length <= 0) {
+                this.initFilter = false;
+                this.noBuscar = true;
+                this.reiniciar = false;
+                setTimeout(() => {
+                    this.reiniciar = !this.reiniciar;
+                }, 25);
                 await this.load();
             } else {
                 const response = await this.ProductoService.getProductosSearch(
@@ -119,9 +238,9 @@ export default {
                     this.found = true;
                     setTimeout(() => {
                         this.found = false;
-                    }, 3200);
+                    }, 3000);
                 } else {
-                    console.log(datos);
+                    this.noBuscar = false;
                     this.productos = datos;
                 }
                 setTimeout(() => {
@@ -130,11 +249,92 @@ export default {
                 }, 500);
             }
         },
-        filtroStock() {
-            this.initFilter = !this.initFilter;
-            /* datos.forEach((element) => {
-                this.productos.push(element);
-                }); */
+        ordenarNombre() {
+            if (this.initOrderNombre) {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.nombreProducto > b.nombreProducto) {
+                        return -1;
+                    }
+                    if (a.nombreProducto < b.nombreProducto) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrderNombre = !this.initOrderNombre;
+            } else {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.nombreProducto < b.nombreProducto) {
+                        return -1;
+                    }
+                    if (a.nombreProducto > b.nombreProducto) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrderNombre = !this.initOrderNombre;
+            }
+        },
+        ordenarPrecio() {
+            if (this.initOrderPrecio) {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.precio > b.precio) {
+                        return -1;
+                    }
+                    if (a.precio < b.precio) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrderPrecio = !this.initOrderPrecio;
+            } else {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.precio < b.precio) {
+                        return -1;
+                    }
+                    if (a.precio > b.precio) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrderPrecio = !this.initOrderPrecio;
+            }
+        },
+        ordenarCantidad(){
+            if (this.initOrdenarCantidad) {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.cantidadVentas > b.cantidadVentas) {
+                        return -1;
+                    }
+                    if (a.cantidadVentas < b.cantidadVentas) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrdenarCantidad = !this.initOrdenarCantidad;
+            } else {
+                const productos = JSON.parse(JSON.stringify(this.productos));
+                const productosOrder = productos.sort(function (a, b) {
+                    if (a.cantidadVentas < b.cantidadVentas) {
+                        return -1;
+                    }
+                    if (a.cantidadVentas > b.cantidadVentas) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.productos = productosOrder;
+                this.initOrdenarCantidad = !this.initOrdenarCantidad;
+            }
         },
         async filtro(value) {
             console.log(value);
@@ -153,6 +353,7 @@ export default {
                 if (this.initFilter === false) {
                     this.productos = datos;
                     this.initFilter = !this.initFilter;
+                    this.noBuscar = false;
                 } else {
                     datos.forEach((element) => {
                         this.productos.push(element);
@@ -178,6 +379,7 @@ export default {
             this.productos = productosSinCat;
             if (productosSinCat.length <= 0) {
                 this.initFilter = false;
+                this.noBuscar = true;
                 this.load();
             }
         },
@@ -198,71 +400,86 @@ export default {
             this.loading = true;
             const respuesta = await this.ProductoService.getProductos(
                 this.limit,
-                this.offset,
+                this.offset
             );
             if (respuesta.status == 200) {
-                const data = await respuesta.data;
+                const data = respuesta.data;
+                await this.countProductos();
                 this.productos = data;
                 this.loading = false;
-                setTimeout(() => {
-                    console.clear();
-                }, 50);
             }
-            this.loaded = !this.loaded;
-            this.animationT();
-        },
-        async animationT() {
-            this.tableAnimation.pop();
-            this.tableAnimation.push("table");
-            setTimeout(() => {
-                this.tableAnimation.pop();
-            }, 600);
         },
     },
     mounted() {
         this.load();
-        this.countProductos();
     },
 };
 </script>
 <style scoped>
-.componentCreated-leave-active {
-    animation: outCard 1000ms;
+.nfCard-enter-active {
+    animation-name: aparecer;
+    animation-duration: 400ms;
+}
+@keyframes aparecer {
+    0% {
+        transform: scale(0.1);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
-@keyframes outCard {
-    from {
+.nfCard-leave-active {
+    animation-name: desvanecer;
+    animation-duration: 300ms;
+}
+@keyframes desvanecer {
+    0% {
         transform: scale(1);
-        opacity: 1;
     }
-    to {
-        opacity: 0;
+    100% {
         transform: scale(0);
     }
 }
 
-.componentCreated-enter-active {
-    animation: animacionCard 300ms;
+.componentCreated-leave-active {
+    animation: outCard 500ms;
 }
-
+@keyframes outCard {
+    from{
+        opacity: 1;
+        right: 32px;
+    }
+    to {
+        opacity: 0.1;
+        right: 0;
+    }
+}
+.componentCreated-enter-active {
+    animation: animacionCard 700ms;
+}
 @keyframes animacionCard {
     0% {
-        transform: scale(0.2);
         opacity: 0.1;
+        right: 0;
     }
     100% {
-        transform: scale(1);
         opacity: 1;
+        right: 32px;
     }
 }
-.table {
+.table-enter-active {
     animation-name: animacion;
     animation-duration: 600ms;
+    place-self: end;
 }
 @keyframes animacion {
     0% {
         opacity: 0.1;
-        transform: translateY(-200px) scale(0.8);
+        transform: translateY(-150px) scale(0.8);
     }
 }
 .image {

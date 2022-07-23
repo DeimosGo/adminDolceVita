@@ -3,7 +3,7 @@
     <OptionsUser @add="add()" v-if="show" />
 </template>
 <script>
-import AsideBar from '@/components/SideBar.vue';
+import AsideBar from '@/containers/SideBar.vue';
 import OptionsUser from '../components/OptionsUser.vue';
 export default {
     name: 'HeadContainer',

@@ -1,6 +1,6 @@
 <template>
-<nav class="hidden rounded-2xl lg:hover:w-full lg:top-0 lg:w-full lg:rounded-none left-0 right-0 text-gray-50 fixed top-3 mx-auto flex-row w-95pct h-16 items-center justify-between
-font-hindMadurai text-xl text-white bg-card transform transition-all duration-300 hover:w-98pct">
+<nav class="hidden rounded-2xl lg:hover:w-full lg:top-0 lg:w-full lg:rounded-none left-0 right-0 fixed top-3 mx-auto flex-row w-95pct h-16 items-center justify-between
+font-hindMadurai text-xl text-white-0 bg-card transform transition-all duration-300 hover:w-98pct">
         <div class="flex items-center space-x-4 cursor-pointer">
             <img class="w-14 pl-2" src="../assets/logo.png" alt="Dolve Vita Logo">
             <router-link to="/" class="font-semibold">Dolce Vita</router-link>

@@ -1,5 +1,5 @@
 <template>
-    <AsideBar @side="side" class="side" v-if="sesion" />
+    <SideBar @side="side" v-if="sesion" />
     <router-view @side="side" />
 </template>
 <style scoped>
@@ -7,7 +7,7 @@
 @import "./tailwind.css";
 </style>
 <script>
-import AsideBar from "./components/SideBar.vue";
+import SideBar from "./containers/SideBar.vue";
 export default {
     data (){
         return {
@@ -18,11 +18,9 @@ export default {
     methods:{
         side(){
             this.sesion = !this.sesion;
-            this.clases.push("animacion");
-            setTimeout(() => this.clases.pop(), 500);
         }
     },
-    components: { AsideBar },
+    components: { SideBar },
     async mounted(){
         if (sessionStorage.getItem("sesion")) {
             this.side();
@@ -30,15 +28,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-animacion{
-animation-name: side;
-animation-duration: 500ms;
-}
-@keyframes side {
-    0%{
-        opacity: 0.1;
-        transform: translateY(-200px) scale(0.8);
-    }
-}
-</style>
