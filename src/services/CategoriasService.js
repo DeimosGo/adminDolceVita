@@ -2,7 +2,7 @@ import axios from "axios";
 
 class Categoria {
     constructor() {
-        this.url = `http://192.168.1.109:3000/api/v1/categorias`;
+        this.url = `https://restdolcevita.herokuapp.com/api/v1/categorias`;
         this.token = sessionStorage.getItem("token");
     }
     async getCategorias(limit = 10, offset = 0) {

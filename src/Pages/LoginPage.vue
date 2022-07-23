@@ -83,7 +83,7 @@ export default {
                 try {
                     const respuesta = await axios({
                         method: "post",
-                        url: "http://192.168.1.109:3000/api/v1/auth/login",
+                        url: "https://restdolcevita.herokuapp.com//api/v1/auth/login",
                         data: {
                             email: this.email,
                             password: this.pass,

@@ -2,7 +2,7 @@ import axios from "axios";
 
 class Rol {
     constructor() {
-        this.url = `http://192.168.1.109:3000/api/v1/roles/`;
+        this.url = `https://restdolcevita.herokuapp.com//api/v1/roles/`;
         this.token = sessionStorage.getItem("token");
     }
     async getRoles(){

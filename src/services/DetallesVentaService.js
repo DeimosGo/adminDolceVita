@@ -2,7 +2,7 @@ import axios from "axios";
 
 class DetallesVenta {
     constructor(){
-        this.url = `http://192.168.1.109:3000/api/v1/detallesVenta`;
+        this.url = `https://restdolcevita.herokuapp.com//api/v1/detallesVenta`;
         this.token = sessionStorage.getItem("token");
     }
     async getDetails(id) {
