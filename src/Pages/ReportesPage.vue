@@ -77,7 +77,6 @@
     </div>
 </template>
 <script>
-let NumeroPalabra = require("numero-palabra");
 import ChartProductos from "@/containers/ChartProductos.vue";
 import ChartEmpleados from "@/containers/ChartEmpleados.vue";
 import ChartVentas from "@/containers/ChartVentas.vue";
@@ -92,7 +91,6 @@ export default {
             seller: "",
             produtoTop: "",
             loadInfo: false,
-            numbers: NumeroPalabra("9").toUpperCase(),
         };
     },
     methods: {

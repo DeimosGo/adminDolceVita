@@ -1,6 +1,6 @@
 <template>
     <div id="userOp"
-    class="bg-white-0 top-0 left-0 right-0 bottom-0 m-auto w-60 h-min bg-white-0 xl:p-4 flex-row xl:absolute fixed z-20 xl:right-1 xl:top-14 border lg:text-2xl text-xl px-7 py-9 rounded-xl"
+    class="bg-white-0 top-0 left-0 right-0 bottom-0 m-auto w-60 h-min xl:p-4 flex-row xl:absolute fixed z-20 xl:right-1 xl:top-14 border lg:text-2xl text-xl px-7 py-9 rounded-xl"
     >
         <ul class="flex flex-col space-y-1 text-red-900 text-md text-center">
             <li class="py-1"><a href="">Cuenta</a></li>
