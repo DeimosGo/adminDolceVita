@@ -2,12 +2,16 @@ import axios from "axios";
 
 class Dni {
     constructor() {
-        this.url = `https://apiperu.dev/api/dni`;
-        this.token = `34f2d93176259228c6e483bf1eb5d5e3e52b43d827a694ca61726b2db5d5abdf`;
+        this.url = `https://www.softwarelion.xyz/api/reniec/reniec-dni`;
+        this.token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjA5LCJjb3JyZW8iOiJkYXZpbnNpZGVyMzQ1QGdtYWlsLmNvbSIsImlhdCI6MTY1ODU2MzM5OH0.8NTdDUf509ZIsx8UyuHFJSV6lBcx7k4x-QfOWvIn6ck`;
     }
     async getNombre(dni) {
         try {
-            const respuesta = await axios.get(`${this.url}/${dni}?api_token=${this.token}`);
+            const respuesta = await axios.post(this.url, {dni: `${dni}`},{
+                headers: {
+                    Authorization: `Bearer ${this.token}`
+                }
+            });
             return respuesta;
         } catch (error) {
             return error;

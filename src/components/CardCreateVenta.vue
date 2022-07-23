@@ -271,10 +271,9 @@ export default {
                     const result = await this.DniService.getNombre(
                         this.dni.toString()
                     );
-                    console.log(result.data.success);
                     if (result.data.success) {
                         this.disDni = true;
-                        this.nombre = `${result.data.data.nombres} ${result.data.data.apellido_paterno} ${result.data.data.apellido_materno}`;
+                        this.nombre = `${result.data.result.nombres} ${result.data.result.paterno} ${result.data.result.materno}`;
                         this.namePlace = "Nombre Completo";
                     } else {
                         this.adviceMessage("No se encontró el DNI");
