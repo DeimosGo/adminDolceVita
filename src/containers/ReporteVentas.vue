@@ -4,7 +4,8 @@
     >
         <div class="w-full flex flex-col space-y-2 justify-center items-center">
             <img
-                class="w-1/6 p-0 m-0 rounded-full"
+            style="width: 16.666667%;"
+                class="p-0 m-0 rounded-full"
                 src="./../assets/logo.png"
                 alt="Logo Dolce Vita"
             />

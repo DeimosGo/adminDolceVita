@@ -6,7 +6,7 @@
             <img
                 src="./../assets/logo.png"
                 alt="Logo Dolce Vita"
-                class="w-1/3"
+                style="width: 33.333333%;"
             />
         </div>
         <div class="w-full flex flex-col justify-center space-y-2 mb-8">
