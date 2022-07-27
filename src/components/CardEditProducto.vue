@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col justify-between absolute h-70v m-auto w-100 rounded-lg z-30 top-0 left-0 right-0 bottom-0 bg-white-0 p-7 overflow-hidden"
+        class="flex flex-col justify-between absolute h-70v m-auto w-11/12 lg:w-100 rounded-lg z-30 top-0 left-0 right-0 bottom-0 bg-white-0 p-7 overflow-hidden"
     >
         <transition name="error">
             <div
@@ -11,14 +11,14 @@
             </div>
         </transition>
         <h2
-            class="w-full items-center justify-center text-center text-2xl font-semibold text-azureMarine-800"
+            class="w-full items-center justify-center text-center text-2xl font-medium text-azureMarine-800"
         >
             Manejo del Producto
         </h2>
         <div
-            class="text-gray-600 font-semibold flex flex-col items-start space-y-1"
+            class="text-gray-600 font-medium flex flex-col items-start space-y-1"
         >
-            <label class="text-lg font-semibold" for="nombre"
+            <label class="text-lg font-medium" for="nombre"
                 >Nombre del producto</label
             >
             <input
@@ -30,10 +30,10 @@
                 class="pl-1 w-full py-1 outline-none border-b border-b-azureMarine-700"
             />
         </div>
-        <div class="relative text-gray-600 font-semibold flex justify-between">
+        <div class="w-full relative text-gray-600 font-medium flex flex-col space-y-2 lg:space-y-0 lg:flex-row justify-between">
             <button
                 @click="showCategories"
-                class="flex w-1/2 text-lg font-semibold p-1 shadow-md border rounded-xl items-center justify-center space-x-6"
+                class="flex w-full lg:w-1/2 text-md lg:text-lg font-medium p-1 shadow-md border rounded-xl items-center justify-center space-x-6"
             >
                 <p>{{ categorySelected.toLocaleLowerCase() }}</p>
                 <i class="fa-solid fa-caret-down text-xs"></i>
@@ -41,7 +41,8 @@
             <transition name="cat">
                 <ul
                     v-show="showCats"
-                    class="flex flex-col bg-white-0 bordes justify-start top-11 absolute max-h-32 w-1/2 rounded-lg outline-none overflow-y-scroll shadow-gray-500 shadow-md"
+                    class="flex flex-col bg-white-0 bordes justify-start top-8 lg:top-10 absolute max-h-32 w-full lg:w-1/2
+                    rounded-lg outline-none overflow-y-scroll shadow-gray-500 shadow-md"
                 >
                     <ButtonCategoria
                         v-for="item in categories"
@@ -52,8 +53,8 @@
                     />
                 </ul>
             </transition>
-            <div class="flex flex-row space-x-2">
-                <label class="text-lg font-semibold" for="cantidad"
+            <div class="w-full lg:w-1/2 flex flex-row justify-center">
+                <label class="text-md lg:text-lg font-medium w-2/5 lg:w-auto" for="cantidad"
                     >N° ventas:</label
                 >
                 <input
@@ -62,14 +63,14 @@
                     v-model="cantidadVentas"
                     v-on:input="cantidadIn()"
                     onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                    class="pr-1 w-20 py-1 outline-none border-b border-b-azureMarine-700 appearance-none text-end"
+                    class="w-3/5 pr-1 lg:w-20 py-1 outline-none border-b border-b-azureMarine-700 appearance-none text-end"
                 />
             </div>
         </div>
         <div
-            class="text-gray-600 font-semibold flex flex-col items-start space-y-1"
+            class="text-gray-600 font-medium flex flex-col items-start space-y-1"
         >
-            <label class="text-lg font-semibold" for="descripcion"
+            <label class="text-lg font-medium" for="descripcion"
                 >Descripcion del producto</label
             >
             <textarea
@@ -82,10 +83,10 @@
             ></textarea>
         </div>
         <div
-            class="text-gray-600 font-semibold flex flex-row items-center justify-between space-y-1"
+            class="text-gray-600 font-medium flex flex-row items-center justify-between space-y-1"
         >
             <div class="flex flex-row space-x-2">
-                <label class="text-lg font-semibold" for="stock">Stock:</label>
+                <label class="text-lg font-medium" for="stock">Stock:</label>
                 <input
                     onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
                     type="number"
@@ -95,7 +96,7 @@
                 />
             </div>
             <div class="flex flex-row space-x-2">
-                <label class="text-lg font-semibold" for="precio"
+                <label class="text-lg font-medium" for="precio"
                     >Precio:</label
                 >
                 <input
@@ -107,16 +108,16 @@
                 />
             </div>
         </div>
-        <div class="w-full flex justify-between">
+        <div class="w-full flex justify-center space-x-3 lg:space-x-0 lg:justify-between">
             <button
                 @click="editProduct()"
-                class="w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600 scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
+                class="w-1/2 lg:w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600 scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Guardar cambios
             </button>
             <button
                 @click="$emit('cerrar')"
-                class="w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
+                class="w-1/2 lg:w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Cerrar
             </button>

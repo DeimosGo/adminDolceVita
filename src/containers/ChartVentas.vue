@@ -1,7 +1,7 @@
 <template>
-    <div class="w-full flex justify-center space-x-4 pb-4">
+    <div class="w-full flex-col lg:flex-row flex justify-center space-y-3 lg:space-x-4 pb-4">
         <div
-            class="w-1/2 lg:w-4/6 p-2 flex flex-col rounded-lg justify-center shadow-md border border-gray-100 bg-white-0"
+            class="w-full lg:w-4/6 p-2 flex flex-col rounded-lg justify-center shadow-md border border-gray-100 bg-white-0"
         >
             <h3 class="w-full text-center text-lg font-bold text-gray-600">
                 VENTAS DE LOS ULTIMOS SEIS MESES
@@ -15,7 +15,7 @@
             ></apexchart>
         </div>
         <div
-            class="w-1/2 lg:w-2/6 p-2 flex flex-col rounded-lg justify-center shadow-md border border-gray-100 bg-white-0"
+            class="w-full lg:w-2/6 p-2 flex flex-col rounded-lg justify-center shadow-md border border-gray-100 bg-white-0"
         >
             <h3 class="w-full text-center text-lg font-bold text-gray-600">
                 CRECIMIENTO MENSUAL DE VENTAS
@@ -150,7 +150,7 @@ export default {
                 const ingresosDelMes = Number(data[data.length-1].total);
                 this.$emit('setIngresos', `S/.${ingresosDelMes.toFixed(2)}`);
                 const cantidad = ingresosDelMes - ingresosAnterior;
-                this.seriesRadial =[((cantidad/ingresosAnterior)*100).toFixed(2)];
+                this.seriesRadial =[((cantidad/ingresosAnterior)*100).toFixed(0)];
                 this.ingresos = 'S/.'+ingresosDelMes;
             }
         },

@@ -21,7 +21,7 @@
                     class="w-full flex flex-col justify-start items-center h-64 overflow-y-scroll bordes"
                 >
                     <ul
-                        class="w-4/5 flex items-center justify-between rounded-2xl font-semibold bg-azureMarine-700 px-2 py-1 text-white-0"
+                        class="w-4/5 flex items-center justify-between rounded-xl mb-2 font-semibold bg-azureMarine-700 px-2 py-1 text-white-0"
                     >
                         <li class="w-1/4 text-center">Producto</li>
                         <li class="w-1/4 text-center">Stock</li>
@@ -34,7 +34,8 @@
                         class="w-4/5 mt-1"
                     >
                         <ul
-                            class="w-full flex items-center justify-between font-medium rounded-2xl bg-azureMarine-100 px-2 py-1 text-gray-700"
+                            class="w-full flex items-center justify-between font-medium rounded-xl bg-white-0
+                            shadow-gray-200 shadow-md px-2 py-1 text-gray-700 border border-gray-200"
                         >
                             <li class="w-1/4 text-center text-sm">
                                 {{ item.nombreProducto.toLowerCase() }}

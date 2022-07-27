@@ -14,14 +14,16 @@
             <div class="flex flex-row space-x-6">
                 <button
                     @click="showcard"
-                    class="flex space-x-1 items-center h-10 px-2 rounded-md border-2 text-submarine-600 border-submarine-600 transition-all duration-100 hover:scale-105"
+                    class="flex space-x-1 items-center h-10 px-2 rounded-md border-2 text-submarine-600 border-submarine-600 transition-all
+                    duration-100 hover:scale-105 bg-white-0"
                 >
                     <p>Nuevo</p>
                     <i class="fa-solid fa-file-circle-plus w-4"></i>
                 </button>
                 <button
                     @click="showFilter"
-                    class="h-10 px-1 z-10 rounded-lg text-azureMarine-800 text-lg flex items-center border-2 border-azureMarine-800 space-x-2 transition-all duration-100 hover:scale-105"
+                    class="h-10 px-1 z-10 rounded-lg text-azureMarine-800 text-lg flex items-center border-2 border-azureMarine-800 space-x-2
+                    transition-all duration-100 hover:scale-105 bg-white-0"
                 >
                     <p>Filtrar</p>
                     <i class="fa-solid fa-filter"></i>

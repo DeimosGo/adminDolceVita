@@ -1,6 +1,6 @@
 <template>
     <div
-        class="w-1/2 p-2 flex flex-col rounded-xl shadow-md border border-gray-100 bg-white-0"
+        class="w-full lg:w-1/2 p-2 flex flex-col rounded-xl shadow-md border border-gray-100 bg-white-0"
     >
         <h3 class="w-full text-center text-lg font-bold text-gray-600">
             PRODUCTOS MAS VENDIDOS

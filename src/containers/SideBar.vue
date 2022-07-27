@@ -2,109 +2,159 @@
     <div
         class="flex items-center justify-start absolute z-50 w-full h-14 bg-upBar"
     >
-        <p
-            to="/"
-            class="font-semibold text-lg text-white-0 cursor-pointer pl-4"
-        >
-            Dolce Vita
-        </p>
-    </div>
-    <aside
-        class="lg:flex hidden absolute z-50 text-sm text-fontColor shadow-xs shadow-cerise-800 bg-card flex-col w-48 h-full pb-2 justify-between items-center"
-    >
-        <div class="w-full flex flex-col h-50v justify-between">
-            <div
-                class="w-full flex items-center space-x-2 justify-center h-14 bg-upBar border-r border-b border-b-cerise-900 border-r-cerise-900"
-            >
-            <img src="./../assets/logo.png" alt="Dolce Vita Logo" class="w-11">
+        <div class="pl-4 flex space-x-2">
+            <button @click="cargar">
+                <i
+                    class="fa-solid fa-bars text-xl text-cerise-100 active:text-white-0 hover:text-white-0"
+                ></i>
+            </button>
+            <div class="flex space-x-1">
+                <img
+                    src="./../assets/logo.png"
+                    alt="Dolce Vita Logo"
+                    class="w-8"
+                />
                 <p class="font-semibold text-lg text-white-0 cursor-pointer">
                     Dolce Vita
                 </p>
             </div>
-            <button
-                @click="options"
-                id="userOptions"
-                class="w-full justify-center cursor-pointer flex space-x-1 items-center hover:text-gray-100"
-            >
-                <div class="border-2 border-fontColor rounded-md px-1.5">
-                <i class="fa-solid fa-user-tie text-fontColor text-xl"></i>
-                </div>
-                <p class="flex items-center font-bold">David Castillo</p>
-            </button>
-            <div class="flex w-full flex-col text-sm font-semibold">
-                <router-link
-                    ref="reportes"
-                    to="/"
-                    class="w-full py-4 pl-3 hover:bg-upBar"
-                    :class="claseProds"
-                >
-                    <div class="border-2 border-fontColor rounded-md text-fontColor">
-                        <i class="fa-solid fa-chart-column px-1 text-base"></i>
-                    </div>
-                    <p>Reportes y Graficas</p>
-                </router-link>
-                <router-link
-                    ref="productos"
-                    to="/productos"
-                    class="w-full pl-3 hover:bg-upBar py-4"
-                    :class="claseProds"
-                >
-                    <div class="border-2 border-fontColor rounded-md text-fontColor">
-                        <i class="fa-solid fa-cookie-bite px-1 text-base"></i>
-                    </div>
-                    <p>Productos</p>
-                </router-link>
-                <router-link
-                    ref="ventas"
-                    to="/ventas"
-                    class="w-full pl-3 py-4 hover:bg-upBar"
-                    :class="claseProds"
-                >
-                    <div class="border-2 border-fontColor rounded-md text-fontColor">
-                        <i class="fa-solid fa-sack-dollar px-1 text-base"></i>
-                    </div>
-                    <p>Ventas</p>
-                </router-link>
-                <router-link
-                    ref="categorias"
-                    to="/categorias"
-                    class="w-full pl-3 py-4 hover:bg-upBar"
-                    :class="claseProds"
-                >
-                    <div class="border-2 border-fontColor rounded-md text-fontColor">
-                        <i class="fa-solid fa-diagram-project px-1 text-base"></i>
-                    </div>
-                    <p>Categorias</p>
-                </router-link>
-                <router-link
-                    ref="empleados"
-                    to="/empleados"
-                    class="w-full pl-3 py-4 hover:bg-upBar"
-                    :class="claseProds"
-                >
-                    <div class="border-2 border-fontColor rounded-md text-fontColor">
-                        <i class="fa-solid fa-people-carry-box px-1 text-base"></i>
-                    </div>
-                    <p>Empleados</p>
-                </router-link>
-            </div>
         </div>
-        <div class="flex w-full flex-col pl-4 pb-2">
-            <button
-                @click="cerrar"
-                class="flex w-full text-center text-lg font-bold space-x-2"
-            >
-                <div class="border-2 border-fontColor rounded-md">
+    </div>
+    <div
+        @click="cargar"
+        v-if="sideIn"
+        class="absolute w-screen top-0 right-0 bottom-0 h-100v bg-gray-400 opacity-20 z-20 cursor-pointer"
+    ></div>
+    <transition name="showSide">
+        <aside
+            v-if="side"
+            class="flex absolute z-50 text-sm text-fontColor shadow-xs shadow-cerise-800 bg-card flex-col w-56 lg:w-48 h-full pb-2 justify-between items-center"
+        >
+            <div class="w-full flex flex-col h-60v lg:h-50v justify-between">
+                <div
+                    class="w-full flex items-center space-x-2 justify-center h-14 bg-upBar border-r border-b border-b-cerise-900 border-r-cerise-900"
+                >
                     <img
-                        class="w-5 m-1 iconAside"
-                        src="./../assets/logout.png"
-                        alt="Cerrar sesion"
+                        src="./../assets/logo.png"
+                        alt="Dolce Vita Logo"
+                        class="w-11"
                     />
+                    <p
+                        class="font-semibold text-lg text-white-0 cursor-pointer"
+                    >
+                        Dolce Vita
+                    </p>
                 </div>
-                <p>Cerrar sesion</p>
-            </button>
-        </div>
-    </aside>
+                <button
+                    @click="options"
+                    id="userOptions"
+                    class="w-full justify-center cursor-pointer flex space-x-1 items-center hover:text-gray-100"
+                >
+                    <div class="border-2 border-fontColor rounded-md px-1.5">
+                        <i
+                            class="fa-solid fa-user-tie text-fontColor text-xl"
+                        ></i>
+                    </div>
+                    <p class="flex items-center font-bold">David Castillo</p>
+                </button>
+                <div class="flex w-full flex-col text-sm font-semibold">
+                    <router-link
+                        @click="cargar"
+                        ref="reportes"
+                        to="/"
+                        class="w-full py-4 pl-3 hover:bg-upBar"
+                        :class="claseProds"
+                    >
+                        <div
+                            class="border-2 border-fontColor rounded-md text-fontColor"
+                        >
+                            <i
+                                class="fa-solid fa-chart-column px-1 text-base"
+                            ></i>
+                        </div>
+                        <p>Reportes y Graficas</p>
+                    </router-link>
+                    <router-link
+                        @click="cargar"
+                        ref="productos"
+                        to="/productos"
+                        class="w-full pl-3 hover:bg-upBar py-4"
+                        :class="claseProds"
+                    >
+                        <div
+                            class="border-2 border-fontColor rounded-md text-fontColor"
+                        >
+                            <i
+                                class="fa-solid fa-cookie-bite px-1 text-base"
+                            ></i>
+                        </div>
+                        <p>Productos</p>
+                    </router-link>
+                    <router-link
+                        @click="cargar"
+                        ref="ventas"
+                        to="/ventas"
+                        class="w-full pl-3 py-4 hover:bg-upBar"
+                        :class="claseProds"
+                    >
+                        <div
+                            class="border-2 border-fontColor rounded-md text-fontColor"
+                        >
+                            <i
+                                class="fa-solid fa-sack-dollar px-1 text-base"
+                            ></i>
+                        </div>
+                        <p>Ventas</p>
+                    </router-link>
+                    <router-link
+                        @click="cargar"
+                        ref="categorias"
+                        to="/categorias"
+                        class="w-full pl-3 py-4 hover:bg-upBar"
+                        :class="claseProds"
+                    >
+                        <div
+                            class="border-2 border-fontColor rounded-md text-fontColor"
+                        >
+                            <i
+                                class="fa-solid fa-diagram-project px-1 text-base"
+                            ></i>
+                        </div>
+                        <p>Categorias</p>
+                    </router-link>
+                    <router-link
+                        @click="cargar"
+                        ref="empleados"
+                        to="/empleados"
+                        class="w-full pl-3 py-4 hover:bg-upBar"
+                        :class="claseProds"
+                    >
+                        <div
+                            class="border-2 border-fontColor rounded-md text-fontColor"
+                        >
+                            <i
+                                class="fa-solid fa-people-carry-box px-1 text-base"
+                            ></i>
+                        </div>
+                        <p>Empleados</p>
+                    </router-link>
+                </div>
+            </div>
+            <div class="flex w-full h-10 pl-4 pb-2 hover:brightness-125">
+                <button
+                    @click="cerrar"
+                    class="flex w-full text-center text-lg font-bold space-x-2"
+                >
+                    <div class="border-2 border-fontColor rounded-md">
+                        <i
+                            class="fa-solid fa-arrow-right-from-bracket px-1 text-base"
+                        ></i>
+                    </div>
+                    <p>Cerrar sesion</p>
+                </button>
+            </div>
+        </aside>
+    </transition>
 </template>
 <script>
 import router from "@/router";
@@ -112,6 +162,8 @@ export default {
     name: "AsideBar",
     data() {
         return {
+            side: true,
+            sideIn: false,
             claseProds: [
                 "w-full",
                 "hover:text-gray-200",
@@ -123,11 +175,17 @@ export default {
             show: false,
         };
     },
-    emits: ['add','side'],
+    emits: ["add", "side"],
     methods: {
+        cargar() {
+            let body = document.querySelector("body");
+            if (body.offsetWidth < 1023) {
+                this.side = !this.side;
+                this.sideIn = !this.sideIn;
+            }
+        },
         options() {
             this.$emit("add");
-            console.log(this.links[0]);
         },
         cerrar() {
             sessionStorage.removeItem("sesion");
@@ -136,6 +194,28 @@ export default {
             this.$emit("side");
             router.push("login");
         },
+        observer() {
+            let body = document.querySelector("body");
+            if (body.offsetWidth > 1023) {
+                this.side = true;
+                this.sideIn = false;
+            } else {
+                this.side = false;
+            }
+        },
+        observerResize() {
+            this.sideIn = false;
+            let body = document.querySelector("body");
+            if (body.offsetWidth > 1023) {
+                this.side = true;
+            } else {
+                this.side = false;
+            }
+        },
+    },
+    mounted() {
+        this.observer();
+        window.addEventListener("resize", this.observerResize);
     },
 };
 </script>
@@ -149,5 +229,27 @@ export default {
     border-left: 4px solid #ffffff;
     padding-left: 8px;
     background-color: #be5555;
+}
+.showSide-enter-active {
+    animation: mostrar 200ms;
+}
+@keyframes mostrar {
+    0% {
+        overflow: hidden;
+        width: 22px;
+    }
+    100% {
+        overflow: hidden;
+    }
+}
+
+.showSide-leave-active {
+    animation: quitar 200ms;
+}
+@keyframes quitar {
+    100% {
+        width: 0px;
+        overflow: hidden;
+    }
 }
 </style>

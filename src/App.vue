@@ -1,6 +1,6 @@
 <template>
-    <SideBar @side="side" v-if="sesion" />
-    <router-view @side="side" />
+        <SideBar @side="side" v-if="sesion" />
+        <router-view @side="side" />
 </template>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&display=swap");
@@ -9,22 +9,22 @@
 <script>
 import SideBar from "./containers/SideBar.vue";
 export default {
-    data (){
+    data() {
         return {
-            clases:[],
+            clases: [],
             sesion: false,
-        }
+        };
     },
-    methods:{
-        side(){
+    methods: {
+        side() {
             this.sesion = !this.sesion;
-        }
+        },
     },
     components: { SideBar },
-    async mounted(){
+    async mounted() {
         if (sessionStorage.getItem("sesion")) {
             this.side();
         }
-    }
-}
+    },
+};
 </script>

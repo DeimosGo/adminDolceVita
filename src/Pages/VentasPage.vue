@@ -51,7 +51,7 @@
             />
         </transition>
         <div
-            class="lg:w-4/5 justify-between flex flex-col lg:flex-row space-x-3 pt-16 h-fit"
+            class="lg:w-4/5 justify-between flex flex-col lg:flex-row space-x-3 pt-2 lg:pt-16 h-fit"
         >
             <h2
                 class="w-full lg:w-1/3 lg:text-left text-center lg:pt-0 text-card text-3xl font-bold"
@@ -94,6 +94,24 @@
                         :venta="item"
                     />
                 </div>
+                <div
+                        v-if="noBuscar"
+                        class="lg:w-4/5 w-11/12 flex space-x-3 text-lg justify-center place-items-center"
+                    >
+                        <button @click="before">
+                            <i
+                                class="fa-solid fa-caret-left text-xl text-card"
+                            ></i>
+                        </button>
+                        <p class="text-card text-md font-semibold">
+                            {{ actual }} de {{ paginas }}
+                        </p>
+                        <button @click="after" class="text-azureMarine-800">
+                            <i
+                                class="fa-solid fa-caret-right text-xl text-card"
+                            ></i>
+                        </button>
+                    </div>
             </div>
         </section>
     </div>
@@ -117,12 +135,15 @@ export default {
             VentasService: new Venta(),
             DetallesService: new DetallesVenta(),
             ComprobanteService: new Comprobante(),
+            limit: 10,
             offset: 0,
             ventas: [],
             venta: {},
             detalles: {},
             card: false,
             cardVentas: false,
+            paginas: 1,
+            actual: 1,
             newVenta: false,
             comp: {},
             comprobant: false,
@@ -131,6 +152,7 @@ export default {
             mensaje: "",
             showEliminarVenta: false,
             id: 0,
+            noBuscar: true,
         };
     },
     methods: {
@@ -145,6 +167,19 @@ export default {
                 }, 3000);
                 this.id = 0;
                 await this.loadDatos();
+            }
+        },
+        async countVentas() {
+            const respuesta = await this.VentasService.getVentasCount();
+            if (respuesta.status == 200) {
+                const data = await respuesta.data;
+                this.cantidad = data.cantidad;
+                const cantidad = data.cantidad / 10;
+                if (cantidad % 2 !== 0) {
+                    this.paginas = Math.floor(cantidad) + 1;
+                }
+            } else {
+                return "error";
             }
         },
         async createdVenta(item) {
@@ -178,10 +213,23 @@ export default {
         },
         async loadDatos() {
             this.loading = !this.loading;
-            /* const limit = this.offset+=10 */
-            const res = await this.VentasService.getVentasRaw(10, 0);
+            const res = await this.VentasService.getVentasRaw(this.limit, this.offset);
             this.ventas = res.data;
             this.loading = !this.loading;
+        },
+        async before() {
+            if (this.offset >= 10) {
+                this.offset -= 10;
+                await this.loadDatos();
+                this.actual -= 1;
+            }
+        },
+        async after() {
+            if (this.offset <= this.paginas) {
+                this.offset += 10;
+                await this.loadDatos();
+                this.actual += 1;
+            }
         },
         async printComprobante(item) {
             this.venta = item;

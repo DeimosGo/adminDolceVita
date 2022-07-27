@@ -1,6 +1,6 @@
 <template>
     <div
-        class="w-full flex justify-center items-center rounded-full shadow-md bg-azure-50"
+        class="w-full flex justify-center items-center rounded-full shadow-md bg-gray-50"
     >
         <ul class="w-full flex justify-between lg:px-8 px-2 py-2 text-gray-800">
             <li class="w-1/4 text-center justify-center flex items-center">{{ sold.fecha }}</li>

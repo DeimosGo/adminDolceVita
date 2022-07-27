@@ -19,6 +19,20 @@ class Venta {
             return error;
         }
     }
+    async getVentasCount() {
+        try {
+            const respuesta = await axios.get(
+                `${this.url}/count`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    },
+                }
+            );
+            return respuesta;
+        } catch (error) {
+            return error;
+        }
+    }
     async getVentasRaw(limit = 10, offset = 0) {
         try {
             const respuesta = await axios.get(

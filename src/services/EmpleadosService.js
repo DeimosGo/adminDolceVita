@@ -8,7 +8,7 @@ class Empleado {
     async getEmpleado(limit = 9, offset = 0) {
         try {
             const respuesta = await axios.get(
-                `${this.url}/?limit=${limit}&offset=${offset}`, {
+                `${this.url}?limit=${limit}&offset=${offset}`, {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     },
@@ -76,7 +76,7 @@ class Empleado {
     async getEmpleadosCount() {
         try {
             const respuesta = await axios.get(
-                `${this.url}/count`, {
+                `${this.url}count`, {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     },

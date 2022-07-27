@@ -29,14 +29,16 @@
             <transition name="nfCard">
                 <NotFoundSearch v-if="found" />
             </transition>
-            <h2 class="text-card text-3xl font-bold">
+            <h2 class="text-card text-3xl font-bold mb-2 lg:mb-0">
                 {{ cantidad }} Categorias
             </h2>
             <div
-                class="flex items-center justify-center place-content-center space-x-4"
+                class="flex lg:flex-row flex-col items-center justify-center place-content-center space-y-3 lg:space-y-0 lg:space-x-4"
             >
-                <NewCategorias @nuevaCategoria="nuevaCategoria" />
-                <ReiniciarFiltros @recargar="recargar" />
+                <div class="flex items-center justify-center place-content-center space-x-4">
+                    <NewCategorias @nuevaCategoria="nuevaCategoria" />
+                    <ReiniciarFiltros @recargar="recargar" />
+                </div>
                 <InputBusqueda
                     @showcard="showcard"
                     @search="search"
@@ -49,7 +51,7 @@
         >
             <transition name="table">
                 <TableCategoria
-                v-if="!loading"
+                    v-if="!loading"
                     :categorias="categorias"
                     :paginas="paginas"
                     :actual="actual"
@@ -151,7 +153,7 @@ export default {
             this.back = !this.back;
             this.card = false;
         },
-        async deleted(id){
+        async deleted(id) {
             const data = await this.CategoriaService.deleteCategoria(id);
             if (data.status == 200) {
                 let categorias = JSON.parse(JSON.stringify(this.categorias));

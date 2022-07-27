@@ -9,7 +9,8 @@
         v-show="!loading"
         class="pt-16 w-full px-2 lg:px-10 h-100v flex place-content-center flex-col lg:items-end justify-center"
     >
-        <div class="w-4/5 flex items-center justify-between">
+            <div class="w-full lg:w-4/5 flex flex-col lg:flex-row items-center
+            justify-center lg:justify-between space-y-2 lg:space-y-0">
             <transition name="nfCard">
                 <NotFoundSearch v-if="found" />
             </transition>
@@ -17,15 +18,17 @@
                 {{ cantidad }} Productos
             </h2>
             <div
-                class="flex flex-col lg:flex-row space-x-7 items-center justify-center place-content-center"
+                class="flex flex-col lg:flex-row lg:space-x-7 items-center justify-center place-content-center"
             >
-                <SideFilter
+                <div class="flex">
+                    <SideFilter
                     v-if="reiniciar"
                     @filtrar="filtro"
                     @quitar="quitar"
                     @advice="advice"
                 />
                 <ReiniciarFiltros @recargar="recargar" />
+                </div>
                 <InputBusqueda
                     @showcard="showcard"
                     @search="search"

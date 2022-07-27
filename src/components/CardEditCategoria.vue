@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col justify-between absolute h-70v m-auto w-100 rounded-lg z-30 top-0 left-0 right-0 bottom-0 bg-white-0 p-7 overflow-hidden"
+        class="flex flex-col justify-between absolute h-70v m-auto w-11/12 lg:w-100 rounded-lg z-30 top-0 left-0 right-0 bottom-0 bg-white-0 p-7 overflow-hidden"
     >
         <transition name="error">
             <div
@@ -48,16 +48,16 @@
                 class="p-1 w-full py-1 outline-none rounded-md border border-azureMarine-700 h-24"
             ></textarea>
         </div>
-        <div class="w-full flex justify-between">
+        <div class="w-full flex justify-center space-x-3 lg:space-x-0 lg:justify-between">
             <button
                 @click="editedElement()"
-                class="w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600 scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
+                class="w-1/2 lg:w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600 scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Guardar cambios
             </button>
             <button
                 @click="$emit('editar')"
-                class="w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
+                class="w-1/2 lg:w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Cerrar
             </button>
