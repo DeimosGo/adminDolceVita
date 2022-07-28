@@ -6,7 +6,8 @@
             <div class="flex flex-row space-x-3">
                 <button
                     @click="$emit('nuevaVenta')"
-                    class="flex space-x-1 items-center h-10 px-2 rounded-md border-2 text-submarine-600 border-submarine-600 transition-all duration-100 hover:scale-105"
+                    class="flex space-x-1 items-center h-10 px-2 rounded-md border-2 text-submarine-600
+                    border-submarine-600 transition-all duration-100 hover:scale-105"
                 >
                     <p>Nuevo</p>
                     <i class="fa-solid fa-file-circle-plus w-4"></i>
@@ -22,7 +23,8 @@
             <div
                 v-show="showAll"
                 :class="animacion"
-                class="absolute top-10 right-0 pl-6 w-72 flex flex-col h-fit p-2 items-start border rounded-lg border-gray-300 text-azureMarine-800 bg-white-0 z-10 shadow-gray-300 shadow-sm"
+                class="absolute top-10 right-0 pl-6 w-72 flex flex-col h-fit p-2 items-start border rounded-lg
+                border-gray-300 text-azureMarine-800 bg-white-0 z-10 shadow-gray-300 shadow-sm"
             >
                 <h3 class="text-lg pb-1">Categorias</h3>
                 <div class="pl-3 flex flex-col space-y-2 items-start">
