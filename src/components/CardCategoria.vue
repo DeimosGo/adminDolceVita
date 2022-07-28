@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col justify-between h-60v w-11/12 lg:w-100 rounded-lg z-30 bg-white-0 p-7 overflow-hidden"
+        class="flex flex-col justify-between h-60v lg:h-50v w-11/12 lg:w-100 rounded-lg z-30 bg-white-0 p-7 overflow-hidden"
     >
         <transition name="error">
             <div

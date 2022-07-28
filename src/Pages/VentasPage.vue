@@ -6,7 +6,7 @@
         <LoadingWheel />
     </div>
     <div
-        v-show="!loading"
+        v-if="!loading"
         class="absolute pt-16 w-full lg:pr-16 h-100v overflow-hidden flex place-content-center flex-col lg:items-end justify-start"
     >
         <transition name="cardNew">
@@ -59,15 +59,15 @@
                 2 Ventas
             </h2>
             <div class="justify-center flex space-x-3">
-                <FIlterVentas @nuevaVenta="nuevaVenta" />
-                <ReiniciarFiltros />
+                <FIlterVentas @nuevaVenta="nuevaVenta" @filtrarPorRango="filtrarPorRango" />
+                <ReiniciarFiltros @recargar="loadDatos" />
             </div>
         </div>
         <section
             id="table"
             class="flex flex-col items-start space-y-3 overflow-scroll lg:overflow-auto justify-center lg:items-end w-full h-5/6"
         >
-            <div
+            <div v-if="!loading"
                 class="flex flex-col items-center space-y-3 min-w-780 justify-start lg:items-end w-full h-5/6"
             >
                 <div
@@ -128,6 +128,7 @@ import Comprobante from "@/services/ComprobanteService";
 import CardCreateVenta from "@/components/CardCreateVenta.vue";
 import CardDeleteElement from "@/components/CardDeleteElement.vue";
 import CreatedElement from "@/components/CreatedElement.vue";
+import moment from "moment";
 export default {
     name: "VentasPage",
     data() {
@@ -210,6 +211,15 @@ export default {
             this.cardVentas = false;
             this.newVenta = false;
             this.showEliminarVenta = false;
+        },
+        async filtrarPorRango(fechas){
+            const fechaIn = moment(fechas[0]).format("YYYY-MM-DD");
+            const fechaOut = moment(fechas[1]).format("YYYY-MM-DD");
+            this.loading = !this.loading;
+            const res = await this.VentasService.getVentasFecha(fechaIn, fechaOut);
+            console.log(res);
+            this.ventas = await res.data;
+            this.loading = !this.loading;
         },
         async loadDatos() {
             this.loading = !this.loading;

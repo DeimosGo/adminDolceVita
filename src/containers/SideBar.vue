@@ -28,11 +28,13 @@
     <transition name="showSide">
         <aside
             v-if="side"
-            class="flex absolute z-50 text-sm text-fontColor shadow-xs shadow-cerise-800 bg-card flex-col w-56 lg:w-48 h-full pb-2 justify-between items-center"
+            class="flex absolute z-50 text-sm text-fontColor shadow-xs shadow-cerise-800 bg-card flex-col w-56
+            lg:w-48 h-full pb-2 justify-between items-center"
         >
-            <div class="w-full flex flex-col h-60v lg:h-50v justify-between">
+            <div class="w-full flex flex-col h-60v lg:h-55v justify-center space-y-3 lg:space-y-0 lg:justify-between">
                 <div
-                    class="w-full flex items-center space-x-2 justify-center h-14 bg-upBar border-r border-b border-b-cerise-900 border-r-cerise-900"
+                    class="w-full hidden lg:flex items-center space-x-2 justify-center h-14 py-1 bg-upBar
+                    border-r border-b border-b-cerise-900 border-r-cerise-900"
                 >
                     <img
                         src="./../assets/logo.png"
@@ -48,7 +50,7 @@
                 <button
                     @click="options"
                     id="userOptions"
-                    class="w-full justify-center cursor-pointer flex space-x-1 items-center hover:text-gray-100"
+                    class="w-full justify-center cursor-pointer flex space-x-1 items-center hover:text-gray-100 pt-2"
                 >
                     <div class="border-2 border-fontColor rounded-md px-1.5">
                         <i

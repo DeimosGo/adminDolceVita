@@ -16,9 +16,9 @@
         >
             Nuevo Empleado
         </h2>
-        <div class="w-full flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 lg:space-x-4 space-x-0">
+        <div class="w-full flex justify-between items-center space-x-4">
             <input
-                class="w-full lg:w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
                 @input="testNombre()"
                 maxlength="100"
                 v-model="nombres"
@@ -31,16 +31,16 @@
                 v-model="apellidos"
                 @input="testApellido()"
                 maxlength="100"
-                class="w-full lg:w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
                 autocomplete="none"
                 name="apellidos"
                 placeholder="Apellidos"
                 type="text"
             />
         </div>
-        <div class="w-full flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 lg:space-x-4 space-x-0">
+        <div class="w-full flex justify-between items-center space-x-4">
             <input
-                class="w-full lg:w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
                 maxlength="9"
                 v-model="telefono"
@@ -50,7 +50,7 @@
                 type="number"
                 pattern="^[0-9]{4}$"
             />
-            <div class="relative w-full lg:w-1/2 h-full">
+            <div class="relative w-1/2 h-full">
                 <button
                     @click="showRoles = !showRoles"
                     class="flex justify-between px-2 w-full h-full items-center border-b font-semibold border-azureMarine-800"
@@ -78,7 +78,7 @@
         <div class="w-full flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 lg:space-x-4 space-x-0">
             <input
                 name="email"
-                class="w-full lg:w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-full lg:w-1/2 border-b text-gray-600 font-medium border-azureMarine-800 outline-none h-10 pl-1"
                 @input="testEmail()"
                 maxlength="100"
                 v-model="email"
@@ -93,11 +93,11 @@
                 autocomplete="none"
                 placeholder="contraseña"
                 type="password"
-                class="w-full lg:w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-full lg:w-1/2 border-b text-gray-600 font-medium border-azureMarine-800 outline-none h-10 pl-1"
             />
         </div>
-        <div class="w-full flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 lg:space-x-4 space-x-0">
-            <div class="w-full lg:w-1/2 flex flex-row items-center justify-center space-x-4">
+        <div class="w-full flex justify-between items-center space-x-4">
+            <div class="w-1/2 flex flex-row items-center justify-center space-x-4">
                 <span
                     class="ml-3 text-sm text-gray-600 font-semibold dark:text-gray-300"
                     >Acceso a la plataforma</span

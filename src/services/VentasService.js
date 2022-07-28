@@ -80,16 +80,19 @@ class Venta {
 
     async getVentasFecha(fechaIn, fechOut) {
         const body = {dateIn: fechaIn, dateOut: fechOut};
+        console.log(body);
         try {
-            const respuesta = await axios.get(
-                `${this.url}/`, body, {
+            const respuesta = await axios.post(
+                `${this.url}/date`, body, {
                     headers: {
                         Authorization: `Bearer ${this.token}`
                     },
                 }
             );
+            console.log(respuesta);
             return respuesta;
         } catch (error) {
+            console.error(error);
             return error;
         }
     }

@@ -352,7 +352,6 @@ export default {
     },
     async mounted() {
         await this.loadProductos();
-        console.log(this.productosSelected);
     },
 };
 </script>

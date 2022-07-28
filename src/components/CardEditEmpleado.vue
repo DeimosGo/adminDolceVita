@@ -1,6 +1,7 @@
 <template>
     <div
-        class="w-100 h-50v absolute left-0 right-0 bottom-0 top-0 m-auto bg-white-0 z-30 shadow-2xl rounded-lg p-4 flex flex-col justify-between items-center"
+        class="w-11/12 lg:w-100 h-70v lg:h-50v absolute left-0 right-0 bottom-0 top-0 m-auto bg-white-0 z-30 shadow-2xl
+        rounded-lg p-4 flex flex-col justify-between items-center"
     >
         <transition name="error">
             <div
@@ -11,13 +12,13 @@
             </div>
         </transition>
         <h2
-            class="w-full items-center justify-center text-center text-2xl font-semibold text-azureMarine-800"
+            class="w-full items-center justify-center text-center text-2xl font-medium text-azureMarine-800"
         >
             Manejo del Empleado
         </h2>
         <div class="w-full flex justify-between items-center space-x-4">
             <input
-                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-1/2 border-b text-gray-600 font-medium border-azureMarine-800 outline-none h-10 pl-1"
                 @input="testNombre()"
                 maxlength="100"
                 v-model="nombres"
@@ -30,7 +31,7 @@
                 v-model="apellidos"
                 @input="testApellido()"
                 maxlength="100"
-                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-1/2 border-b text-gray-600 font-medium border-azureMarine-800 outline-none h-10 pl-1"
                 autocomplete="none"
                 name="apellidos"
                 placeholder="Apellidos"
@@ -39,7 +40,7 @@
         </div>
         <div class="w-full flex justify-start items-center space-x-4">
             <input
-                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-1/2 border-b text-gray-600 font-medium border-azureMarine-800 outline-none h-10 pl-1"
                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
                 maxlength="9"
                 v-model="telefono"
@@ -52,7 +53,7 @@
             <div class="relative w-1/2 h-full">
                 <button
                     @click="showRoles = !showRoles"
-                    class="flex justify-between px-2 w-full h-full items-center border-b font-semibold border-azureMarine-800"
+                    class="flex justify-between px-2 w-full h-full items-center border-b font-medium border-azureMarine-800"
                 >
                     <p :class="classRol">{{ rolSelected }}</p>
                     <i class="fa-solid fa-caret-down text-xs"></i>
@@ -74,10 +75,10 @@
                 </transition>
             </div>
         </div>
-        <div class="w-full flex justify-between items-center space-x-4">
+        <div class="w-full flex flex-col lg:flex-row justify-between items-center space-y-3 lg:space-y-0 lg:space-x-4 space-x-0">
             <input
                 name="email"
-                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-full lg:w-1/2 border-b text-gray-600 font-medium border-azureMarine-800 outline-none h-10 pl-1"
                 @input="testEmail()"
                 maxlength="100"
                 v-model="email"
@@ -92,13 +93,13 @@
                 autocomplete="none"
                 placeholder="contraseña"
                 type="password"
-                class="w-1/2 border-b text-gray-600 font-semibold border-azureMarine-800 outline-none h-10 pl-1"
+                class="w-full lg:w-1/2 border-b text-gray-600 font-medium border-azureMarine-800 outline-none h-10 pl-1"
             />
         </div>
         <div class="flex items-center justify-between w-full">
             <div class="flex flex-row items-center justify-center space-x-4">
                 <span
-                    class="ml-3 text-sm text-gray-600 font-semibold dark:text-gray-300"
+                    class="ml-3 text-sm text-gray-600 font-medium dark:text-gray-300"
                     >Acceso a la plataforma</span
                 >
                 <label
@@ -125,23 +126,26 @@
                 format="YYYY-MM-DD"
             ></date-picker>
         </div>
-        <div class="w-full flex justify-between">
+        <div class="w-full flex justify-between space-x-4 lg:space-x-0">
             <button
                 @click="editEmpleado()"
-                class="w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600 scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
+                class="w-1/3 text-xs lg:text-base lg:w-40 py-1 border-2 text-azure-600 border-azure-600 rounded-md hover:text-white-0 hover:bg-azure-600
+                scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
-                Guardar cambios
+                Guardar
             </button>
             <button
                 @click="$emit('editEliminar', idEmpleado)"
-                class="flex justify-center items-center space-x-2 w-40 py-1 border-2 text-cerise-500 border-cerise-500 rounded-md hover:text-white-0 hover:bg-cerise-500 scale-100 shadow-lg transition-all duration-200 hover:scale-95 hover:shadow-none"
+                class="flex justify-center items-center space-x-2 w-1/3 lg:w-40 py-1 border-2 text-cerise-500 border-cerise-500 rounded-md
+                hover:text-white-0 hover:bg-cerise-500 scale-100 shadow-lg transition-all duration-200 hover:scale-95 hover:shadow-none"
             >
                 <p class="h-full mt-1">Eliminar</p>
                 <i class="fa-regular fa-circle-xmark text-lg h-full"></i>
             </button>
             <button
                 @click="$emit('showCardsEdits')"
-                class="w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105 shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
+                class="w-1/3 lg:w-40 py-1 border-2 text-upBar border-upBar rounded-md hover:text-white-0 hover:bg-upBar scale-105
+                shadow-lg transition-all duration-200 hover:scale-100 hover:shadow-none"
             >
                 Cerrar
             </button>
