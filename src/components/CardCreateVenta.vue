@@ -6,7 +6,7 @@
             class="relative w-full flex flex-col h-100v justify-start items-center bg-white-0 z-30 pt-16 pb-4 overflow-y-scroll bordes"
         >
             <h2
-                class="w-full items-center justify-center text-center text-2xl font-semibold text-azureMarine-800"
+                class="w-full items-center justify-center text-center text-2xl font-medium text-azureMarine-800"
             >
                 Nueva Venta
             </h2>
@@ -18,10 +18,10 @@
                     {{ textInfo }}
                 </p>
                 <div
-                    class="w-full flex flex-col justify-start items-center h-64 overflow-y-scroll bordes"
+                    class="w-full flex flex-col justify-start items-center h-64 overflow-y-scroll bordes mb-2"
                 >
                     <ul
-                        class="w-4/5 flex items-center justify-between rounded-xl mb-2 font-semibold bg-azureMarine-700 px-2 py-1 text-white-0"
+                        class="w-4/5 flex items-center justify-between rounded-xl font-medium bg-azureMarine-700 px-2 py-1 text-white-0"
                     >
                         <li class="w-1/4 text-center">Producto</li>
                         <li class="w-1/4 text-center">Stock</li>
@@ -34,8 +34,7 @@
                         class="w-4/5 mt-1"
                     >
                         <ul
-                            class="w-full flex items-center justify-between font-medium rounded-xl bg-white-0
-                            shadow-gray-200 shadow-md px-2 py-1 text-gray-700 border border-gray-200"
+                            class="w-full flex items-center justify-between font-medium rounded-xl bg-white-0 shadow-gray-200 shadow-md px-2 py-1 text-gray-700 border border-gray-200"
                         >
                             <li class="w-1/4 text-center text-sm">
                                 {{ item.nombreProducto.toLowerCase() }}
@@ -67,7 +66,7 @@
                         class="w-full flex flex-col justify-center items-center"
                     >
                         <ul
-                            class="w-full flex items-center justify-between font-semibold px-2 py-1 text-azureMarine-700"
+                            class="w-full flex items-center justify-between font-medium px-2 py-1 text-azureMarine-700"
                         >
                             <li class="w-1/3 text-center">Producto</li>
                             <li class="w-1/3 text-center">Precio</li>
@@ -77,7 +76,7 @@
                         <div
                             v-for="(item, i) in productosSelected"
                             :key="i"
-                            class="w-full mt-1"
+                            class="w-full"
                         >
                             <ul
                                 class="w-full flex items-center justify-between font-medium px-2 py-1 text-gray-700"
@@ -107,7 +106,7 @@
                                 <li class="w-1/4 text-center">
                                     <button
                                         @click="remove(item)"
-                                        class="text-xl text-azureMarine-700 transition-all duration-100 hover:scale-110"
+                                        class="text-xl text-cerise-700 transition-all duration-100 hover:scale-110"
                                     >
                                         <i class="fa-solid fa-delete-left"></i>
                                     </button>
@@ -116,8 +115,24 @@
                         </div>
                     </div>
                 </div>
+                <ul
+                    class="flex flex-col space-y-2 w-10/12 px-3 pb-4 font-medium text-sm"
+                >
+                    <li class="flex justify-between">
+                        <p>Subtotal</p>
+                        <p><span class="text-gray-500 pr-1">S/.</span>{{ subtotal }}</p>
+                    </li>
+                    <li class="flex justify-between">
+                        <p>IGV</p>
+                        <p><span class="text-gray-500 pr-1">S/.</span>{{ igv }}</p>
+                    </li>
+                    <li class="flex justify-between">
+                        <p>Total</p>
+                        <p><span class="text-gray-500 pr-1">S/.</span>{{ Number(total).toFixed(2) }}</p>
+                    </li>
+                </ul>
                 <div
-                    class="w-full flex flex-col md:flex-row justify-center space-x-4 items-center mb-1"
+                    class="w-full flex space-y-2 lg:space-y-0 flex-col md:flex-row justify-center space-x-4 items-center mb-1"
                 >
                     <p
                         class="w-1/6 text-center text-gray-700 font-medium text-lg"
@@ -131,17 +146,17 @@
                         pattern="^[0-9]{4}$"
                         v-model="dni"
                         @input="testDni"
-                        class="w-1/6 pl-1 py-1 border-2 border-azure-400 rounded-lg outline-none placeholder:text-gray-400"
+                        class="w-11/12 lg:w-1/6 pl-1 py-1 border-2 border-azure-400 rounded-lg outline-none placeholder:text-gray-400"
                         onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
                     />
                     <input
-                        class="w-2/6 pl-3 py-2 border-2 cursor-not-allowed text-sm border-azure-200 bg-gray-100 rounded-lg outline-none placeholder:text-gray-400"
+                        class="w-11/12 lg:w-2/6 pl-3 py-2 border-2 cursor-not-allowed text-sm border-azure-200 bg-gray-100 rounded-lg outline-none placeholder:text-gray-400"
                         type="text"
                         :placeholder="namePlace"
                         disabled
                         :value="nombre"
                     />
-                    <div class="w-1/6 flex justify-center">
+                    <div class="w-11/12 lg:w-1/6 flex justify-center">
                         <button
                             @click="returnAll"
                             class="w-1/6 text-cerise-800 text-lg"
@@ -212,7 +227,46 @@ export default {
             dni: null,
         };
     },
+    computed: {
+        subtotal() {
+            let result = this.total;
+            result -= result * 0.18;
+            return this.round10(result, -2);
+        },
+        igv() {
+            let result = this.subtotal * 0.18;
+            return this.round10(result, -2);
+        },
+        total() {
+            let result = 0;
+            if (this.productosSelected.length > 0) {
+                this.productosSelected.forEach((element) => {
+                    result += element.precio * element.cantidad;
+                });
+            }
+            return result;
+        },
+    },
     methods: {
+        decimalAdjust(type, value, exp) {
+            if (typeof exp === "undefined" || +exp === 0) {
+                return Math[type](value);
+            }
+            value = +value;
+            exp = +exp;
+            if (isNaN(value) || !(typeof exp === "number" && exp % 1 === 0)) {
+                return NaN;
+            }
+            value = value.toString().split("e");
+            value = Math[type](
+                +(value[0] + "e" + (value[1] ? +value[1] - exp : -exp))
+            );
+            value = value.toString().split("e");
+            return +(value[0] + "e" + (value[1] ? +value[1] + exp : exp));
+        },
+        round10(value, exp) {
+            return this.decimalAdjust("round", value, exp);
+        },
         async adviceMessage(message) {
             this.advice = message;
             this.showAdvice = true;
@@ -224,26 +278,23 @@ export default {
             } else if (this.nombre.length <= 0 || !this.dni) {
                 this.adviceMessage("No se ha validado el DNI");
             } else {
-                let subtotal = 0;
                 const idEmpleado = sessionStorage.getItem("idEmpleado");
-                this.productosSelected.forEach((element) => {
-                    subtotal += element.precio * element.cantidad;
-                });
                 const venta = await this.VentaService.postVentas({
-                    precioTotal: subtotal,
+                    precioTotal: this.subtotal,
                     idEmpleado: idEmpleado,
                 });
                 if (venta.status == 201) {
-                    const total = subtotal + subtotal * 0.18;
                     const data = venta.data;
                     await this.ComprobanteService.postComprobante({
                         idComprobante: data.idVenta,
                         dniCliente: `${this.dni}`,
                         nombreCliente: this.nombre,
                         fecha: data.fecha,
-                        totalVenta: total,
+                        totalVenta: this.total,
                     });
-                    const products = JSON.parse(JSON.stringify(this.productosSelected));
+                    const products = JSON.parse(
+                        JSON.stringify(this.productosSelected)
+                    );
                     for (let i = 0; i < products.length; i++) {
                         await this.DetalleService.createDetalles({
                             cantidad: products[i].cantidad,
@@ -252,7 +303,7 @@ export default {
                         });
                     }
                     await this.loadProductos();
-                    this.$emit('createdVenta', data);
+                    this.$emit("createdVenta", data);
                 }
             }
         },
@@ -293,7 +344,6 @@ export default {
             }
         },
         add(item) {
-            console.log(this.productosSelected);
             let valid = [];
             const elemento = {
                 idProducto: item.idProducto,
@@ -330,7 +380,6 @@ export default {
         },
         async remove(el) {
             const cut = this.productosSelected.filter((item) => item !== el);
-            console.log(cut);
             this.productosSelected = cut;
         },
         async search(name) {
@@ -350,7 +399,7 @@ export default {
             }
         },
     },
-    async mounted() {
+    async beforeMount() {
         await this.loadProductos();
     },
 };
@@ -366,7 +415,7 @@ export default {
 /* Chrome, Edge, and Safari */
 .bordes::-webkit-scrollbar {
     border-radius: 15px;
-    width: 10px;
+    width: 13px;
 }
 
 .bordes::-webkit-scrollbar-track {

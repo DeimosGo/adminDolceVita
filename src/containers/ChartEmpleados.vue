@@ -49,6 +49,9 @@ export default {
                 xaxis: {
                     categories: [],
                 },
+                theme: {
+                    palette: 'palette4',
+                },
             },
         };
     },

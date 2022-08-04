@@ -2,8 +2,12 @@
 <div class="w-full flex justify-end">
     <div @click="editar" v-if="showEditar" class="absolute w-full top-0 right-0 bottom-0 h-100v bg-gray-900 opacity-20 z-10 cursor-pointer"></div>
     <div @click="eliminar" v-if="showEliminar" class="absolute w-full top-0 right-0 bottom-0 h-100v bg-gray-900 opacity-20 z-10 cursor-pointer"></div>
-    <CardEditCategoria v-if="showEditar" :categoria="categoria" @editar="editar" @edited="edited" />
-    <CardDeleteElement @deleted="deleted" @eliminar="eliminar" v-if="showEliminar" />
+    <transition name="editCard">
+        <CardEditCategoria v-if="showEditar" :categoria="categoria" @editar="editar" @edited="edited" />
+    </transition>
+    <transition name="deleteCard">
+        <CardDeleteElement @deleted="deleted" @eliminar="eliminar" v-if="showEliminar" />
+    </transition>
     <div class="w-full flex flex-col overflow-scroll max-h-65v scrollTable lg:overflow-auto space-y-4 lg:w-10/12 lg:mt-0 mt-7">
         <table class="w-full text-center min-w-580">
             <tr
@@ -91,6 +95,65 @@ export default {
 };
 </script>
 <style scoped>
+
+.deleteCard-enter-active{
+    animation: enterDelete 250ms;
+}
+
+@keyframes enterDelete {
+    0%{
+        transform: scale(0.1);
+    }
+
+    80%{
+        transform: scale(1.1);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
+
+.deleteCard-leave-active{
+    animation: leaveDelete 200ms;
+}
+
+@keyframes leaveDelete {
+    from{
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    to{
+        opacity: 0;
+        transform: scale(0.3);
+    }
+}
+
+.editCard-leave-active{
+    animation: editOut 250ms;
+}
+
+@keyframes editOut {
+    from{
+        opacity: 1;
+    }
+    to{
+        top: 200px;
+        opacity: 0;
+    }
+}
+
+
+.editCard-enter-active {
+    animation: editIn 250ms;
+}
+
+@keyframes editIn {
+    from{
+        opacity: 0.4;
+        top: 200px;
+    }
+}
 
 .scrollTable {
     scrollbar-width: auto;

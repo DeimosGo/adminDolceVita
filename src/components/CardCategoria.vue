@@ -5,21 +5,22 @@
         <transition name="error">
             <div
                 v-show="errorShow"
-                class="w-48 h-14 border-cerise-800 text-cerise-700 absolute top-6 right-0 left-0 m-auto bg-cerise-200 rounded-lg flex items-center justify-center border-2"
+                class="w-48 h-14 border-cerise-800 text-cerise-700 absolute top-6 right-0 left-0 m-auto bg-cerise-200 rounded-lg flex
+                items-center justify-center border-2"
             >
                 <p>{{ message }}</p>
             </div>
         </transition>
 
         <h2
-            class="w-full items-center justify-center text-center text-2xl font-semibold text-azureMarine-800"
+            class="w-full items-center justify-center text-center text-2xl font-medium text-azureMarine-800"
         >
             Nueva Categoria
         </h2>
         <div
-            class="text-gray-600 font-semibold flex flex-col items-start space-y-1"
+            class="text-gray-600 font-medium flex flex-col items-start space-y-1"
         >
-            <label class="text-lg font-semibold" for="nombre"
+            <label class="text-lg font-medium" for="nombre"
                 >Nombre de la categoria</label
             >
             <input
@@ -33,9 +34,9 @@
             />
         </div>
         <div
-            class="text-gray-600 font-semibold flex flex-col items-start space-y-1"
+            class="text-gray-600 font-medium flex flex-col items-start space-y-1"
         >
-            <label class="text-lg font-semibold" for="descripcion"
+            <label class="text-lg font-medium" for="descripcion"
                 >Descripcion de la categoria</label
             >
             <textarea

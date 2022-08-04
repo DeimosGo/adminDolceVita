@@ -20,25 +20,9 @@
                     <i class="fa-solid fa-filter"></i>
                 </button>
             </div>
-            <div
-                v-show="showAll"
-                :class="animacion"
-                class="absolute top-10 right-0 pl-6 w-72 flex flex-col h-fit p-2 items-start border rounded-lg
-                border-gray-300 text-azureMarine-800 bg-white-0 z-10 shadow-gray-300 shadow-sm"
-            >
-                <h3 class="text-lg pb-1">Categorias</h3>
-                <div class="pl-3 flex flex-col space-y-2 items-start">
-                    <FiltroButton
-                        v-for="item in itemsCategoria"
-                        :item="item"
-                        :key="item.idCategoria"
-                        v-bind="$attrs"
-                    />
-                </div>
-            </div>
             <transition name="flitros">
-                <div v-if="showFilters"
-                class="absolute w-56 lg:w-96 top-8 shadow-md shadow-gray-300 flex flex-col bg-white-0 p-2 justify-center
+                <div v-show="showFilters"
+                class="absolute w-56 lg:w-80 top-8 shadow-md shadow-gray-300 flex flex-col bg-white-0 p-2 justify-center
                 space-y-4 z-40 border border-gray-200 rounded-lg"
             >
                 <div class="flex space-x-2">
@@ -63,9 +47,9 @@
                     >
                         Empleados
                     </p>
-                    <ul class="pt-2 pl-4 flex flex-col space-y-2">
-                        <li v-for="item in empleados" :key="item.idEmpleado" class="cursor-pointer w-fit">
-                            <button>{{item.nombres[0].toUpperCase()+item.nombres.substring(1).toLowerCase()}}</button>
+                    <ul class="pt-2 grid grid-cols-2 place-content-center justify-center items-center">
+                        <li v-for="item in empleados" :key="item.idEmpleado" class="cursor-pointer w-fit place-self-center">
+                        <FiltroVentaButton v-bind="$attrs" :key="item.idEmpleado" :item="item" />
                         </li>
                     </ul>
                 </div>
@@ -79,9 +63,10 @@ import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 import "vue-datepicker-next/locale/es.es";
 import Empleado from "@/services/EmpleadosService";
+import FiltroVentaButton from "@/components/FiltroVentaButton.vue";
 export default {
     name: "FilterVentas",
-    components: { DatePicker },
+    components: { DatePicker, FiltroVentaButton },
     data() {
         return {
             date: [],

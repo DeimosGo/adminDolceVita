@@ -89,13 +89,11 @@ export default {
                             password: this.pass,
                         },
                     });
-                    if (respuesta.status == 200) {
-                        console.log(respuesta);
+                    if (respuesta.status === 200) {
                         const data = await respuesta.data.token;
                         const rol = await respuesta.data.usuario.idRol;
                         const idEmpleado = await respuesta.data.usuario.idEmpleado;
                         this.valid = "";
-                        console.log(rol);
                         sessionStorage.setItem("sesion", true);
                         sessionStorage.setItem("token", data);
                         sessionStorage.setItem("rol", rol);
@@ -109,7 +107,13 @@ export default {
                         this.error = true;
                         setTimeout(() =>{this.error = false;},3000)
                         console.clear();
-                    } else {
+                    }else if (error.response.status === 403) {
+                        this.valid = "Usuario deshabilitado";
+                        this.error = true;
+                        setTimeout(() =>{this.error = false;},3000)
+                        console.clear();
+                    }
+                    else {
                         this.valid = "Conexion no establecida";
                         this.error = true;
                         setTimeout(() =>{this.error = false;},3000)

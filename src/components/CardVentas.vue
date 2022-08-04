@@ -1,7 +1,7 @@
 <template>
     <div id="printContent" class="w-80 h-50v shadow-2xl flex flex-col py-7 px-2 justify-between rounded-lg
     absolute top-0 left-0 right-0 bottom-0 m-auto z-30 bg-white-0">
-    <h3 class="w-full items-center justify-center text-center text-2xl font-semibold text-azureMarine-700">
+    <h3 class="w-full items-center justify-center text-center text-2xl font-medium text-azureMarine-700">
         Venta del {{sell.fecha}}
     </h3>
     <p class="w-full items-center justify-center text-center text-lg font-medium text-gray-700">
@@ -23,7 +23,15 @@
             <p class="w-1/4 text-center">{{item.precio}}</p>
         </ul>
     </div>
-    <div class="w-full flex justify-between font-medium text-xl">
+    <div class="w-full flex justify-between font-medium text-lg">
+        <p class="text-azureMarine-700">Subtotal</p>
+        <p class="text-gray-600">{{sell.subtotal}}</p>
+    </div>
+    <div class="w-full flex justify-between font-medium text-lg">
+        <p class="text-azureMarine-700">IGV</p>
+        <p class="text-gray-600">{{igv.toFixed(2)}}</p>
+    </div>
+    <div class="w-full flex justify-between font-medium text-lg">
         <p class="text-azureMarine-700">Total</p>
         <p class="text-gray-600">{{sell.precio_total}}</p>
     </div>
@@ -40,6 +48,11 @@ export default {
     name: 'CardVentas',
     props:{
         venta: Object,
+    },
+    computed:{
+        igv() {
+            return this.sell.precio_total - this.sell.subtotal;
+        }
     },
     data(){
         return {
@@ -58,7 +71,7 @@ export default {
             this.detalles = result.data;
         }
     },
-    async mounted(){
+    async beforeMount(){
         await this.loadItems();
     }
 }

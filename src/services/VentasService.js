@@ -63,6 +63,21 @@ class Venta {
         }
     }
 
+    async getEmpleados(id) {
+        try {
+            const respuesta = await axios.get(
+                `${this.url}/empleado/${id}/`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    },
+                }
+            );
+            return respuesta;
+        } catch (error) {
+            return error;
+        }
+    }
+
     async getVentasChart() {
         try {
             const respuesta = await axios.get(
@@ -80,7 +95,6 @@ class Venta {
 
     async getVentasFecha(fechaIn, fechOut) {
         const body = {dateIn: fechaIn, dateOut: fechOut};
-        console.log(body);
         try {
             const respuesta = await axios.post(
                 `${this.url}/date`, body, {
@@ -89,10 +103,8 @@ class Venta {
                     },
                 }
             );
-            console.log(respuesta);
             return respuesta;
         } catch (error) {
-            console.error(error);
             return error;
         }
     }

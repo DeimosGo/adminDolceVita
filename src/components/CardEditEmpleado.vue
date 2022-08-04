@@ -194,7 +194,7 @@ export default {
             ).toDate();
             this.idRol = this.empleado.idRol;
             const index = this.roles.findIndex(
-                (item) => (item.idRol = this.idRol)
+                (item) => (item.idRol === this.idRol)
             );
             this.rolSelected = this.roles[index].nombreRol;
         },
@@ -211,6 +211,8 @@ export default {
             return result;
         },
         async editEmpleado() {
+            // eslint-disable-next-line no-debugger
+            debugger
             const fecha = moment(this.date).format("YYYY-MM-DD");
             const modelo = {
                 nombres: "",
@@ -247,13 +249,22 @@ export default {
                 replace.push(this.password);
                 claves = Object.keys(modelo);
             }
+            if (objetoSend.password) {
+                    if (this.password.length > 0 && this.password.length < 12) {
+                        this.errorShow = !this.errorShow;
+                        this.message = "La contraseña debe tener al menos 12 caracteres";
+                        setTimeout(() => {
+                            this.errorShow = !this.errorShow;
+                        }, 2000);
+                    }
+            }
             for (let i = 0; i < claves.length; i++) {
                 let clave = claves[i];
                 if (replace[i] !== old[i]) {
                     objetoSend[clave] = replace[i];
                 }
             }
-            if (Object.keys(objetoSend).length === 0) {
+            if (Object.keys(objetoSend).length <= 0) {
                 this.message = "No se han detectado cambios";
                 this.errorShow = !this.errorShow;
                 setTimeout(() => {
@@ -284,14 +295,6 @@ export default {
                 setTimeout(() => {
                     this.errorShow = !this.errorShow;
                 }, 2000);
-            }else if (objetoSend.password) {
-                    if (this.password.length > 0 && this.password.length < 12) {
-                        this.errorShow = !this.errorShow;
-                        this.message = "La contraseña debe tener al menos 12 caracteres";
-                        setTimeout(() => {
-                            this.errorShow = !this.errorShow;
-                        }, 2000);
-                    }
             }else if(objetoSend.email){
                     if (!this.testEmail()){
                         this.errorShow = !this.errorShow;

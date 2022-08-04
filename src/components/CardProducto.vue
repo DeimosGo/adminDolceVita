@@ -176,14 +176,8 @@ export default {
             this.categories = cats;
         },
         async showCategories() {
-            if (this.listar === false) {
-                await this.getCategories();
-                this.listar = true;
-                this.showCats = true;
-            }else{
-                this.listar = false
-                this.showCats = false;
-            }
+            this.listar = !this.listar;
+            this.showCats = !this.showCats;
         },
         async createProduct() {
             console.log(this.descripcionProducto);
@@ -232,6 +226,9 @@ export default {
             }
         },
     },
+    beforeMount(){
+        this.getCategories();
+    }
 };
 </script>
 <style scoped>

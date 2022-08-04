@@ -20,8 +20,12 @@
         <transition name="showEliminar">
             <CardDeleteElement v-if="deleteCard" @eliminar="eliminar" @deleted="deleted" />
         </transition>
-        <CardEmpleado @showCards="showCards" v-if="showCreate" @created="created" />
-        <CardEditEmpleado v-if="showEdit" @showCardsEdits="showCardsEdits" @editEliminar="editEliminar" @edited="edited" :empleado="empleado" />
+        <transition name="fade">
+            <CardEmpleado @showCards="showCards" v-if="showCreate" @created="created" />
+        </transition>
+        <transition name="editCard">
+            <CardEditEmpleado v-if="showEdit" @showCardsEdits="showCardsEdits" @editEliminar="editEliminar" @edited="edited" :empleado="empleado" />
+        </transition>
             <transition>
                 <NotFoundSearch v-if="found" />
             </transition>
@@ -47,12 +51,6 @@
             justify-center mt-10 place-items-center lg:place-items-start lg:w-5/6 lg:mt-10 grid xl:grid-cols-3
             lg:grid-cols-2 md:grid-cols-2 gap-x-4 gap-y-12"
         >
-            <EmpleadoRow
-                @showCardsEdits="showCardsEdits"
-                v-for="item in empleados"
-                :key="item.idEmpleado"
-                :empleado="item"
-            />
             <EmpleadoRow
                 @showCardsEdits="showCardsEdits"
                 v-for="item in empleados"
@@ -207,6 +205,63 @@ export default {
 };
 </script>
 <style scoped>
+.editCard-leave-active{
+    animation: editOut 250ms;
+}
+
+@keyframes editOut {
+    from{
+        opacity: 1;
+    }
+    to{
+        top: 200px;
+        opacity: 0;
+    }
+}
+
+
+.editCard-enter-active {
+    animation: editIn 250ms;
+}
+
+@keyframes editIn {
+    from{
+        opacity: 0.4;
+        top: 200px;
+    }
+}
+
+.fade-enter-active {
+    animation: createIn 300ms;
+}
+
+@keyframes createIn {
+    from {
+        top: -800px;
+        opacity: 0.8;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+.fade-leave-active {
+    animation: createOut 300ms;
+}
+
+@keyframes createOut {
+    from {
+        top: 0;
+        opacity: 1;
+    }
+    to {
+        top: -800px;
+        opacity: 0;
+    }
+}
+
+
 .showEliminar-enter-active{
     animation: enterDelete 250ms;
 }

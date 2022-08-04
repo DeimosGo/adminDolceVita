@@ -319,6 +319,36 @@ export default {
 };
 </script>
 <style scoped>
+.fade-enter-active {
+    animation: createIn 300ms;
+}
+
+@keyframes createIn {
+    from {
+        top: -800px;
+        opacity: 0.8;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+.fade-leave-active {
+    animation: createOut 300ms;
+}
+
+@keyframes createOut {
+    from {
+        top: 0;
+        opacity: 1;
+    }
+    to {
+        top: -800px;
+        opacity: 0;
+    }
+}
+
 .componentCreated-leave-active {
     animation: outCard 1000ms;
 }

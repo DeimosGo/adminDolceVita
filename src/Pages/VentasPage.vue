@@ -5,96 +5,103 @@
     >
         <LoadingWheel />
     </div>
-    <div
-        v-if="!loading"
-        class="absolute pt-16 w-full lg:pr-16 h-100v overflow-hidden flex place-content-center flex-col lg:items-end justify-start"
-    >
-        <transition name="cardNew">
-            <CardCreateVenta
-                v-if="newVenta"
-                @quitarTodo="quitarTodo"
-                @createdVenta="createdVenta"
-            />
-        </transition>
-        <transition name="createdElement">
-            <CreatedElement v-if="created" :message="mensaje" />
-        </transition>
-        <transition name="showEliminar">
-            <CardDeleteElement
-                v-if="showEliminarVenta"
-                @eliminar="quitarTodo"
-                @deleted="deleted"
-            />
-        </transition>
+    <transition name="showElements">
         <div
-            @click="quitarTodo"
-            v-if="card"
-            class="absolute w-screen top-0 right-0 bottom-0 h-100v bg-gray-500 opacity-20 z-20 cursor-pointer"
-        ></div>
-        <div v-if="comprobant" class="w-0 h-0 overflow-hidden">
-            <div
-                class="w-screen h-fit flex flex-col justify-center items-center"
-                id="printContent"
-            >
-                <ComprobanteCard
-                    :venta="venta"
-                    :detalles="detalles"
-                    :comprobante="comp"
+            v-if="!loading"
+            class="absolute pt-16 w-full lg:pr-16 h-100v overflow-hidden flex place-content-center flex-col lg:items-end justify-start"
+        >
+            <transition name="cardNew">
+                <CardCreateVenta
+                    v-if="newVenta"
+                    @quitarTodo="quitarTodo"
+                    @createdVenta="createdVenta"
                 />
-            </div>
-        </div>
-        <transition name="cardDetails">
-            <CardVentas
-                v-if="cardVentas"
-                @quitarTodo="quitarTodo"
-                :venta="venta"
-            />
-        </transition>
-        <div
-            class="lg:w-4/5 justify-between flex flex-col lg:flex-row space-x-3 pt-2 lg:pt-16 h-fit"
-        >
-            <h2
-                class="w-full lg:w-1/3 lg:text-left text-center lg:pt-0 text-card text-3xl font-bold"
-            >
-                2 Ventas
-            </h2>
-            <div class="justify-center flex space-x-3">
-                <FIlterVentas @nuevaVenta="nuevaVenta" @filtrarPorRango="filtrarPorRango" />
-                <ReiniciarFiltros @recargar="loadDatos" />
-            </div>
-        </div>
-        <section
-            id="table"
-            class="flex flex-col items-start space-y-3 overflow-scroll lg:overflow-auto justify-center lg:items-end w-full h-5/6"
-        >
-            <div v-if="!loading"
-                class="flex flex-col items-center space-y-3 min-w-780 justify-start lg:items-end w-full h-5/6"
-            >
+            </transition>
+            <transition name="createdElement">
+                <CreatedElement v-if="created" :message="mensaje" />
+            </transition>
+            <transition name="showEliminar">
+                <CardDeleteElement
+                    v-if="showEliminarVenta"
+                    @eliminar="quitarTodo"
+                    @deleted="deleted"
+                />
+            </transition>
+            <div
+                @click="quitarTodo"
+                v-if="card"
+                class="absolute w-screen top-0 right-0 bottom-0 h-100v bg-gray-500 opacity-20 z-20 cursor-pointer"
+            ></div>
+            <div v-if="comprobant" class="w-0 h-0 overflow-hidden">
                 <div
-                    class="lg:w-4/5 w-11/12 flex justify-center rounded-full bg-azureMarine-600"
+                    class="w-screen h-fit flex flex-col justify-center items-center"
+                    id="printContent"
                 >
-                    <ul
-                        class="w-full flex justify-between lg:px-8 px-2 py-2 text-white-0"
-                    >
-                        <li class="w-1/4 text-center">Fecha</li>
-                        <li class="w-1/4 text-center">Total</li>
-                        <li class="w-1/4 text-center">Vendedor</li>
-                        <li class="w-1/4 text-center">Acciones</li>
-                    </ul>
-                </div>
-                <div
-                    class="lg:w-4/5 w-11/12 flex justify-center rounded-full flex-col space-y-2"
-                >
-                    <VentaRow
-                        v-for="item in ventas"
-                        @showDetails="showDetails"
-                        @printComprobante="printComprobante"
-                        @deleteProduct="deleteProduct"
-                        :key="item.idVenta"
-                        :venta="item"
+                    <ComprobanteCard
+                        :venta="venta"
+                        :detalles="detalles"
+                        :comprobante="comp"
                     />
                 </div>
+            </div>
+            <transition name="cardDetails">
+                <CardVentas
+                    v-if="cardVentas"
+                    @quitarTodo="quitarTodo"
+                    :venta="venta"
+                />
+            </transition>
+            <div
+                class="lg:w-4/5 justify-between flex flex-col lg:flex-row space-x-3 pt-2 lg:pt-16 h-fit"
+            >
+                <h2
+                    class="w-full lg:w-1/3 lg:text-left text-center lg:pt-0 text-card text-3xl font-bold"
+                >
+                    {{totalVentas}} Ventas
+                </h2>
+                <div class="justify-center flex space-x-3">
+                    <FIlterVentas
+                        @nuevaVenta="nuevaVenta"
+                        @filtrarPorRango="filtrarPorRango"
+                        @quitar="quitar" @filtrar="filtrar"
+                    />
+                    <ReiniciarFiltros @recargar="loadDatos" />
+                </div>
+            </div>
+            <section
+                id="table"
+                class="flex flex-col items-start space-y-3 overflow-scroll scrollTable lg:overflow-scroll justify-center lg:items-end w-full h-5/6
+                max-h-65v lg:mt-0 mt-7"
+            >
                 <div
+                    v-if="!loading"
+                    class="flex flex-col items-center space-y-3 min-w-780 justify-start lg:items-end w-full h-5/6"
+                >
+                    <div
+                        class="lg:w-4/5 w-11/12 flex justify-center rounded-full bg-azureMarine-600"
+                    >
+                        <ul
+                            class="w-full flex justify-between lg:px-8 px-2 py-2 text-white-0"
+                        >
+                            <li class="w-1/4 text-center">Fecha</li>
+                            <li class="w-1/4 text-center">Total</li>
+                            <li class="w-1/4 text-center">Vendedor</li>
+                            <li class="w-1/4 text-center">Acciones</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="lg:w-4/5 w-11/12 flex justify-center rounded-full flex-col space-y-2"
+                    >
+                        <VentaRow
+                            v-for="item in ventas"
+                            @showDetails="showDetails"
+                            @printComprobante="printComprobante"
+                            @deleteProduct="deleteProduct"
+                            :key="item.idVenta"
+                            :venta="item"
+                        />
+                    </div>
+                    <div
                         v-if="noBuscar"
                         class="lg:w-4/5 w-11/12 flex space-x-3 text-lg justify-center place-items-center"
                     >
@@ -112,13 +119,15 @@
                             ></i>
                         </button>
                     </div>
-            </div>
-        </section>
-    </div>
+                </div>
+            </section>
+        </div>
+    </transition>
 </template>
 <script>
 import FIlterVentas from "@/containers/FIlterVentas.vue";
 import ReiniciarFiltros from "@/components/ReiniciarFiltros.vue";
+import LoadingWheel from "@/components/LoadingWheel.vue";
 import Venta from "@/services/VentasService";
 import VentaRow from "@/components/VentaRow.vue";
 import CardVentas from "@/components/CardVentas.vue";
@@ -148,15 +157,59 @@ export default {
             newVenta: false,
             comp: {},
             comprobant: false,
-            loading: false,
+            loading: true,
             created: false,
             mensaje: "",
             showEliminarVenta: false,
             id: 0,
             noBuscar: true,
+            totalVentas: 0,
+            initFilter:false,
         };
     },
     methods: {
+        async filtrar(value) {
+            const response = await this.VentasService.getEmpleados(value);
+            const datos = response.data;
+            if (datos.length <= 0) {
+                this.found = true;
+                setTimeout(() => {
+                    this.found = false;
+                }, 3200);
+            } else {
+                if (this.initFilter === false) {
+                    this.ventas = datos;
+                    this.initFilter = !this.initFilter;
+                    this.noBuscar = false;
+                } else {
+                    datos.forEach((element) => {
+                        this.ventas.push(element);
+                    });
+                }
+            }
+            setTimeout(() => {
+                this.loading = false;
+                console.clear();
+            }, 500);
+        },
+        async quitar(value) {
+            const valor = Number.parseInt(value);
+            let ventasSinCat = [];
+            console.log(valor)
+            let data = JSON.parse(JSON.stringify(this.ventas));
+            data.forEach((item) => {
+                if (item.id_empleado !== valor) {
+                    console.log(item.id_empleado);
+                    ventasSinCat.push(item);
+                }
+            });
+            this.ventas = ventasSinCat;
+            if (ventasSinCat.length <= 0) {
+                this.initFilter = false;
+                this.noBuscar = true;
+                this.loadDatos();
+            }
+        },
         async deleted() {
             const data = await this.VentasService.deleteVenta(this.id);
             if (data.status == 200) {
@@ -174,7 +227,7 @@ export default {
             const respuesta = await this.VentasService.getVentasCount();
             if (respuesta.status == 200) {
                 const data = await respuesta.data;
-                this.cantidad = data.cantidad;
+                this.totalVentas = data.cantidad;
                 const cantidad = data.cantidad / 10;
                 if (cantidad % 2 !== 0) {
                     this.paginas = Math.floor(cantidad) + 1;
@@ -190,8 +243,8 @@ export default {
             this.created = true;
             item = {
                 ...item,
-                precio_total:item.precioTotal,
-            }
+                precio_total: item.precioTotal,
+            };
             await this.printComprobante(item);
             setTimeout(() => {
                 this.created = false;
@@ -212,18 +265,24 @@ export default {
             this.newVenta = false;
             this.showEliminarVenta = false;
         },
-        async filtrarPorRango(fechas){
+        async filtrarPorRango(fechas) {
             const fechaIn = moment(fechas[0]).format("YYYY-MM-DD");
             const fechaOut = moment(fechas[1]).format("YYYY-MM-DD");
             this.loading = !this.loading;
-            const res = await this.VentasService.getVentasFecha(fechaIn, fechaOut);
-            console.log(res);
+            const res = await this.VentasService.getVentasFecha(
+                fechaIn,
+                fechaOut
+            );
             this.ventas = await res.data;
             this.loading = !this.loading;
         },
         async loadDatos() {
-            this.loading = !this.loading;
-            const res = await this.VentasService.getVentasRaw(this.limit, this.offset);
+            this.loading = true;
+            await this.countVentas();
+            const res = await this.VentasService.getVentasRaw(
+                this.limit,
+                this.offset
+            );
             this.ventas = res.data;
             this.loading = !this.loading;
         },
@@ -266,21 +325,60 @@ export default {
         },
     },
     components: {
-    FIlterVentas,
-    ReiniciarFiltros,
-    VentaRow,
-    CardVentas,
-    ComprobanteCard,
-    CardCreateVenta,
-    CardDeleteElement,
-    CreatedElement
-},
-    async mounted() {
+        LoadingWheel,
+        FIlterVentas,
+        ReiniciarFiltros,
+        VentaRow,
+        CardVentas,
+        ComprobanteCard,
+        CardCreateVenta,
+        CardDeleteElement,
+        CreatedElement,
+    },
+    async beforeMount() {
         this.loadDatos();
     },
 };
 </script>
 <style scoped>
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.scrollTable {
+    scrollbar-width: auto;
+    scrollbar-color: #d4d4d8 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+.scrollTable::-webkit-scrollbar {
+    border-radius: 15px;
+    width: 10px;
+}
+
+.scrollTable::-webkit-scrollbar-track {
+    border-radius: 15px;
+    background: #ffffff;
+}
+
+.scrollTable::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: #d4d4d8;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+}
+
+
+.showElements-enter-active{
+    animation: showVentas 300ms;
+}
+
+@keyframes showVentas {
+    0%{
+        transform: scale(0.1);
+        opacity: 0.1;
+    }
+}
+
 .showEliminar-enter-active {
     animation: enterDelete 250ms;
 }
