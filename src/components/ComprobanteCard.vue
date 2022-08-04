@@ -120,7 +120,6 @@ export default {
     mounted(){
         this.sold.precio_total
         this.igv = Number((this.sold.precio_total * 0.18)).toFixed(2);
-        console.log(this.igv);
     }
 };
 </script>

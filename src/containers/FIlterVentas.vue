@@ -23,7 +23,7 @@
             <transition name="flitros">
                 <div v-show="showFilters"
                 class="absolute w-56 lg:w-80 top-8 shadow-md shadow-gray-300 flex flex-col bg-white-0 p-2 justify-center
-                space-y-4 z-40 border border-gray-200 rounded-lg"
+                space-y-4 z-50 border border-gray-200 rounded-lg"
             >
                 <div class="flex space-x-2">
                     <date-picker
@@ -77,7 +77,6 @@ export default {
     },
     methods:{
         filtroFecha(){
-            console.log(this.date);
             if (this.date.length === 2) {
                 this.$emit('filtrarPorRango', this.date);
             }
@@ -107,7 +106,7 @@ export default {
         z-index: 0;
     }
     100%{
-        z-index: 0;
+        z-index: 10;
     }
 }
 
@@ -117,7 +116,7 @@ export default {
 
 @keyframes filterOut {
     0%{
-        z-index: 0;
+        z-index: 10;
     }
     100%{
         z-index: 0;

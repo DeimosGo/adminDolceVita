@@ -208,7 +208,18 @@ export default {
             let fechas = [];
             moment.locale("es");
             if (result.status == 200) {
-                const data = result.data.reverse();
+                let data = result.data;
+                data = data.reverse();
+                const allDatos = data.sort(function (a, b) {
+                    return Number(a.mes) - Number(b.mes);
+                });
+                let suma = 0;
+                allDatos.forEach((element) => {
+                    suma += Number(element.total);
+                    datos.push(Number(element.cantidad));
+                    let mes = moment(element.mes, "MM").format("MMMM");
+                    fechas.push(mes[0].toUpperCase() + mes.substring(1));
+                });
                 const orden = data.sort(function (a, b) {
                     return Number(a.total) - Number(b.total);
                 });
@@ -223,17 +234,13 @@ export default {
                 let monthLess = moment(orden[0].mes, "MM").format("MMMM");
                 this.mesLess =
                     monthLess[0].toUpperCase() + monthLess.substring(1);
-                let suma = 0;
-                data.forEach((element) => {
-                    suma += Number(element.total);
-                    datos.push(Number(element.cantidad));
-                    let mes = moment(element.mes, "MM").format("MMMM");
-                    fechas.push(mes[0].toUpperCase() + mes.substring(1));
-                });
                 this.ingresos = suma;
                 this.series[0].data = datos;
                 this.chartOptions.labels = fechas;
                 this.loaded = true;
+                data.sort(function (a, b) {
+                    return Number(a.mes) - Number(b.mes);
+                });
                 const ingresosAnterior = Number(
                     data[data.length - 2].total
                 );
@@ -254,8 +261,8 @@ export default {
             }
         },
     },
-    async beforeMount() {
-        await this.loadInfo();
+    mounted() {
+        this.loadInfo();
     },
 };
 </script>

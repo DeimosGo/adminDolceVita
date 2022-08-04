@@ -26,12 +26,10 @@ export default {
         search(e) {
             if (this.clicked) {
                 this.clases = ["text-gray-900 text-md"];
-                console.log(e.target.value);
                 this.$emit("quitar", e.target.value);
                 this.clicked = !this.clicked;
             } else {
                 this.clases = ["text-md text- text-azure-900 font-bold"];
-                console.log(e.target.value);
                 this.$emit("filtrar", e.target.value);
                 this.clicked = !this.clicked;
             }

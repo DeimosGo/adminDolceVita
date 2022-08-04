@@ -180,7 +180,6 @@ export default {
             this.showCats = !this.showCats;
         },
         async createProduct() {
-            console.log(this.descripcionProducto);
             const data = {
                 nombreProducto: this.nombreProducto.toUpperCase(),
                 descripcionProducto: this.descripcionProducto.toUpperCase(),

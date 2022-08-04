@@ -50,6 +50,9 @@ export default {
             ],
             chartOptions: {
                 chart: {
+                    toolbar: {
+                        show: true,
+                    },
                     type: "area",
                     height: 350,
                     zoom: {
@@ -83,6 +86,9 @@ export default {
                     height: 350,
                     type: "radialBar",
                     offsetY: -10,
+                    toolbar: {
+                        show: true,
+                    },
                 },
                 plotOptions: {
                     radialBar: {
@@ -119,7 +125,7 @@ export default {
     methods: {
         async loadInfo() {
             const result = await this.VentasService.getVentasChart();
-            let fechaFormat = moment(this.fechaActual).format("YYYY-MM-DD");
+            const fechaFormat = moment(this.fechaActual).format("YYYY-MM-DD");
             this.chartOptions.chart.id = `ventasSemestre_${fechaFormat}`;
             let datos = [];
             let fechas = [];
@@ -146,8 +152,8 @@ export default {
             }
         },
     },
-    async beforeMount() {
-        await this.loadInfo();
-    },
-};
+    mounted(){
+        this.loadInfo();
+}
+}
 </script>

@@ -76,7 +76,7 @@ export default {
         statusLog: Boolean,
     },
     /* http://localhost:3000/api/v1/empleados/ */
-    emits: ["side"],
+    emits: ['side'],
     methods: {
         async access() {
             if (this.email.length !== 0 && this.pass.length !== 0) {
@@ -91,14 +91,19 @@ export default {
                     });
                     if (respuesta.status === 200) {
                         const data = await respuesta.data.token;
+                        console.log(respuesta.data.usuario);
                         const rol = await respuesta.data.usuario.idRol;
                         const idEmpleado = await respuesta.data.usuario.idEmpleado;
+                        const nombre = respuesta.data.usuario.nombres;
+                        const apellido = respuesta.data.usuario.apellidos;
                         this.valid = "";
                         sessionStorage.setItem("sesion", true);
                         sessionStorage.setItem("token", data);
                         sessionStorage.setItem("rol", rol);
                         sessionStorage.setItem("idEmpleado", idEmpleado);
-                        this.$emit("side");
+                        sessionStorage.setItem("nombre", nombre);
+                        sessionStorage.setItem("apellido", apellido);
+                        this.$emit('side');
                         router.push("/");
                     }
                 } catch (error) {
@@ -106,25 +111,21 @@ export default {
                         this.valid = "Correo o contraseña invalidos";
                         this.error = true;
                         setTimeout(() =>{this.error = false;},3000)
-                        console.clear();
                     }else if (error.response.status === 403) {
                         this.valid = "Usuario deshabilitado";
                         this.error = true;
                         setTimeout(() =>{this.error = false;},3000)
-                        console.clear();
                     }
                     else {
                         this.valid = "Conexion no establecida";
                         this.error = true;
                         setTimeout(() =>{this.error = false;},3000)
-                        console.clear();
                     }
                 }
             } else {
                 this.valid = "Faltan datos";
                 this.error = true;
-                setTimeout(() =>{this.error = false;},3000)
-                console.clear();
+                setTimeout(() =>{this.error = false;},3000);
             }
         },
     },

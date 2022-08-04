@@ -406,6 +406,9 @@ export default {
                 const orden = data.sort(function (a, b) {
                     return Number(a.total) - Number(b.total);
                 });
+                const allDatos = data.sort(function (a, b) {
+                    return Number(a.mes) - Number(b.mes);
+                });
                 this.ingresosMes = orden[orden.length - 1].total;
                 this.ingresosMesBajo = orden[0].total;
                 let monthMore = moment(
@@ -418,7 +421,7 @@ export default {
                 this.mesLess =
                     monthLess[0].toUpperCase() + monthLess.substring(1);
                 let suma = 0;
-                data.forEach((element) => {
+                allDatos.forEach((element) => {
                     suma += Number(element.total);
                     datos.push(Number(element.cantidad));
                     let mes = moment(element.mes, "MM").format("MMMM");
@@ -428,6 +431,9 @@ export default {
                 this.seriesVentas[0].data = datos;
                 this.chartOptionsVentas.labels = fechas;
                 this.loaded = true;
+                data.sort(function (a, b) {
+                    return Number(a.mes) - Number(b.mes);
+                });
                 const ingresosAnterior = Number(
                     data[data.length - 2].total
                 );

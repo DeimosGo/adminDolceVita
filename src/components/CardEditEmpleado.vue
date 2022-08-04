@@ -367,10 +367,6 @@ export default {
                 return false;
             }
         },
-        create() {
-            const validate = this.testEmail();
-            console.log(validate);
-        },
     },
     async mounted() {
         await this.getRoles();

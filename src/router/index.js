@@ -63,13 +63,18 @@ const router = createRouter({
     routes
 })
 
+
 router.beforeEach((to, from, next) => {
     if (to.matched.some(route => route.meta.requiresAuth)) {
         const sesion = sessionStorage.getItem("sesion");
+        const rol = Number(sessionStorage.getItem("rol"));
         if (!sesion) {
-            console.log(sesion);
             next('/login');
-        } else {
+        }
+        else if (rol === 2 && to.path !=='/ventas') {
+            next('/ventas');
+        }
+        else {
             next();
         }
     } else {

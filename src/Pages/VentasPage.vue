@@ -5,6 +5,9 @@
     >
         <LoadingWheel />
     </div>
+    <transition name="nfCard">
+        <NotFoundSearch v-if="found" />
+    </transition>
     <transition name="showElements">
         <div
             v-if="!loading"
@@ -57,21 +60,21 @@
                 <h2
                     class="w-full lg:w-1/3 lg:text-left text-center lg:pt-0 text-card text-3xl font-bold"
                 >
-                    {{totalVentas}} Ventas
+                    {{ totalVentas }} Ventas
                 </h2>
                 <div class="justify-center flex space-x-3">
                     <FIlterVentas
                         @nuevaVenta="nuevaVenta"
                         @filtrarPorRango="filtrarPorRango"
-                        @quitar="quitar" @filtrar="filtrar"
+                        @quitar="quitar"
+                        @filtrar="filtrar"
                     />
                     <ReiniciarFiltros @recargar="loadDatos" />
                 </div>
             </div>
             <section
                 id="table"
-                class="flex flex-col items-start space-y-3 overflow-scroll scrollTable justify-center lg:items-end w-full h-5/6
-                lg:mt-0 mt-7"
+                class="flex flex-col items-start space-y-3 overflow-scroll scrollTable justify-center lg:items-end w-full h-5/6 lg:mt-0 mt-7"
             >
                 <div
                     v-if="!loading"
@@ -89,7 +92,8 @@
                             <li class="w-1/4 text-center">Acciones</li>
                         </ul>
                     </div>
-                    <div v-if="loadFilter"
+                    <div
+                        v-if="loadFilter"
                         class="lg:w-4/5 w-11/12 flex justify-center rounded-full flex-col space-y-2"
                     >
                         <VentaRow
@@ -138,6 +142,7 @@ import CardCreateVenta from "@/components/CardCreateVenta.vue";
 import CardDeleteElement from "@/components/CardDeleteElement.vue";
 import CreatedElement from "@/components/CreatedElement.vue";
 import moment from "moment";
+import NotFoundSearch from "@/components/NotFoundSearch.vue";
 export default {
     name: "VentasPage",
     data() {
@@ -164,8 +169,9 @@ export default {
             id: 0,
             noBuscar: true,
             totalVentas: 0,
-            initFilter:false,
+            initFilter: false,
             loadFilter: true,
+            found: false,
         };
     },
     methods: {
@@ -173,8 +179,13 @@ export default {
             this.loadFilter = false;
             const response = await this.VentasService.getEmpleados(value);
             const datos = response.data;
-            console.log(datos);
-            if (datos.length <= 0) {
+            if (!datos) {
+                this.found = true;
+                setTimeout(() => {
+                    this.found = false;
+                }, 3200);
+                this.loadFilter = true;
+            } else if (datos.length <= 0) {
                 this.found = true;
                 setTimeout(() => {
                     this.found = false;
@@ -182,7 +193,6 @@ export default {
                 this.loadFilter = true;
             } else {
                 if (this.initFilter === false) {
-                    this.ventas = [];
                     this.ventas = datos;
                     this.initFilter = !this.initFilter;
                     this.noBuscar = false;
@@ -198,17 +208,19 @@ export default {
             }, 100);
         },
         async quitar(value) {
+            this.loadFilter = false;
             const valor = Number.parseInt(value);
             let ventasSinCat = [];
-            console.log(valor)
             let data = JSON.parse(JSON.stringify(this.ventas));
+            this.ventas = [];
+            console.log(data);
             data.forEach((item) => {
                 if (item.id_empleado !== valor) {
-                    console.log(item.id_empleado);
                     ventasSinCat.push(item);
                 }
             });
             this.ventas = ventasSinCat;
+            setTimeout(() => this.loadFilter = true,50);
             if (ventasSinCat.length <= 0) {
                 this.initFilter = false;
                 this.noBuscar = true;
@@ -278,11 +290,15 @@ export default {
                 fechaIn,
                 fechaOut
             );
-            this.ventas = await res.data;
+            this.ventas = res.data;
+            this.noBuscar = false;
             this.loading = !this.loading;
         },
         async loadDatos() {
             this.loading = true;
+            this.noBuscar = true;
+            this.initFilter = false;
+            this.loadFilter = true;
             await this.countVentas();
             const res = await this.VentasService.getVentasRaw(
                 this.limit,
@@ -330,23 +346,23 @@ export default {
         },
     },
     components: {
-        LoadingWheel,
-        FIlterVentas,
-        ReiniciarFiltros,
-        VentaRow,
-        CardVentas,
-        ComprobanteCard,
-        CardCreateVenta,
-        CardDeleteElement,
-        CreatedElement,
-    },
+    LoadingWheel,
+    FIlterVentas,
+    ReiniciarFiltros,
+    VentaRow,
+    CardVentas,
+    ComprobanteCard,
+    CardCreateVenta,
+    CardDeleteElement,
+    CreatedElement,
+    NotFoundSearch
+},
     async beforeMount() {
         this.loadDatos();
     },
 };
 </script>
 <style scoped>
-
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 .scrollTable {
@@ -372,13 +388,12 @@ export default {
     border: 3px solid #ffffff;
 }
 
-
-.showElements-enter-active{
+.showElements-enter-active {
     animation: showVentas 300ms;
 }
 
 @keyframes showVentas {
-    0%{
+    0% {
         transform: scale(0.1);
         opacity: 0.1;
     }

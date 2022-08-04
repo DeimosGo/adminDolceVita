@@ -172,7 +172,6 @@ export default {
                         filtro.push(element);
                     }
                 });
-                console.log(filtro);
                 this.productos = filtro;
                 this.cantidad -= 1;
                 await this.advice("Registro eliminado");
@@ -248,7 +247,6 @@ export default {
                 }
                 setTimeout(() => {
                     this.loading = false;
-                    console.clear();
                 }, 500);
             }
         },
@@ -340,19 +338,16 @@ export default {
             }
         },
         async filtro(value) {
-            console.log(value);
             const response = await this.ProductoService.getProductosCategoria(
                 value
             );
             const datos = response.data;
-            console.log(datos);
             if (datos.length <= 0) {
                 this.found = true;
                 setTimeout(() => {
                     this.found = false;
                 }, 3200);
             } else {
-                console.log(datos);
                 if (this.initFilter === false) {
                     this.productos = datos;
                     this.initFilter = !this.initFilter;
@@ -365,7 +360,6 @@ export default {
             }
             setTimeout(() => {
                 this.loading = false;
-                console.clear();
             }, 500);
         },
         async quitar(value) {
@@ -373,8 +367,6 @@ export default {
             let productosSinCat = [];
             let data = JSON.parse(JSON.stringify(this.productos));
             data.forEach((item) => {
-                console.log(typeof item.idCategoria);
-                console.log(typeof valor);
                 if (item.idCategoria !== valor) {
                     productosSinCat.push(item);
                 }

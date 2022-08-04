@@ -57,10 +57,14 @@
                             class="fa-solid fa-user-tie text-fontColor text-xl"
                         ></i>
                     </div>
-                    <p class="flex items-center font-bold">David Castillo</p>
+                    <p class="flex items-center font-bold">
+                        {{ nombre[0] + nombre.toLowerCase().substring(1) }}
+                        {{ apellido[0] + apellido.toLowerCase().substring(1) }}
+                    </p>
                 </button>
                 <div class="flex w-full flex-col text-sm font-semibold">
                     <router-link
+                        v-if="show"
                         @click="cargar"
                         ref="reportes"
                         to="/"
@@ -77,6 +81,7 @@
                         <p>Reportes y Graficas</p>
                     </router-link>
                     <router-link
+                        v-if="show"
                         @click="cargar"
                         ref="productos"
                         to="/productos"
@@ -110,6 +115,7 @@
                     </router-link>
                     <router-link
                         @click="cargar"
+                        v-if="show"
                         ref="categorias"
                         to="/categorias"
                         class="w-full pl-3 py-4 hover:bg-upBar"
@@ -125,6 +131,7 @@
                         <p>Categorias</p>
                     </router-link>
                     <router-link
+                        v-if="show"
                         @click="cargar"
                         ref="empleados"
                         to="/empleados"
@@ -164,6 +171,8 @@ export default {
     name: "AsideBar",
     data() {
         return {
+            nombre: '',
+            apellido: '',
             side: true,
             sideIn: false,
             claseProds: [
@@ -196,6 +205,14 @@ export default {
             this.$emit("side");
             router.push("login");
         },
+        verificar(){
+            const id = sessionStorage.getItem('rol');
+            if (id == 1) {
+                this.show = true
+            }else{
+                this.show = false;
+            }
+        },
         observer() {
             let body = document.querySelector("body");
             if (body.offsetWidth > 1023) {
@@ -216,6 +233,9 @@ export default {
         },
     },
     mounted() {
+        this.nombre = sessionStorage.getItem('nombre');
+        this.apellido = sessionStorage.getItem('apellido');
+        this.verificar();
         this.observer();
         window.addEventListener("resize", this.observerResize);
     },

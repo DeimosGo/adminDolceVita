@@ -137,7 +137,6 @@ export default {
     },
     methods: {
         async edited(item) {
-            console.log(item);
             let categorias = JSON.parse(JSON.stringify(this.categorias));
             for (let i = 0; i < categorias.length; i++) {
                 if (categorias[i].idCategoria == item.idCategoria) {
@@ -257,7 +256,6 @@ export default {
                 }
                 setTimeout(() => {
                     this.loading = false;
-                    console.clear();
                 }, 500);
             }
         },
@@ -272,8 +270,6 @@ export default {
             let productosSinCat = [];
             let data = JSON.parse(JSON.stringify(this.productos));
             data.forEach((item) => {
-                console.log(typeof item.idCategoria);
-                console.log(typeof valor);
                 if (item.idCategoria !== valor) {
                     productosSinCat.push(item);
                 }
