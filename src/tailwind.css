@@ -958,12 +958,12 @@ video {
   max-height: 70vh;
 }
 
-.max-h-65v {
-  max-height: 65vh;
-}
-
 .max-h-32 {
   max-height: 8rem;
+}
+
+.max-h-65v {
+  max-height: 65vh;
 }
 
 .w-full {
@@ -2911,14 +2911,6 @@ video {
 
   .lg\:overflow-auto {
     overflow: auto;
-  }
-
-  .lg\:overflow-visible {
-    overflow: visible;
-  }
-
-  .lg\:overflow-scroll {
-    overflow: scroll;
   }
 
   .lg\:rounded-none {
