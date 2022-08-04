@@ -70,8 +70,8 @@
             </div>
             <section
                 id="table"
-                class="flex flex-col items-start space-y-3 overflow-scroll scrollTable lg:overflow-scroll justify-center lg:items-end w-full h-5/6
-                max-h-65v lg:mt-0 mt-7"
+                class="flex flex-col items-start space-y-3 overflow-scroll scrollTable justify-center lg:items-end w-full h-5/6
+                lg:mt-0 mt-7"
             >
                 <div
                     v-if="!loading"
