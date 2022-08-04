@@ -89,7 +89,7 @@
                             <li class="w-1/4 text-center">Acciones</li>
                         </ul>
                     </div>
-                    <div
+                    <div v-if="loadFilter"
                         class="lg:w-4/5 w-11/12 flex justify-center rounded-full flex-col space-y-2"
                     >
                         <VentaRow
@@ -165,19 +165,24 @@ export default {
             noBuscar: true,
             totalVentas: 0,
             initFilter:false,
+            loadFilter: true,
         };
     },
     methods: {
         async filtrar(value) {
+            this.loadFilter = false;
             const response = await this.VentasService.getEmpleados(value);
             const datos = response.data;
+            console.log(datos);
             if (datos.length <= 0) {
                 this.found = true;
                 setTimeout(() => {
                     this.found = false;
                 }, 3200);
+                this.loadFilter = true;
             } else {
                 if (this.initFilter === false) {
+                    this.ventas = [];
                     this.ventas = datos;
                     this.initFilter = !this.initFilter;
                     this.noBuscar = false;
@@ -186,11 +191,11 @@ export default {
                         this.ventas.push(element);
                     });
                 }
+                this.loadFilter = true;
             }
             setTimeout(() => {
                 this.loading = false;
-                console.clear();
-            }, 500);
+            }, 100);
         },
         async quitar(value) {
             const valor = Number.parseInt(value);
