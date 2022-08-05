@@ -5,7 +5,7 @@
     >
         <transition name="alertError">
             <div v-if="error" class="absolute right-0 left-0 top-8 m-auto flex justify-center items-center w-11/12 lg:w-80 py-1 alert rounded-xl">
-                <p class="text-cerise-400 text-xl font-semibold">{{ valid }}</p>
+                <p class="text-white-0 text-xl font-semibold">{{ valid }}</p>
             </div>
         </transition>
 
@@ -145,7 +145,7 @@ export default {
     background-size: cover;
 }
 .alert{
-background-color: rgba(225, 0, 0, 0.5);
+background-color: rgba(225, 0, 0, 0.4);
 }
 .alertError-enter-active {
     animation: alertIn 200ms;
