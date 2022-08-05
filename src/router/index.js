@@ -10,7 +10,7 @@ const routes = [{
     },
     {
         path: '/productos',
-        name: 'about',
+        name: 'ProductosPage',
         component: () => import('./../Pages/ProductosPage.vue'),
         meta: {
             requiresAuth: true
@@ -50,7 +50,7 @@ const routes = [{
     },
     {
         path: '/:pathMatch(.*)*',
-        name: 'Not Found',
+        name: 'NotFound',
         component: ()=> import('./../Pages/NotFound.vue'),
         meta: {
             requiresAuth: true

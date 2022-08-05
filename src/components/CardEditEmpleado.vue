@@ -247,6 +247,12 @@ export default {
                 replace.push(this.password);
                 claves = Object.keys(modelo);
             }
+            for (let i = 0; i < claves.length; i++) {
+                let clave = claves[i];
+                if (replace[i] !== old[i]) {
+                    objetoSend[clave] = replace[i];
+                }
+            }
             if (objetoSend.password) {
                     if (this.password.length > 0 && this.password.length < 12) {
                         this.errorShow = !this.errorShow;
@@ -256,13 +262,7 @@ export default {
                         }, 2000);
                     }
             }
-            for (let i = 0; i < claves.length; i++) {
-                let clave = claves[i];
-                if (replace[i] !== old[i]) {
-                    objetoSend[clave] = replace[i];
-                }
-            }
-            if (Object.keys(objetoSend).length <= 0) {
+            else if (Object.keys(objetoSend).length <= 0) {
                 this.message = "No se han detectado cambios";
                 this.errorShow = !this.errorShow;
                 setTimeout(() => {
