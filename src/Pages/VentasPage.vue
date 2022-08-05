@@ -87,8 +87,18 @@
                             class="w-full flex justify-between lg:px-8 px-2 py-2 text-white-0"
                         >
                             <li class="w-1/4 text-center">Fecha</li>
-                            <li class="w-1/4 text-center">Total</li>
-                            <li class="w-1/4 text-center">Vendedor</li>
+                            <li class="w-1/4 text-center">
+                            <button @click="ordenarPrecio">
+                                Total
+                                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                            </button>
+                            </li>
+                            <li class="w-1/4 text-center">
+                                <button @click="ordenarNombre">
+                                    Vendedor
+                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
+                                </button>
+                                </li>
                             <li class="w-1/4 text-center">Acciones</li>
                         </ul>
                     </div>
@@ -170,11 +180,78 @@ export default {
             noBuscar: true,
             totalVentas: 0,
             initFilter: false,
+            initOrderTotal:false,
+            initOrderNombre:false,
             loadFilter: true,
             found: false,
         };
     },
     methods: {
+        ordenarNombre() {
+            this.loadFilter = false;
+            if (!this.initOrderNombre) {
+                const ventas = JSON.parse(JSON.stringify(this.ventas));
+                const ventasOrder = ventas.sort(function (a, b) {
+                    if (a.nombres > b.nombres) {
+                        return -1;
+                    }
+                    if (a.nombres < b.nombres) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.ventas = ventasOrder;
+                this.initOrderNombre = !this.initOrderNombre;
+                setTimeout(()=>this.loadFilter = true, 50);
+            } else {
+                const ventas = JSON.parse(JSON.stringify(this.ventas));
+                const ventasOrder = ventas.sort(function (a, b) {
+                    if (a.nombres < b.nombres) {
+                        return -1;
+                    }
+                    if (a.nombres > b.nombres) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.ventas = ventasOrder;
+                this.initOrderNombre = !this.initOrderNombre;
+                setTimeout(()=>this.loadFilter = true, 50);
+            }
+        },
+        ordenarPrecio() {
+            this.loadFilter = false;
+            if (!this.initOrderTotal) {
+                const ventas = JSON.parse(JSON.stringify(this.ventas));
+                const ventasOrder = ventas.sort(function (a, b) {
+                    if (Number(a.precio_total) > Number(b.precio_total)) {
+                        return -1;
+                    }
+                    if (Number(a.precio_total) < Number(b.precio_total)) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.ventas = ventasOrder;
+                this.initOrderTotal = !this.initOrderTotal;
+                setTimeout(()=>this.loadFilter = true, 50);
+            } else {
+                this.loadFilter = false;
+                const ventas = JSON.parse(JSON.stringify(this.ventas));
+                const ventasOrder = ventas.sort(function (a, b) {
+                    if (Number(a.precio_total) < Number(b.precio_total)) {
+                        return -1;
+                    }
+                    if (Number(a.precio_total) > Number(b.precio_total)) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                this.ventas = ventasOrder;
+                this.initOrderTotal = !this.initOrderTotal;
+                setTimeout(()=>this.loadFilter = true, 50);
+            }
+        },
         async filtrar(value) {
             this.loadFilter = false;
             const response = await this.VentasService.getEmpleados(value);

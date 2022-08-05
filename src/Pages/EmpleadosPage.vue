@@ -35,7 +35,7 @@
             >
                 {{cantidad}} Empleados
             </h2>
-            <div class="w-11/12 lg:w-1/3 flex justify-center items-center space-x-4 lg:mt-0 mt-2">
+            <div class="w-11/12 lg:w-2/5 flex justify-center items-center space-x-4 lg:mt-0 mt-2">
                 <button
                     @click="showCards"
                     class="flex space-x-1 items-center h-10 px-2 rounded-md border-2 text-submarine-600 border-submarine-600 transition-all duration-100 hover:scale-105"
