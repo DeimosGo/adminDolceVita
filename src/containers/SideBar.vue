@@ -163,15 +163,15 @@
                 </button>
             </div>
             <transition name="cardCerrar">
-                <div v-if="closeCard" class="z-50 rounded-lg border border-gray-300 shadow-lg p-2 text-center w-48 lg:w-72 bg-white-0
+                <div v-if="closeCard" class="z-50 rounded-lg border border-gray-300 shadow-lg p-2 text-center w-44 lg:w-72 bg-white-0
                     absolute right-0 bottom-2 left-52 m-auto flex flex-col h-fit justify-center items-center space-y-2 lg:space-y-6">
-                    <p class="text-azure-900 text-md lg:text-base">¿Seguro que desea cerrar sesion?</p>
-                    <div class="w-full flex space-x-1">
-                        <button @click="cerrar" class="w-1/2 border border-cerise-600 p-1 rounded-md text-cerise-600
+                    <p class="text-azure-900 text-sm lg:text-base">¿Seguro que desea cerrar sesion?</p>
+                    <div class="w-full flex space-x-1 justify-center items-center px-2 pb-1 lg:pb-2">
+                        <button @click="cerrar" class="w-1/3 lg:w-1/2 border border-cerise-600 p-1 rounded-md text-cerise-600
                         transition-all duration-150 hover:-translate-y-1 hover:scale-105 hover:text-white-0 hover:bg-cerise-600">
                             Si
                         </button>
-                        <button @click="showCerrar" class="w-1/2 border border-azure-500 p-1 rounded-md text-azure-500
+                        <button @click="showCerrar" class="w-1/3 lg:w-1/2 border border-azure-500 p-1 rounded-md text-azure-500
                         transition-all duration-150 hover:-translate-y-1 hover:scale-105 hover:text-white-0 hover:bg-azure-500">
                             No
                         </button>

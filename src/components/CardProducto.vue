@@ -171,7 +171,7 @@ export default {
             this.descripcionProducto = descripcion;
         },
         async getCategories() {
-            const datos = await this.CategoriaService.getCategorias();
+            const datos = await this.CategoriaService.getCategorias(100, 0);
             const cats = datos.data;
             this.categories = cats;
         },

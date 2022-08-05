@@ -1,5 +1,6 @@
 <template>
     <button
+        class="place-self-center text-start"
         :class="clases"
         @click="search"
         :value="item.idCategoria"

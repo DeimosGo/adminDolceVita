@@ -32,10 +32,11 @@
             <div
                 v-show="showAll"
                 :class="animacion"
-                class="absolute top-10 right-0 pl-6 w-52 flex flex-col h-fit p-2 items-start border rounded-lg border-gray-300 text-azureMarine-800 bg-white-0 z-10 shadow-gray-300 shadow-sm"
+                class="absolute top-11 right-0 w-56 flex flex-col h-fit p-2 items-center left-0 border rounded-lg
+                border-gray-300 text-azureMarine-800 bg-white-0 z-10 shadow-gray-300 shadow-sm"
             >
                 <h3 class="w-full text-center text-lg pb-1">Categorias</h3>
-                <div class="pl-3 flex flex-col space-y-2 items-start">
+                <div class="w-full grid grid-cols-2 items-center gap-2 text-start place-content-center p-1">
                     <FiltroButton
                         v-for="item in itemsCategoria"
                         :item="item"
@@ -127,7 +128,7 @@ export default {
             }
         },
         async listCategorias() {
-            const categorias = await this.categorias.getCategorias();
+            const categorias = await this.categorias.getCategorias(100, 0);
             if (categorias.status == 200) {
                 const data = await categorias.data;
                 this.itemsCategoria = data;

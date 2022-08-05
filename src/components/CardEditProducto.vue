@@ -186,16 +186,12 @@ export default {
             this.descripcionProducto = descripcion;
         },
         async getCategories() {
-            const datos = await this.CategoriaService.getCategorias();
+            const datos = await this.CategoriaService.getCategorias(100, 0);
             const cats = datos.data;
             this.categories = cats;
         },
         async showCategories() {
             this.showCats = !this.showCats;
-            if (this.listar === false) {
-                await this.getCategories();
-                this.listar = true;
-            }
         },
         async editProduct() {
             const modelo = {
@@ -281,8 +277,9 @@ export default {
             }
         },
     },
-    mounted() {
-        this.loadCategory();
+    async beforeMount() {
+        await this.loadCategory();
+        await this.getCategories();
     },
 };
 </script>
