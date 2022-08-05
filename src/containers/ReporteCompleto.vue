@@ -87,7 +87,7 @@
                 <p class="pr-4">S/.{{ Number(ingresosActual).toFixed(2) }}</p>
             </li>
         </ul>
-            <p class="text-center text-xl font-semibold">Crecimiento Mensual de ventas</p>
+            <p class="text-center text-xl font-semibold">Crecimiento Mensual de ingresos</p>
         <apexchart
         class="border-t-0"
                 type="radialBar"

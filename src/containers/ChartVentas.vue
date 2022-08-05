@@ -20,7 +20,7 @@
             class="w-full lg:w-2/6 p-2 flex flex-col rounded-lg justify-center shadow-md border border-gray-100 bg-white-0"
         >
             <h3 class="w-full text-center text-lg font-bold text-gray-600">
-                CRECIMIENTO MENSUAL DE VENTAS
+                CRECIMIENTO MENSUAL DE INGRESOS
             </h3>
             <apexchart
                 type="radialBar"
@@ -80,7 +80,7 @@ export default {
                     palette: 'palette1',
                 },
             },
-            seriesRadial: [67],
+            seriesRadial: [0],
             chartOptionsRadial: {
                 chart: {
                     height: 350,
@@ -143,6 +143,8 @@ export default {
                 this.loaded = true;
                 const ingresosAnterior = Number(data[data.length - 2].total);
                 const ingresosDelMes = Number(data[data.length - 1].total);
+                console.log(ingresosDelMes);
+                console.log(ingresosAnterior);
                 this.$emit("setIngresos", `S/.${ingresosDelMes.toFixed(2)}`);
                 const cantidad = ingresosDelMes - ingresosAnterior;
                 this.seriesRadial = [
