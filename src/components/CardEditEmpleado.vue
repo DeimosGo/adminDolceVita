@@ -211,6 +211,8 @@ export default {
             return result;
         },
         async editEmpleado() {
+            // eslint-disable-next-line no-debugger
+            debugger
             const fecha = moment(this.date).format("YYYY-MM-DD");
             const modelo = {
                 nombres: "",
@@ -253,14 +255,12 @@ export default {
                     objetoSend[clave] = replace[i];
                 }
             }
-            if (objetoSend.password) {
-                    if (this.password.length > 0 && this.password.length < 12) {
+            if (objetoSend.password && this.password.length > 0 && this.password.length < 12) {
+                    this.errorShow = !this.errorShow;
+                    this.message = "La contraseña debe tener al menos 12 caracteres";
+                    setTimeout(() => {
                         this.errorShow = !this.errorShow;
-                        this.message = "La contraseña debe tener al menos 12 caracteres";
-                        setTimeout(() => {
-                            this.errorShow = !this.errorShow;
-                        }, 2000);
-                    }
+                    }, 2000);
             }
             else if (Object.keys(objetoSend).length <= 0) {
                 this.message = "No se han detectado cambios";
@@ -293,14 +293,12 @@ export default {
                 setTimeout(() => {
                     this.errorShow = !this.errorShow;
                 }, 2000);
-            }else if(objetoSend.email){
-                    if (!this.testEmail()){
+            }else if(objetoSend.email && !this.testEmail()){
                         this.errorShow = !this.errorShow;
                         this.message = "Indique un email valido";
                         setTimeout(() => {
                             this.errorShow = !this.errorShow;
                         }, 2000);
-                    }
             }else if(objetoSend.telefono) {
                     if (objetoSend.telefono.length < 9 || objetoSend.telefono.length > 9) {
                         this.errorShow = !this.errorShow;
