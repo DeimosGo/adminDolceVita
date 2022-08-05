@@ -253,19 +253,23 @@ export default {
                     objetoSend[clave] = replace[i];
                 }
             }
-            if (objetoSend.password && this.password.length > 0 && this.password.length < 12) {
+            if (objetoSend.password){
+                if(this.password.length > 0 && this.password.length < 12) {
                     this.errorShow = !this.errorShow;
                     this.message = "La contraseña debe tener al menos 12 caracteres";
                     setTimeout(() => {
                         this.errorShow = !this.errorShow;
                     }, 2000);
+                    return
             }
-            else if (Object.keys(objetoSend).length <= 0) {
+            }
+            if (Object.keys(objetoSend).length <= 0) {
                 this.message = "No se han detectado cambios";
                 this.errorShow = !this.errorShow;
                 setTimeout(() => {
                     this.errorShow = !this.errorShow;
                 }, 2000);
+                return
             } else if (
                 this.nombres.length <= 0 ||
                 this.apellidos.length <= 0 ||
@@ -291,52 +295,58 @@ export default {
                 setTimeout(() => {
                     this.errorShow = !this.errorShow;
                 }, 2000);
-            }else if(objetoSend.email && !this.testEmail()){
+            }else if(objetoSend.email){
+                if(!this.testEmail()){
+                    this.errorShow = !this.errorShow;
+                    this.message = "Indique un email valido";
+                    setTimeout(() => {
                         this.errorShow = !this.errorShow;
-                        this.message = "Indique un email valido";
-                        setTimeout(() => {
-                            this.errorShow = !this.errorShow;
-                        }, 2000);
-            }else if(objetoSend.telefono && objetoSend.telefono.length < 9 || objetoSend.telefono.length > 9) {
+                    }, 2000);
+                    return
+            }
+            }
+            else if(objetoSend.telefono){
+                if(objetoSend.telefono.length < 9 || objetoSend.telefono.length > 9) {
+                    this.errorShow = !this.errorShow;
+                    this.message = "Indique un telefono valido";
+                    setTimeout(() => {
                         this.errorShow = !this.errorShow;
-                        this.message = "Indique un telefono valido";
-                        setTimeout(() => {
-                            this.errorShow = !this.errorShow;
-                        }, 2000);
-            } else {
-                let validate = true;
-                if(validate) {
-                    const returned = await this.EmpleadoService.patchEmpleado(
-                        this.idEmpleado,
-                        objetoSend
-                    );
-                    if (returned.status == 409) {
-                    const error = returned.response.data.error[0].path
-                    if (error.includes("email")) {
-                        this.errorShow = !this.errorShow;
-                        this.message = "El correo ya está registrado";
-                        setTimeout(() => {
-                            this.errorShow = !this.errorShow;
-                        }, 2000);
-                    }else if (error.includes("telefono")) {
-                        this.errorShow = !this.errorShow;
-                        this.message = "El telefono ya está registrado";
-                        setTimeout(() => {
-                            this.errorShow = !this.errorShow;
-                        }, 2000);
-                    }
-                    }
-                    else if (returned.data.updated) {
-                        const nuevo = await this.EmpleadoService.getEmpleadoId(this.idEmpleado);
-                        this.$emit("edited", nuevo.data);
-                    } else {
-                        this.errorShow = !this.errorShow;
-                        this.message = "Problema de conexion";
-                        setTimeout(() => {
-                            this.errorShow = !this.errorShow;
-                        }, 2000);
-                    }
+                    }, 2000);
+                    return
                 }
+            }
+            let validate = true;
+            if(validate) {
+                const returned = await this.EmpleadoService.patchEmpleado(
+                    this.idEmpleado,
+                    objetoSend
+                );
+                if (returned.status == 409) {
+                const error = returned.response.data.error[0].path
+                if (error.includes("email")) {
+                    this.errorShow = !this.errorShow;
+                    this.message = "El correo ya está registrado";
+                    setTimeout(() => {
+                        this.errorShow = !this.errorShow;
+                    }, 2000);
+                }else if (error.includes("telefono")) {
+                    this.errorShow = !this.errorShow;
+                    this.message = "El telefono ya está registrado";
+                    setTimeout(() => {
+                        this.errorShow = !this.errorShow;
+                    }, 2000);
+                }
+                }
+                else if (returned.data.updated) {
+                    const nuevo = await this.EmpleadoService.getEmpleadoId(this.idEmpleado);
+                    this.$emit("edited", nuevo.data);
+                } else {
+                    this.errorShow = !this.errorShow;
+                    this.message = "Problema de conexion";
+                    setTimeout(() => {
+                        this.errorShow = !this.errorShow;
+                    }, 2000);
+            }
             }
         },
         async getRoles() {
