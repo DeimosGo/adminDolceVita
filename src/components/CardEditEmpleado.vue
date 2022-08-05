@@ -211,8 +211,6 @@ export default {
             return result;
         },
         async editEmpleado() {
-            // eslint-disable-next-line no-debugger
-            debugger
             const fecha = moment(this.date).format("YYYY-MM-DD");
             const modelo = {
                 nombres: "",
