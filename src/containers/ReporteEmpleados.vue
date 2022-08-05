@@ -57,7 +57,7 @@
         >
             <div class="w-full">
                 <p class="text-center text-xl font-semibold">
-                    Productos más vendidos
+                    Vendedores Destacados
                 </p>
                 <apexchart
                     type="bar"

@@ -41,7 +41,7 @@
                         Aplicar
                     </button>
                 </div>
-                <div>
+                <div v-if="admin">
                     <p
                         class="w-fit border-b border-gray-500 text-gray-500 font-medium"
                     >
@@ -73,6 +73,7 @@ export default {
             empleados: [],
             showFilters: false,
             EmpleadoService: new Empleado(),
+            admin: false,
         };
     },
     methods:{
@@ -85,8 +86,17 @@ export default {
             this.showFilters = !this.showFilters;
         },
         async cargarEmpleados(){
-            const { data } = await this.EmpleadoService.getEmpleado(12, 0);
-            this.empleados = data;
+            this.validateDelete();
+            if (this.admin) {
+                const { data } = await this.EmpleadoService.getEmpleado(12, 0);
+                this.empleados = data;
+            }
+        },
+        validateDelete(){
+            const rol = Number(sessionStorage.getItem("rol"));
+            if (rol === 1) {
+                this.admin = true;
+            }
         }
     },
     async mounted(){

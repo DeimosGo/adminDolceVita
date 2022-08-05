@@ -224,7 +224,7 @@ export default {
             DniService: new Dni(),
             textInfo: "Productos mas vendidos",
             nombre: "",
-            dni: null,
+            dni: 'null',
         };
     },
     computed: {

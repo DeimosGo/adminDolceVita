@@ -27,7 +27,7 @@
                 transition-all duration-200 transform hover:scale-105 items-center">
                     <i class="fa-solid fa-print text-2xl"></i>
                 </button>
-                <button @click="deleteProduct" class="p-0 m-0">
+                <button v-if="admin" @click="deleteProduct" class="p-0 m-0">
                     <i
                         class="fa-regular fa-circle-xmark text-cerise-800 text-2xl scale-105 hover:scale-100"
                     ></i>
@@ -45,6 +45,7 @@ export default {
     data(){
         return {
             sold: this.venta,
+            admin: false,
         }
     },
     emits:['showDetails'],
@@ -58,6 +59,15 @@ export default {
         deleteProduct(){
             this.$emit('deleteProduct', this.sold.id_venta);
         },
+        validateDelete(){
+            const rol = Number(sessionStorage.getItem("rol"));
+            if (rol === 1) {
+                this.admin = true;
+            }
+        }
+    },
+    beforeMount(){
+        this.validateDelete();
     }
 };
 </script>
