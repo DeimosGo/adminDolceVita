@@ -211,6 +211,8 @@ export default {
             return result;
         },
         async editEmpleado() {
+            // eslint-disable-next-line no-debugger
+            debugger
             const fecha = moment(this.date).format("YYYY-MM-DD");
             const modelo = {
                 nombres: "",
@@ -297,14 +299,12 @@ export default {
                         setTimeout(() => {
                             this.errorShow = !this.errorShow;
                         }, 2000);
-            }else if(objetoSend.telefono) {
-                    if (objetoSend.telefono.length < 9 || objetoSend.telefono.length > 9) {
+            }else if(objetoSend.telefono && objetoSend.telefono.length < 9 || objetoSend.telefono.length > 9) {
                         this.errorShow = !this.errorShow;
                         this.message = "Indique un telefono valido";
                         setTimeout(() => {
                             this.errorShow = !this.errorShow;
                         }, 2000);
-                        }
             } else {
                 let validate = true;
                 if(validate) {
