@@ -151,7 +151,7 @@
             </div>
             <div class="flex w-full h-10 pl-4 pb-2 hover:brightness-125">
                 <button
-                    @click="cerrar"
+                    @click="showCerrar"
                     class="flex w-full text-center text-lg font-bold space-x-2"
                 >
                     <div class="border-2 border-fontColor rounded-md">
@@ -162,6 +162,22 @@
                     <p>Cerrar sesion</p>
                 </button>
             </div>
+            <transition name="cardCerrar">
+                <div v-if="closeCard" class="z-50 rounded-lg border border-gray-300 shadow-lg p-2 text-center w-48 lg:w-72 bg-white-0
+                    absolute right-0 bottom-2 left-52 m-auto flex flex-col h-fit justify-center items-center space-y-2 lg:space-y-6">
+                    <p class="text-azure-900 text-md lg:text-base">¿Seguro que desea cerrar sesion?</p>
+                    <div class="w-full flex space-x-1">
+                        <button @click="cerrar" class="w-1/2 border border-cerise-600 p-1 rounded-md text-cerise-600
+                        transition-all duration-150 hover:-translate-y-1 hover:scale-105 hover:text-white-0 hover:bg-cerise-600">
+                            Si
+                        </button>
+                        <button @click="showCerrar" class="w-1/2 border border-azure-500 p-1 rounded-md text-azure-500
+                        transition-all duration-150 hover:-translate-y-1 hover:scale-105 hover:text-white-0 hover:bg-azure-500">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </transition>
         </aside>
     </transition>
 </template>
@@ -184,6 +200,7 @@ export default {
                 "text-fontColor",
             ],
             show: false,
+            closeCard: false,
         };
     },
     emits: ["add", "side"],
@@ -198,12 +215,15 @@ export default {
         options() {
             this.$emit("add");
         },
-        cerrar() {
+        showCerrar(){
+            this.closeCard = !this.closeCard;
+        },
+        async cerrar() {
             sessionStorage.removeItem("sesion");
             sessionStorage.removeItem("token");
             sessionStorage.removeItem("rol");
-            this.$emit("side");
-            router.push("login");
+            await this.$emit("side");
+            router.push("/login");
         },
         verificar(){
             const id = sessionStorage.getItem('rol');
@@ -242,6 +262,37 @@ export default {
 };
 </script>
 <style scoped>
+.cardCerrar-enter-active{
+    animation: cerrarIn 150ms;
+}
+@keyframes cerrarIn {
+    0%{
+        transform: scale(0.1);
+        z-index: 0;
+        opacity: 0;
+    }
+    60%{
+        transform: scale(0.1);
+        opacity: 0;
+    }
+    100%{
+        z-index: 0;
+    }
+}
+.cardCerrar-leave-active{
+    animation: cerrarOut 150ms;
+}
+@keyframes cerrarOut {
+    100%{
+        transform: scale(0.0);
+        z-index: 0;
+        opacity: 0;
+    }
+}
+
+
+
+
 .iconAside {
     filter: invert(95%) sepia(5%) saturate(3549%) hue-rotate(298deg)
         brightness(96%) contrast(82%);

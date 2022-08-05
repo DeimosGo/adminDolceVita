@@ -46,7 +46,8 @@
             <div class="w-4/5 lg:w-3/5 flex flex-col px-3">
                 <button
                     @click="access"
-                    class="w-full font-semibold text-white-0 rounded-full transition-all duration-200 hover:-translate-y-1 bg-saffron-500 py-2 px-4 text-md hover:scale-95 hover:shadow-sm shadow-md"
+                    class="w-full font-semibold text-white-0 rounded-full transition-all duration-200 hover:-translate-y-1
+                    bg-saffron-500 py-2 px-4 text-md hover:scale-105 hover:shadow-sm shadow-md"
                 >
                     Ingresar
                 </button>
