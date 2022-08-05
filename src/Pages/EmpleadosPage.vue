@@ -2,6 +2,7 @@
     <div v-if="loading" class="w-full h-100v grid place-content-center z-40">
         <LoadingWheel />
     </div>
+    <transition name="tableShow">
     <div
         v-if="!loading"
         class="lg:pt-16 w-full px-2 lg:px-10 h-100v flex flex-col justify-center lg:items-end lg:justify-start"
@@ -42,23 +43,23 @@
                     <p>Nuevo</p>
                     <i class="fa-solid fa-file-circle-plus w-4"></i>
                 </button>
-
+                <ReiniciarFiltros @recargar="loadInfo" />
                 <InputBusqueda @search="search" :phText="'Empleado'" class="mt-0" />
             </div>
         </div>
-        <div
+            <div v-if="showLoad"
             class="w-full max-h-70v overflow-y-scroll xl:overflow-y-visible pt-7 place-content-start z-0 lg:justify-start
             justify-center mt-10 place-items-center lg:place-items-start lg:w-5/6 lg:mt-10 grid xl:grid-cols-3
-            lg:grid-cols-2 md:grid-cols-2 gap-x-4 gap-y-12"
-        >
+            lg:grid-cols-2 md:grid-cols-2 gap-x-4 gap-y-12">
             <EmpleadoRow
                 @showCardsEdits="showCardsEdits"
                 v-for="item in empleados"
                 :key="item.idEmpleado"
                 :empleado="item"
             />
-        </div>
+            </div>
     </div>
+    </transition>
 </template>
 <script>
 import LoadingWheel from "@/components/LoadingWheel.vue";
@@ -70,9 +71,10 @@ import NotFoundSearch from "@/components/NotFoundSearch.vue";
 import CardEmpleado from "../components/CardEmpleado.vue";
 import CardEditEmpleado from "@/components/CardEditEmpleado.vue";
 import CardDeleteElement from "@/components/CardDeleteElement.vue";
+import ReiniciarFiltros from "@/components/ReiniciarFiltros.vue";
 export default {
     name: "EmpleadosPage",
-    components: { LoadingWheel, EmpleadoRow, InputBusqueda, NotFoundSearch, CardEmpleado, CreatedElement, CardEditEmpleado, CardDeleteElement },
+    components: { LoadingWheel, EmpleadoRow, InputBusqueda, NotFoundSearch, CardEmpleado, CreatedElement, CardEditEmpleado, CardDeleteElement, ReiniciarFiltros },
     data() {
         return {
             loading: false,
@@ -89,6 +91,7 @@ export default {
             deleteCard: false,
             createdElement: false,
             idEliminar: 0,
+            showLoad: false,
         };
     },
     methods: {
@@ -170,12 +173,14 @@ export default {
             this.showEdit = !this.showEdit;
         },
         async loadInfo() {
+            this.showLoad = false;
             this.loading = true;
             const respuesta = await this.EmpleadoService.getEmpleado(9, 0);
             if (respuesta.status == 200) {
                 const data = respuesta.data;
                 this.empleados = data;
                 this.loading = false;
+                this.showLoad = true;
             }
         },
         async search(name) {
@@ -205,6 +210,18 @@ export default {
 };
 </script>
 <style scoped>
+
+.tableShow-enter-active {
+    animation: tableIn 150ms;
+}
+
+@keyframes tableIn {
+    0%{
+        opacity: 0.2;
+        transform: scale(0.1);
+    }
+}
+
 .editCard-leave-active{
     animation: editOut 250ms;
 }

@@ -91,7 +91,6 @@ export default {
                     });
                     if (respuesta.status === 200) {
                         const data = await respuesta.data.token;
-                        console.log(respuesta.data.usuario);
                         const rol = await respuesta.data.usuario.idRol;
                         const idEmpleado = await respuesta.data.usuario.idEmpleado;
                         const nombre = respuesta.data.usuario.nombres;
