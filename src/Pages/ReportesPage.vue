@@ -59,25 +59,25 @@
                 <button class="text-center w-full lg:w-1/4 text-lg rounded-lg p-1 border border-azureAqua-600 text-azureAqua-600
                 hover:border-azureAqua-500 hover:text-azureAqua-500 hover:-translate-y-1 scale-95 lg:scale-100 shadow-sm
                 hover:shadow-lg transition-all duration-200 bg-white-0" @click="print()">
-                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i> Reporte de ventas
+                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i> Descargar reporte de ventas
                 </button>
 
                 <button class="text-center w-full lg:w-1/4 text-lg rounded-lg p-1 border border-azureAqua-600 text-azureAqua-600
                 hover:border-azureAqua-500 hover:text-azureAqua-500 hover:-translate-y-1 scale-95 lg:scale-100 shadow-sm
                 hover:shadow-lg transition-all duration-200 bg-white-0" @click="print(1)">
-                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i> Reporte de productos
+                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i>Descargar reporte de productos
                 </button>
 
                 <button class="text-center w-full lg:w-1/4 text-lg rounded-lg p-1 border border-azureAqua-600 text-azureAqua-600
                 hover:border-azureAqua-500 hover:text-azureAqua-500 hover:-translate-y-1 scale-95 lg:scale-100 shadow-sm
                 hover:shadow-lg transition-all duration-200 bg-white-0" @click="print(2)">
-                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i> Reporte de vendedores
+                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i>Descargar reporte de vendedores
                 </button>
 
                 <button class="text-center w-full lg:w-1/4 text-lg rounded-lg p-1 border border-azureAqua-600 text-azureAqua-600
                 hover:border-azureAqua-500 hover:text-azureAqua-500 hover:-translate-y-1 scale-95 lg:scale-100 shadow-sm
                 hover:shadow-lg transition-all duration-200 bg-white-0" @click="print(3)">
-                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i> Reporte completo
+                    <i class="fa-solid fa-file-pdf mr-1 text-xl"></i>Descargar reporte completo
                 </button>
             </div>
             <ChartVentas @setMes="setMes" @setIngresos="setIngresos" />
