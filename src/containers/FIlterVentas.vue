@@ -5,7 +5,7 @@
         >
             <div class="flex flex-row space-x-3">
                 <button
-                    @click="$emit('nuevaVenta')"
+                    @click="nuevaVenta"
                     class="flex space-x-1 items-center h-10 px-2 rounded-md border-2 text-submarine-600
                     border-submarine-600 transition-all duration-100 hover:scale-105"
                 >
@@ -77,6 +77,10 @@ export default {
         };
     },
     methods:{
+        nuevaVenta(){
+            this.showFilters=false;
+            this.$emit('nuevaVenta');
+        },
         filtroFecha(){
             if (this.date.length === 2) {
                 this.$emit('filtrarPorRango', this.date);

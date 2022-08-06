@@ -88,17 +88,21 @@
                         >
                             <li class="w-1/4 text-center">Fecha</li>
                             <li class="w-1/4 text-center">
-                            <button @click="ordenarPrecio">
-                                Total
-                                <i class="fa-solid fa-arrow-down-short-wide"></i>
-                            </button>
+                                <button @click="ordenarPrecio">
+                                    Total
+                                    <i
+                                        class="fa-solid fa-arrow-down-short-wide"
+                                    ></i>
+                                </button>
                             </li>
                             <li class="w-1/4 text-center">
                                 <button @click="ordenarNombre">
                                     Vendedor
-                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
+                                    <i
+                                        class="fa-solid fa-arrow-down-short-wide"
+                                    ></i>
                                 </button>
-                                </li>
+                            </li>
                             <li class="w-1/4 text-center">Acciones</li>
                         </ul>
                     </div>
@@ -180,8 +184,8 @@ export default {
             noBuscar: true,
             totalVentas: 0,
             initFilter: false,
-            initOrderTotal:false,
-            initOrderNombre:false,
+            initOrderTotal: false,
+            initOrderNombre: false,
             loadFilter: true,
             found: false,
             counter: 1,
@@ -203,7 +207,7 @@ export default {
                 });
                 this.ventas = ventasOrder;
                 this.initOrderNombre = !this.initOrderNombre;
-                setTimeout(()=>this.loadFilter = true, 50);
+                setTimeout(() => (this.loadFilter = true), 50);
             } else {
                 const ventas = JSON.parse(JSON.stringify(this.ventas));
                 const ventasOrder = ventas.sort(function (a, b) {
@@ -217,7 +221,7 @@ export default {
                 });
                 this.ventas = ventasOrder;
                 this.initOrderNombre = !this.initOrderNombre;
-                setTimeout(()=>this.loadFilter = true, 50);
+                setTimeout(() => (this.loadFilter = true), 50);
             }
         },
         ordenarPrecio() {
@@ -235,7 +239,7 @@ export default {
                 });
                 this.ventas = ventasOrder;
                 this.initOrderTotal = !this.initOrderTotal;
-                setTimeout(()=>this.loadFilter = true, 50);
+                setTimeout(() => (this.loadFilter = true), 50);
             } else {
                 this.loadFilter = false;
                 const ventas = JSON.parse(JSON.stringify(this.ventas));
@@ -250,7 +254,7 @@ export default {
                 });
                 this.ventas = ventasOrder;
                 this.initOrderTotal = !this.initOrderTotal;
-                setTimeout(()=>this.loadFilter = true, 50);
+                setTimeout(() => (this.loadFilter = true), 50);
             }
         },
         async filtrar(value) {
@@ -291,18 +295,19 @@ export default {
             let ventasSinCat = [];
             let data = JSON.parse(JSON.stringify(this.ventas));
             this.ventas = [];
-            console.log(data);
             data.forEach((item) => {
                 if (item.id_empleado !== valor) {
                     ventasSinCat.push(item);
                 }
             });
-            this.ventas = ventasSinCat;
-            setTimeout(() => this.loadFilter = true,50);
             if (ventasSinCat.length <= 0) {
                 this.initFilter = false;
                 this.noBuscar = true;
+                this.loadFilter = true;
                 this.loadDatos();
+            } else {
+                this.ventas = ventasSinCat;
+                setTimeout(() => (this.loadFilter = true), 50);
             }
         },
         async deleted() {
@@ -326,7 +331,7 @@ export default {
                 const cantidad = data.cantidad / 10;
                 if (cantidad % 2 !== 0) {
                     this.paginas = Math.floor(cantidad) + 1;
-                }else{
+                } else {
                     this.paginas = cantidad;
                 }
             } else {
@@ -389,15 +394,15 @@ export default {
         },
         async before() {
             if (this.offset >= 10) {
-                this.counter--
+                this.counter--;
                 this.offset -= 10;
                 await this.loadDatos();
                 this.actual -= 1;
             }
         },
         async after() {
-            if (this. counter < this.paginas) {
-                this.counter++
+            if (this.counter < this.paginas) {
+                this.counter++;
                 this.offset += 10;
                 await this.loadDatos();
                 this.actual += 1;
@@ -428,17 +433,17 @@ export default {
         },
     },
     components: {
-    LoadingWheel,
-    FIlterVentas,
-    ReiniciarFiltros,
-    VentaRow,
-    CardVentas,
-    ComprobanteCard,
-    CardCreateVenta,
-    CardDeleteElement,
-    CreatedElement,
-    NotFoundSearch
-},
+        LoadingWheel,
+        FIlterVentas,
+        ReiniciarFiltros,
+        VentaRow,
+        CardVentas,
+        ComprobanteCard,
+        CardCreateVenta,
+        CardDeleteElement,
+        CreatedElement,
+        NotFoundSearch,
+    },
     async beforeMount() {
         this.loadDatos();
     },

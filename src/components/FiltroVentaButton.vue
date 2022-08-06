@@ -6,6 +6,7 @@
         :key="item.idEmpleado"
     >
     {{ empleado.nombres[0] + empleado.nombres.toLowerCase().substring(1) }}
+    {{ empleado.apellidos[0] + empleado.apellidos.toLowerCase().substring(1) }}
     </button>
 </template>
 <script>
