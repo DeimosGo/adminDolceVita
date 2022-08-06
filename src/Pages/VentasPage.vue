@@ -375,9 +375,35 @@ export default {
                 fechaIn,
                 fechaOut
             );
-            this.ventas = res.data;
-            this.noBuscar = false;
-            this.loading = !this.loading;
+            if (!res.data) {
+                this.found = true;
+                setTimeout(() => {
+                    this.found = false;
+                }, 3200);
+                this.loadFilter = true;
+                this.loading = !this.loading;
+            } else if (res.data.length <= 0) {
+                this.loading = !this.loading;
+                this.found = true;
+                setTimeout(() => {
+                    this.found = false;
+                }, 3200);
+                this.loadFilter = true;
+            } else {
+                if (this.initFilter === false) {
+                    this.ventas = res.data;
+                    this.initFilter = !this.initFilter;
+                    this.noBuscar = false;
+                    this.loadFilter = true;
+                    this.loading = !this.loading;
+                } else {
+                    res.data.forEach((element) => {
+                        this.ventas.push(element);
+                    });
+                    this.loadFilter = true;
+                    this.loading = !this.loading;
+                }
+            }
         },
         async loadDatos() {
             this.loading = true;
