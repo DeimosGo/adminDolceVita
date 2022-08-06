@@ -5,7 +5,7 @@
         <ul class="w-full flex justify-between lg:px-8 px-2 py-2 text-gray-800">
             <li class="w-1/4 text-center justify-center flex items-center">{{ sold.fecha }}</li>
             <li class="w-1/4 justify-center flex items-center text-left">
-                S/.{{ sold.precio_total }}
+                S/. {{ sold.precio_total }}
             </li>
             <li class="w-1/4 text-center justify-center flex items-center">
                 {{ sold.nombres[0] + sold.nombres.toLowerCase().substring(1) }}

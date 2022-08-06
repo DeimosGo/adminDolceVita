@@ -184,6 +184,7 @@ export default {
             initOrderNombre:false,
             loadFilter: true,
             found: false,
+            counter: 1,
         };
     },
     methods: {
@@ -325,6 +326,8 @@ export default {
                 const cantidad = data.cantidad / 10;
                 if (cantidad % 2 !== 0) {
                     this.paginas = Math.floor(cantidad) + 1;
+                }else{
+                    this.paginas = cantidad;
                 }
             } else {
                 return "error";
@@ -386,13 +389,15 @@ export default {
         },
         async before() {
             if (this.offset >= 10) {
+                this.counter--
                 this.offset -= 10;
                 await this.loadDatos();
                 this.actual -= 1;
             }
         },
         async after() {
-            if (this.offset <= this.paginas) {
+            if (this. counter < this.paginas) {
+                this.counter++
                 this.offset += 10;
                 await this.loadDatos();
                 this.actual += 1;

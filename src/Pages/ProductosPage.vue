@@ -129,6 +129,7 @@ export default {
             offset: 0,
             mensaje: "",
             reiniciar: true,
+            counter: 1,
         };
     },
     emits: ["side"],
@@ -191,13 +192,15 @@ export default {
         },
         async before() {
             if (this.offset >= 10) {
+                this.counter--
                 this.offset -= 10;
                 await this.load();
                 this.actual -= 1;
             }
         },
         async after() {
-            if (this.offset <= this.paginas) {
+            if (this.offset < this.paginas) {
+                this.counter++
                 this.offset += 10;
                 await this.load();
                 this.actual += 1;
@@ -386,6 +389,8 @@ export default {
                 const cantidad = data.cantidad / 10;
                 if (cantidad % 2 !== 0) {
                     this.paginas = Math.floor(cantidad) + 1;
+                }else{
+                    this.paginas = cantidad;
                 }
             } else {
                 return "error";
