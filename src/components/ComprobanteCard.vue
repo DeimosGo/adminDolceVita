@@ -67,11 +67,11 @@
             <ul
                 v-for="(item, i) in details"
                 :key="i"
-                class="w-full flex justify-between items-center text-sm text-gray-600"
+                class="w-full flex justify-between items-center text-gray-600"
             >
-                <p class="w-2/4 h-6 text-center">{{item.nombre_producto.toLowerCase()}}</p>
-                <p class="w-1/4 text-center">{{item.cantidad}}</p>
-                <p class="w-1/4 text-center">{{item.precio}}</p>
+                <li class="text-center">{{item.nombre_producto.toLowerCase()}}</li>
+                <li class="text-center">{{item.cantidad}}</li>
+                <li class="text-center">{{item.precio}}</li>
             </ul>
         </div>
         <div class="w-full flex justify-center flex-col space-y-2">

@@ -143,12 +143,12 @@ export default {
                 this.loaded = true;
                 const ingresosAnterior = Number(data[data.length - 2].total);
                 const ingresosDelMes = Number(data[data.length - 1].total);
-                this.$emit("setIngresos", `S/.${ingresosDelMes.toFixed(2)}`);
+                this.$emit("setIngresos", `S/. ${ingresosDelMes.toFixed(2)}`);
                 const cantidad = ingresosDelMes - ingresosAnterior;
                 this.seriesRadial = [
                     ((cantidad / ingresosAnterior) * 100).toFixed(0),
                 ];
-                this.ingresos = "S/." + ingresosDelMes;
+                this.ingresos = `S/. ${ingresosDelMes}`;
             }
         },
     },
