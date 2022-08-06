@@ -207,6 +207,7 @@ export default {
             }
         },
         async advice(mensaje) {
+            await this.countProductos();
             this.mensaje = mensaje;
             this.created = !this.created;
             setTimeout(() => {
