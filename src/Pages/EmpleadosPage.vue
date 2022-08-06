@@ -175,6 +175,7 @@ export default {
         async loadInfo() {
             this.showLoad = false;
             this.loading = true;
+            await this.countEmpleados();
             const respuesta = await this.EmpleadoService.getEmpleado(9, 0);
             if (respuesta.status == 200) {
                 const data = respuesta.data;
@@ -205,7 +206,6 @@ export default {
     },
     async mounted() {
         await this.loadInfo();
-        await this.countEmpleados();
     },
 };
 </script>
