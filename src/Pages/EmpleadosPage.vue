@@ -136,7 +136,7 @@ export default {
             this.createdElement = true;
             setTimeout(() => {
                 this.createdElement = false;
-            }, 4000);
+            }, 5000);
         },
         async edited(item) {
             this.quitarTodo();
@@ -153,8 +153,9 @@ export default {
         },
         async created(){
             this.quitarTodo();
+            await this.loadInfo();
             this.loading = !this.loading;
-            setTimeout(() => (this.loading = !this.loading), 100);
+            setTimeout(() => (this.loading = !this.loading), 50);
             this.advice('Empleado Creado');
         },
         quitarTodo(){
