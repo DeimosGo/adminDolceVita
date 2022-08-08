@@ -81,11 +81,21 @@ export default {
             agotado: false,
             dBtn: ["text-gray-900"],
             aBtn: ["text-gray-900"],
+            socketInstance: null,
         };
+    },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
     },
     emits: ["advice"],
     methods: {
-        created() {
+        created(data) {
+            console.log(data);
+            this.$socket.emit('cliente:registerProduct', data);
             this.card = !this.card;
             this.$emit("advice", "Elemento creado");
         },

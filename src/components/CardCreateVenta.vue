@@ -206,6 +206,7 @@ import InputBusqueda from "./InputBusqueda.vue";
 import Venta from "@/services/VentasService";
 import Comprobante from "@/services/ComprobanteService";
 import DetallesVenta from "@/services/DetallesVentaService";
+import Empleado from "@/services/EmpleadosService";
 export default {
     name: "CardCreateVenta",
     components: { InputBusqueda },
@@ -221,6 +222,7 @@ export default {
             VentaService: new Venta(),
             DetalleService: new DetallesVenta(),
             ComprobanteService: new Comprobante(),
+            EmpleadoService: new Empleado(),
             DniService: new Dni(),
             textInfo: "Productos mas vendidos",
             nombre: "",
@@ -246,6 +248,13 @@ export default {
             }
             return result;
         },
+    },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
     },
     methods: {
         decimalAdjust(type, value, exp) {
@@ -279,11 +288,14 @@ export default {
                 this.adviceMessage("No se ha validado el DNI");
             } else {
                 const idEmpleado = sessionStorage.getItem("idEmpleado");
+                const empleado = await this.EmpleadoService.getEmpleadoId(idEmpleado);
                 const venta = await this.VentaService.postVentas({
                     precioTotal: this.subtotal,
                     idEmpleado: idEmpleado,
                 });
                 if (venta.status == 201) {
+                    console.log(empleado);
+                    this.$socket.emit('cliente:createVenta', empleado.data);
                     const data = venta.data;
                     await this.ComprobanteService.postComprobante({
                         idComprobante: data.idVenta,

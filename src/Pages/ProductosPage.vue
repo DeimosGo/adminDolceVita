@@ -132,6 +132,13 @@ export default {
             counter: 1,
         };
     },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
+    },
     emits: ["side"],
     methods: {
         ordenarStock() {
@@ -168,17 +175,23 @@ export default {
             if (data.status == 200) {
                 let productos = JSON.parse(JSON.stringify(this.productos));
                 let filtro = [];
+                let product = {};
                 productos.forEach((element) => {
                     if (element.idProducto !== id) {
                         filtro.push(element);
+                    }else{
+                        product = element;
                     }
                 });
                 this.productos = filtro;
                 this.cantidad -= 1;
                 await this.advice("Registro eliminado");
+                console.log(product);
+                this.$socket.emit('cliente:deleteProduct', product);
             }
         },
         async edited(item) {
+            this.$socket.emit('cliente:editProduct', item);
             let productos = JSON.parse(JSON.stringify(this.productos));
             for (let i = 0; i < productos.length; i++) {
                 if (productos[i].idProducto == item.idProducto) {
@@ -199,7 +212,7 @@ export default {
             }
         },
         async after() {
-            if (this.offset < this.paginas) {
+            if (this.counter < this.paginas) {
                 this.counter++
                 this.offset += 10;
                 await this.load();

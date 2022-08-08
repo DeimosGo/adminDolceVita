@@ -14,9 +14,12 @@
         "core-js": "^3.8.3",
         "get-age": "^1.0.1",
         "moment": "^2.29.4",
+        "socket.io-client": "^4.5.1",
         "vue": "^3.2.13",
+        "vue-3-socket.io": "^1.0.5",
         "vue-datepicker-next": "^1.0.2",
         "vue-router": "^4.0.3",
+        "vue-socket.io": "^2.1.1-b",
         "vue3-apexcharts": "^1.4.1",
         "vuex": "^4.0.2"
     },

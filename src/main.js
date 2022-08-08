@@ -1,9 +1,14 @@
-import { createApp } from 'vue'
+import {
+    createApp
+} from 'vue'
 import './index.css';
 import VueApexCharts from "vue3-apexcharts";
 import App from './App.vue';
 import router from './router';
 import VueHtmlToPaper from './plugins/VueHtmlToPaper';
+import VueSocketIO from 'vue-3-socket.io'
+import SocketIO from 'socket.io-client'
+
 
 const options = {
     name: '',
@@ -21,4 +26,13 @@ let app = createApp(App);
 app.use(VueApexCharts);
 app.use(VueHtmlToPaper, options);
 app.use(router);
+app.use(new VueSocketIO({
+    debug: false,
+    connection: SocketIO('http://localhost:3000'), //options object is Optional
+    /* vuex: {
+      store,
+      actionPrefix: "SOCKET_",
+      mutationPrefix: "SOCKET_"
+    } */
+}));
 app.mount("#app");

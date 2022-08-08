@@ -38,6 +38,7 @@
                         id="password"
                         class="w-full px-4 py-1 h-10 text-white-0 rounded-full mt-2 outline-none cardLogin placeholder:font-medium placeholder:text-gray-200 transition-all duration-100 hover:border hover:border-gray-300 focus:border focus:border-gray-300"
                         v-model="pass"
+                        @keyup.enter="access"
                         type="password"
                         placeholder="contraseña"
                     />
@@ -76,7 +77,6 @@ export default {
     props: {
         statusLog: Boolean,
     },
-    /* http://localhost:3000/api/v1/empleados/ */
     emits: ['side'],
     methods: {
         async access() {
@@ -103,7 +103,7 @@ export default {
                         sessionStorage.setItem("idEmpleado", idEmpleado);
                         sessionStorage.setItem("nombre", nombre);
                         sessionStorage.setItem("apellido", apellido);
-                        this.$emit('side');
+                        this.$emit('side', respuesta.data.usuario);
                         router.push("/");
                     }
                 } catch (error) {

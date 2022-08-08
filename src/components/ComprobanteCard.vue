@@ -77,7 +77,7 @@
         <div class="w-full flex justify-center flex-col space-y-2">
             <div class="w-full flex justify-between font-normal text-base px-4">
                 <p class="text-gray-700">Subtotal</p>
-                <p class="text-gray-600">{{sold.precio_total}}</p>
+                <p class="text-gray-600">{{sold.subtotal}}</p>
             </div>
             <div class="w-full flex justify-between font-normal text-base px-4">
                 <p class="text-gray-700">IGV 18%</p>

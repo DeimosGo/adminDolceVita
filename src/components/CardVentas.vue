@@ -1,5 +1,5 @@
 <template>
-    <div id="printContent" class="w-80 h-50v shadow-2xl flex flex-col py-7 px-2 justify-between rounded-lg
+    <div id="printContent" class="w-80 h-70v shadow-2xl flex flex-col py-7 px-2 justify-between rounded-lg
     absolute top-0 left-0 right-0 bottom-0 m-auto z-30 bg-white-0">
     <h3 class="w-full items-center justify-center text-center text-2xl font-medium text-azureMarine-700">
         Venta del {{sell.fecha}}
@@ -17,7 +17,7 @@
             <li class="w-1/4 text-center font-medium border-b border-azureMarine-700">cantidad</li>
             <li class="w-1/4 text-center font-medium border-b border-azureMarine-700">precio</li>
         </ul>
-        <ul v-for="(item, i) in detalles" :key="i" class="w-full flex justify-between items-center text-sm text-gray-600">
+        <ul v-for="(item, i) in detalles" :key="i" class="w-full flex justify-between items-center text-sm text-gray-600 pb-4">
             <p class="w-2/4 h-6 text-center">{{item.nombre_producto}}</p>
             <p class="w-1/4 text-center">{{item.cantidad}}</p>
             <p class="w-1/4 text-center">{{item.precio}}</p>
