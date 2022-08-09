@@ -28,8 +28,8 @@ app.use(VueHtmlToPaper, options);
 app.use(router);
 app.use(new VueSocketIO({
     debug: false,
-    /* connection: SocketIO('https://restdolcevita.herokuapp.com/'), */ //options object is Optional
-    connection: SocketIO('http://localhost:3000'), //options object is Optional
+    connection: SocketIO('https://restdolcevita.herokuapp.com/'),//options object is Optional
+    /* connection: SocketIO('http://localhost:3000'),  *///options object is Optional
     /* vuex: {
       store,
       actionPrefix: "SOCKET_",
