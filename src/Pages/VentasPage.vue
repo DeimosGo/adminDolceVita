@@ -191,6 +191,13 @@ export default {
             counter: 1,
         };
     },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
+    },
     methods: {
         ordenarNombre() {
             this.loadFilter = false;
@@ -322,6 +329,11 @@ export default {
                 this.id = 0;
                 await this.loadDatos();
             }
+        },
+        messageLogin(){
+            this.sockets.subscribe("server:countVentas", () => {
+                this.countVentas();
+            });
         },
         async countVentas() {
             const respuesta = await this.VentasService.getVentasCount();
