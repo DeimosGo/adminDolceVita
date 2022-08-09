@@ -203,8 +203,20 @@ export default {
             closeCard: false,
         };
     },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
+    },
     emits: ["add", "side"],
     methods: {
+        async messageDeleteProducto(){
+            this.sockets.subscribe("logout", async () => {
+            await this.cerrar();
+        });
+        },
         cargar() {
             let body = document.querySelector("body");
             if (body.offsetWidth < 1023) {
@@ -253,6 +265,7 @@ export default {
         },
     },
     mounted() {
+        this.messageDeleteProducto();
         this.nombre = sessionStorage.getItem('nombre');
         this.apellido = sessionStorage.getItem('apellido');
         this.verificar();

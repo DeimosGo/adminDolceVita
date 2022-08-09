@@ -57,6 +57,16 @@ export default {
             this.sesion = !this.sesion;
             if (this.sesion) {
                 this.$socket.emit('logged', user);
+                this.messageProducto();
+                this.messageEditProducto();
+                this.messageDeleteProducto();
+                if (user) {
+                    console.log(user);
+                    if (user.idRol == 1) {
+                        this.messageNewVenta();
+                        this.messageLogin();
+                    }
+                }
                 /* this.socket.emit("logged", user); */
             }
         },
@@ -120,6 +130,7 @@ export default {
         });
         },
         messageNewVenta(){
+            console.log('subscribe');
             this.sockets.subscribe("server:adviceNewVenta", (empleado) => {
             if (sessionStorage.getItem("sesion")) {
                 this.datos = `${empleado} ha realizado una nueva venta`;
@@ -165,13 +176,15 @@ export default {
     },
     components: { SideBar },
     async mounted() {
+        console.log();
         if (sessionStorage.getItem("sesion")) {
             this.side();
             this.messageProducto();
             this.messageEditProducto();
             this.messageDeleteProducto();
-            this.messageNewVenta();
-            if (sessionStorage.getItem("rol") == '1') {
+            sessionStorage.getItem("rol")
+            if (sessionStorage.getItem("rol") === '1') {
+                this.messageNewVenta();
                 this.messageLogin();
             }
         }
