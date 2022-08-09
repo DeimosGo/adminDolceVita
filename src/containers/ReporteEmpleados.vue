@@ -147,18 +147,14 @@ export default {
                 dateOut
             );
             let ventas = [];
-            let lab = [];
+            /* let lab = []; */
             data.forEach((element) => {
-                lab.push(
+                this.chartOptions.xaxis.categories.push(
                     `${element.nombres[0]+element.nombres.toLowerCase().substring(1)} ${element.apellidos[0]+element.apellidos.toLowerCase().substring(1)}`
                 );
-                ventas.push({
-                    name: ` ${element.cantidad} - ${element.nombres[0]+element.nombres.toLowerCase().substring(1)}
-                    ${element.apellidos[0]+element.apellidos.toLowerCase().substring(1)}`,
-                    data:[element.cantidad]});
+                ventas.push({name: `${element.cantidad} ${element.nombres[0]+element.nombres.toLowerCase().substring(1)} ${element.apellidos[0]+element.apellidos.toLowerCase().substring(1)}`,data:[element.cantidad]});
             });
             this.series = ventas;
-            this.chartOptions.xaxis.categories = lab;
             this.loaded = true;
             this.empleados = data;
             this.reload = true;
