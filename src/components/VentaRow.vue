@@ -51,6 +51,7 @@ export default {
     emits:['showDetails'],
     methods:{
         showDetails(){
+            console.log(this.sold);
             this.$emit('showDetails', this.sold);
         },
         printComprobante(){

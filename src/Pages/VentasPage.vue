@@ -446,6 +446,8 @@ export default {
             const response = await this.DetallesService.getDetails(id);
             this.detalles = response.data;
             const result = await this.ComprobanteService.getComprobanteId(id);
+            console.log(response);
+            console.log(result);
             this.comprobant = true;
             this.comp = result.data;
             if (result.status == 200) {

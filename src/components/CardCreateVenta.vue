@@ -294,9 +294,8 @@ export default {
                     idEmpleado: idEmpleado,
                 });
                 if (venta.status == 201) {
-                    console.log(empleado);
                     this.$socket.emit('cliente:createVenta', empleado.data);
-                    const data = venta.data;
+                    let data = venta.data;
                     await this.ComprobanteService.postComprobante({
                         idComprobante: data.idVenta,
                         dniCliente: `${this.dni}`,
@@ -314,6 +313,11 @@ export default {
                             idProducto: products[i].idProducto,
                         });
                     }
+                    data = {
+                        ...data,
+                        subtotal:this.subtotal,
+                    };
+                    console.log(data);
                     await this.loadProductos();
                     this.$emit("createdVenta", data);
                 }

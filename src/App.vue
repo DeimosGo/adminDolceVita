@@ -60,6 +60,7 @@ export default {
                 this.messageProducto();
                 this.messageEditProducto();
                 this.messageDeleteProducto();
+                this.messageInterval();
                 if (user) {
                     console.log(user);
                     if (user.idRol == 1) {
@@ -165,7 +166,7 @@ export default {
                 }, 8000);
             }
         });
-        }
+        },
     },
     sockets: {
         connect: function () {
