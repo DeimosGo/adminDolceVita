@@ -332,6 +332,7 @@ export default {
         },
         messageLogin(){
             this.sockets.subscribe("server:countVentas", () => {
+                this.loadDatos();
                 this.countVentas();
             });
         },

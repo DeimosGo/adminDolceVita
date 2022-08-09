@@ -1,5 +1,5 @@
 <template>
-    <div
+    <div v-if="reload"
         class="w-full flex flex-col p-4 space-y-8 text-gray-600 font-medium items-center justify-center"
     >
         <div class="w-full flex flex-col space-y-2 justify-center items-center">
@@ -68,6 +68,7 @@ export default {
     name: "ReporteProductos",
     data() {
         return {
+            reload: true,
             moreLess: "Aumento",
             percent: "",
             productos:[],
@@ -88,6 +89,13 @@ export default {
             },
         };
     },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
+    },
     components: { apexchart: VueApexCharts },
     methods: {
         async load() {
@@ -105,9 +113,17 @@ export default {
             }
             this.series = ventas;
             this.loaded = true;
+            this.reload = true;
+        },
+        refreshSubs(){
+            this.sockets.subscribe("server:fixChart", async () => {
+                this.reload = false;
+                await this.load();
+            });
         },
     },
     async beforeMount() {
+        this.refreshSubs();
         await this.load();
     },
 };

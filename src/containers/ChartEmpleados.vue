@@ -55,6 +55,13 @@ export default {
             },
         };
     },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
+    },
     methods: {
         async load() {
             let fechaFormat = moment(this.fechaActual).format('YYYY-MM-DD');
@@ -80,9 +87,40 @@ export default {
             this.chartOptions.xaxis.categories = lab;
             this.show = true;
         },
+        async refresh() {
+            let fechaFormat = moment(this.fechaActual).format('YYYY-MM-DD');
+            this.chartOptions.chart.id = `empleadosDestacados_${fechaFormat}`;
+            const fecha = new Date();
+            var momentObj = moment(fecha).format('YYYY-MM-DD');
+            const dateOut = `${momentObj.slice(0,8)}01`;
+            const dateIn = moment(`${momentObj.slice(0,8)}01`).subtract(1, 'months').format('YYYY-MM-DD');
+            const { data } = await this.VentasService.getEmpleadosChart(
+                dateIn,
+                dateOut
+            );
+            let ventas = [];
+            let lab = [];
+            data.forEach((element) => {
+                lab.push(
+                    `${element.nombres[0]+element.nombres.toLowerCase().substring(1)} ${element.apellidos[0]+element.apellidos.toLowerCase().substring(1)}`
+                );
+                ventas.push({name: 'ventas',data:[element.cantidad]});
+            });
+            this.$emit('setSeller', lab[0]);
+            this.series = ventas;
+            this.chartOptions.xaxis.categories = lab;
+            this.show=true
+        },
+        refreshSubs(){
+            this.sockets.subscribe("server:fixChart",async () => {
+                this.show = false
+                await this.refresh();
+            });
+        },
     },
     async mounted() {
         await this.load();
+        this.refreshSubs();
     },
 };
 </script>

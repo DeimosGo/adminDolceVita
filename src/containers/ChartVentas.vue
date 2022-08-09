@@ -23,6 +23,7 @@
                 CRECIMIENTO MENSUAL DE INGRESOS
             </h3>
             <apexchart
+                v-if="loadedRadial"
                 type="radialBar"
                 height="400"
                 :options="chartOptionsRadial"
@@ -39,6 +40,7 @@ export default {
     data() {
         return {
             ingresos: "",
+            loadedRadial: true,
             fechaActual: new Date(),
             loaded: false,
             VentasService: new Venta(),
@@ -122,6 +124,13 @@ export default {
             },
         };
     },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
+    },
     methods: {
         async loadInfo() {
             const result = await this.VentasService.getVentasChart();
@@ -151,9 +160,44 @@ export default {
                 this.ingresos = `S/.${ingresosDelMes}`;
             }
         },
+        async refresh(){
+            const result = await this.VentasService.getVentasChart();
+            const fechaFormat = moment(this.fechaActual).format("YYYY-MM-DD");
+            this.chartOptions.chart.id = `ventasSemestre_${fechaFormat}`;
+            let datos = [];
+            let fechas = [];
+            moment.locale("es");
+            if (result.status == 200) {
+                const data = result.data.reverse();
+                data.forEach((element) => {
+                    datos.push(Number(element.cantidad));
+                    let mes = moment(element.mes, "MM").format("MMMM");
+                    fechas.push(mes[0].toUpperCase() + mes.substring(1));
+                });
+                this.$emit("setMes", fechas[fechas.length - 1]);
+                this.series[0].data = datos;
+                this.chartOptions.labels = fechas;
+                const ingresosAnterior = Number(data[data.length - 2].total);
+                const ingresosDelMes = Number(data[data.length - 1].total);
+                this.$emit("setIngresos", `S/.${ingresosDelMes.toFixed(2)}`);
+                const cantidad = ingresosDelMes - ingresosAnterior;
+                this.seriesRadial = [
+                    ((cantidad / ingresosAnterior) * 100).toFixed(0),
+                ];
+                this.ingresos = `S/.${ingresosDelMes}`;
+                this.loadedRadial = true;
+            /* this.loaded = true; */
+        }},
+        refreshSubs(){
+            this.sockets.subscribe("server:fixChart", async () => {
+                this.loadedRadial = false;
+                await this.refresh();
+        });
+        },
     },
-    mounted(){
-        this.loadInfo();
+    async mounted(){
+        this.refreshSubs();
+        await this.loadInfo();
 }
 }
 </script>

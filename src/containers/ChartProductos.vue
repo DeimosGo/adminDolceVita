@@ -6,6 +6,7 @@
             PRODUCTOS MAS VENDIDOS
         </h3>
         <apexchart
+            v-if="loaded"
             class="w-full"
             type="bar"
             height="350"
@@ -23,6 +24,7 @@ export default {
     components: { apexchart: VueApexCharts },
     data() {
         return {
+            loaded: true,
             fechaActual: new Date(),
             ProductosService: new Producto(),
             chartOptions: {
@@ -44,6 +46,13 @@ export default {
             ],
         };
     },
+    sockets: {
+        connect: function () {
+        },
+        customEmit: function (data) {
+            data
+        }
+    },
     methods: {
         async load() {
             let fechaFormat = moment(this.fechaActual).format("YYYY-MM-DD");
@@ -63,9 +72,17 @@ export default {
                     .substring(1)
                     .toLowerCase()}`
             );
+            this.loaded = true;
+        },
+        refreshSubs(){
+            this.sockets.subscribe("server:fixChart", async () => {
+                this.loaded = false;
+                await this.load();
+            });
         },
     },
     async mounted() {
+        this.refreshSubs();
         await this.load();
     },
 };

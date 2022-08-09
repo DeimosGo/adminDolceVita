@@ -1,5 +1,5 @@
 <template>
-    <div
+    <div v-if="reload"
         class="w-full flex flex-col p-4 space-y-8 text-gray-600 items-center justify-center"
     >
         <div class="w-full flex flex-col space-y-2 justify-center items-center">
@@ -212,6 +212,7 @@ export default {
     name: "ReporteVentas",
     data() {
         return {
+            reload: true,
             moreLess: "Aumento",
             percent: "",
             productos:[],
@@ -452,10 +453,18 @@ export default {
                     2
                 )}%`;
                 this.$emit('setLoad');
+                this.reload = true;
             }
+        },
+        refreshSubs(){
+            this.sockets.subscribe("server:fixChart", async () => {
+                this.reload = false;
+                await this.loadInfo();
+            });
         },
     },
     async beforeMount() {
+        this.refreshSubs();
         await this.loadInfo();
     },
 };

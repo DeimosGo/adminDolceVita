@@ -80,7 +80,7 @@
                     <i class="fa-solid fa-file-pdf mr-1 text-xl"></i>Descargar reporte completo
                 </button>
             </div>
-            <ChartVentas @setMes="setMes" @setIngresos="setIngresos" />
+            <ChartVentas @reloadReports="reloadReports" @setMes="setMes" @setIngresos="setIngresos" />
             <div
                 class="w-full flex flex-col lg:flex-row justify-center space-y-4 lg:space-y-0 lg:space-x-4 pb-3"
             >
@@ -102,7 +102,7 @@
                 <div id="reporte3" class="w-full">
                     <ReporteCompleto @setLoad="setLoad" />
                 </div>
-            </section>
+    </section>
 </template>
 <script>
 import ChartProductos from "@/containers/ChartProductos.vue";
@@ -124,6 +124,7 @@ export default {
             seller: "",
             produtoTop: "",
             loadInfo: false,
+            realTime: true,
         };
     },
     methods: {
