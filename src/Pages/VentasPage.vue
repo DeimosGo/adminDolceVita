@@ -485,6 +485,7 @@ export default {
         NotFoundSearch,
     },
     async beforeMount() {
+        this.messageLogin();
         this.loadDatos();
     },
 };
