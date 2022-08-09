@@ -232,12 +232,23 @@ export default {
     computed: {
         subtotal() {
             let result = this.total;
-            result -= result * 0.18;
-            return this.round10(result, -2);
+            if (result ===0) {
+                /* result -= (result * 0.18);
+                return this.round10(result, -2); */
+                return 0;
+            }else{
+                /* result -= (result * 0.18)+1;
+                return this.round10(result, -2); */
+                return Number(result - (result*0.18)).toFixed(2);
+            }
         },
         igv() {
-            let result = this.subtotal * 0.18;
-            return this.round10(result, -2);
+            let result = this.total
+            if (result === 0) {
+                return 0;
+            } else {
+                return Number(result*0.18).toFixed(2);
+            }
         },
         total() {
             let result = 0;

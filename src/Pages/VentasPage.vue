@@ -464,7 +464,7 @@ export default {
             this.comprobant = true;
             this.comp = result.data;
             if (result.status == 200) {
-                setTimeout(() => this.$htmlToPaper("printContent"), 600);
+                setTimeout(() => this.$htmlToPaper("printContent"), 700);
             }
         },
         deleteProduct(id) {
