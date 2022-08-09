@@ -60,7 +60,6 @@ export default {
                 this.messageProducto();
                 this.messageEditProducto();
                 this.messageDeleteProducto();
-                this.messageInterval();
                 if (user) {
                     console.log(user);
                     if (user.idRol == 1) {
