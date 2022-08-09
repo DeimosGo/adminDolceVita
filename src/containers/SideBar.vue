@@ -234,6 +234,9 @@ export default {
             sessionStorage.removeItem("sesion");
             sessionStorage.removeItem("token");
             sessionStorage.removeItem("rol");
+            const dato = sessionStorage.getItem("idEmpleado");
+            console.log(dato);
+            this.$socket.emit('cliente:closeSesion',dato);
             await this.$emit("side");
             router.push("/login");
         },

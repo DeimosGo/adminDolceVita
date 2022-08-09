@@ -90,6 +90,7 @@ export default {
                             password: this.pass,
                         },
                     });
+                    console.log(respuesta);
                     if (respuesta.status === 200) {
                         const data = await respuesta.data.token;
                         const rol = await respuesta.data.usuario.idRol;
@@ -107,12 +108,17 @@ export default {
                         router.push("/");
                     }
                 } catch (error) {
+                    console.log(error.response.data.message);
                     if (error.response.status === 401) {
                         this.valid = "Correo o contraseña invalidos";
                         this.error = true;
                         setTimeout(() =>{this.error = false;},3000)
                     }else if (error.response.status === 403) {
                         this.valid = "Usuario deshabilitado";
+                        this.error = true;
+                        setTimeout(() =>{this.error = false;},3000)
+                    }else if (error.response.data.message==='sesion'){
+                        this.valid = "Ya hay una sesion activa";
                         this.error = true;
                         setTimeout(() =>{this.error = false;},3000)
                     }

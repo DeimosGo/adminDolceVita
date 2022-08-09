@@ -39,7 +39,6 @@
 </style>
 <script>
 import SideBar from "./containers/SideBar.vue";
-/* import SocketMethods from './services/SocketConnection'; */
 export default {
     data() {
         return {
@@ -60,6 +59,7 @@ export default {
                 this.messageProducto();
                 this.messageEditProducto();
                 this.messageDeleteProducto();
+                this.messageExpire();
                 if (user) {
                     console.log(user);
                     if (user.idRol == 1) {
@@ -152,6 +152,24 @@ export default {
             this.sockets.subscribe("server:adviceDeleteProducto", (producto) => {
             if (sessionStorage.getItem("sesion")) {
                 this.datos = `Se ha eliminado el producto ${producto}`;
+                this.inicioWarn = true;
+                const sound = new Audio(this.music);
+                sound.muted = true;
+                sound.addEventListener("canplaythrough", () => {
+                    sound.muted = false;
+                    sound.play();
+                    sound.volume = 0.5;
+                });
+                setTimeout(() => {
+                    this.inicioWarn = false;
+                }, 8000);
+            }
+        });
+        },
+        messageExpire(){
+            this.sockets.subscribe("server:warLogin", (mensaje) => {
+            if (sessionStorage.getItem("sesion")) {
+                this.datos = mensaje;
                 this.inicioWarn = true;
                 const sound = new Audio(this.music);
                 sound.muted = true;
